@@ -220,9 +220,17 @@
     <div class="wrap">
       <span class="eyebrow orange">Independent Creative Studio · Est. 2018</span>
 
-      <div class="hero-logo-wrap" aria-hidden="true">
-        <img src="assets/logo.svg" alt="Fervent Digital Marketing" width="867" height="274" />
-      </div>
+      <figure class="hero-photo">
+        <picture>
+          <source media="(max-width: 720px)" srcset="assets/hero-mobile.webp" type="image/webp" />
+          <source media="(max-width: 720px)" srcset="assets/hero-mobile.jpg"  type="image/jpeg" />
+          <source srcset="assets/hero.webp" type="image/webp" />
+          <img src="assets/hero.jpg"
+               alt="Designer hand sketching UI and UX wireframes — Fervent Digital Marketing"
+               width="2400" height="1440"
+               loading="eager" fetchpriority="high" />
+        </picture>
+      </figure>
 
       <h1 id="hero-heading">
         Bold brands. <span class="stroke">Considered design.</span> Fervent execution.
@@ -602,6 +610,8 @@
       </span>
       <span>Driven by Spirit. Defined by Results.</span>
     </div>
+    <div class="foot-tag">Independent Creative Studio · Est. 2018</div>
+    <div class="foot-credit">Hero photograph: <a href="https://unsplash.com/@kellysikkema" target="_blank" rel="noopener noreferrer">Kelly Sikkema</a> via <a href="https://unsplash.com" target="_blank" rel="noopener noreferrer">Unsplash</a></div>
   </div>
 </footer>
 
