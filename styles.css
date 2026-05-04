@@ -290,16 +290,13 @@ nav a:focus-visible::after { width: 100%; }
 }
 .hero > .wrap { position: relative; z-index: 1; }
 
-/* Logo sits in a dark band so the original logo design works naturally */
-.hero-logo-band {
-  background: var(--bg-dark);
-  border-radius: 12px;
-  padding: 32px 28px;
+/* Hero logo wrapper — uses the real Fervent logo on light background */
+.hero-logo-wrap {
   margin: 24px 0 56px;
-  max-width: 920px;
-  box-shadow: var(--shadow-md);
+  max-width: 720px;
 }
-.hero-logo-band svg { width: 100%; height: auto; display: block; }
+.hero-logo-wrap img,
+.hero-logo-wrap svg { width: 100%; height: auto; display: block; }
 
 .hero h1 {
   font-size: clamp(40px, 5.6vw, 88px);
@@ -796,7 +793,7 @@ footer {
   .about-stats   { grid-template-columns: 1fr 1fr; }
   .tl-row        { grid-template-columns: 1fr; gap: 12px; padding: 28px 0; }
 
-  .hero-logo-band { padding: 24px 18px; margin: 16px 0 40px; }
+  .hero-logo-wrap { margin: 16px 0 40px; max-width: 100%; }
 }
 
 /* Small mobile */
@@ -812,7 +809,7 @@ footer {
 
 /* Tiny screens — last-resort guard */
 @media (max-width: 360px) {
-  .hero-logo-band { padding: 18px 12px; }
+  .hero-logo-wrap { margin: 12px 0 28px; }
   .hero h1        { font-size: clamp(32px, 9vw, 44px); }
 }
 
@@ -938,7 +935,7 @@ body.legal { background: var(--bg); }
   .contact-actions { display: none; }
   body { background: #fff; color: #000; }
   p, .tl-detail, .hero-tag, .stat .lab { color: #222; }
-  .hero-logo-band { background: #fff; box-shadow: none; }
+  .hero-logo-wrap img { background: #fff; }
   a { color: inherit; text-decoration: underline; }
   section { page-break-inside: avoid; padding: 24px 0; border-top: 1px solid #ccc; }
 }
