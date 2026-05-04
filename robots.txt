@@ -1,0 +1,9 @@
+# Fervent Digital Marketing — robots.txt
+# Allow all reputable crawlers full access.
+
+User-agent: *
+Allow: /
+Disallow:
+
+# Sitemap location
+Sitemap: https://www.ferventdigital.co.za/sitemap.xml
