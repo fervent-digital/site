@@ -463,6 +463,82 @@ nav a:focus-visible::after { width: 100%; }
   letter-spacing: 0.04em;
 }
 
+/* "Why I'm a Necessity" bullet list — small accent dash before each item */
+.why-list-title {
+  margin: 28px 0 4px;
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.why-list {
+  list-style: none;
+  margin: 0 0 28px;
+  padding: 0;
+}
+.why-list li {
+  position: relative;
+  padding: 14px 0 14px 36px;
+  border-bottom: 1px solid var(--line);
+  font-size: 15px;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+.why-list li:last-child { border-bottom: none; }
+.why-list li::before {
+  content: "";
+  position: absolute;
+  top: 24px;
+  left: 0;
+  width: 22px;
+  height: 1px;
+  background: var(--cyan);
+}
+.why-list li:nth-child(2)::before { background: var(--orange); }
+.why-list li strong { color: var(--ink); font-weight: 700; margin-right: 4px; }
+
+/* Core Competencies grid — sits below the About bio */
+.competencies-block {
+  margin-top: 64px;
+  padding-top: 48px;
+  border-top: 1px solid var(--line);
+}
+.competencies-block .eyebrow { margin-bottom: 24px; }
+.competencies {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+.competency {
+  padding: 24px 22px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  min-width: 0;
+  transition: border-color var(--t-base) ease, transform var(--t-base) ease, box-shadow var(--t-base) ease;
+}
+@media (hover: hover) {
+  .competency:hover {
+    border-color: var(--cyan);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+}
+.competency:nth-child(2):hover { border-color: var(--orange); }
+.competency:nth-child(4):hover { border-color: var(--orange); }
+.competency h3 {
+  font-size: 16px;
+  margin-bottom: 10px;
+  color: var(--ink);
+  letter-spacing: -0.005em;
+}
+.competency p {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
 .about-stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -974,6 +1050,8 @@ footer {
   .services-grid { grid-template-columns: 1fr; }
   .modes         { grid-template-columns: 1fr; gap: 18px; }
   .lead          { margin: -16px 0 32px; font-size: 17px; }
+  .competencies  { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .competencies-block { margin-top: 48px; padding-top: 36px; }
   .portfolio-grid { grid-template-columns: 1fr; }
   .work.large, .work.med, .work.small, .work.wide { grid-column: span 1; }
   .foot-grid     { grid-template-columns: 1fr; gap: 40px; }
@@ -987,6 +1065,7 @@ footer {
 @media (max-width: 520px) {
   :root { --gutter: var(--gutter-sm); }
   .about-stats   { grid-template-columns: 1fr; }
+  .competencies  { grid-template-columns: 1fr; }
   .foot-bottom   { flex-direction: column; gap: 10px; align-items: flex-start; }
   .brand-logo    { height: 30px; }
   .nav-inner     { height: 68px; }
