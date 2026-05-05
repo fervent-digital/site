@@ -109,7 +109,7 @@
       "worksFor": { "@id": "https://www.ferventdigital.co.za/#studio" }
     },
     {
-      "@type": "ProfessionalService",
+      "@type": ["ProfessionalService", "Organization"],
       "@id": "https://www.ferventdigital.co.za/#studio",
       "name": "Fervent Digital Marketing",
       "alternateName": "Fervent",
@@ -187,10 +187,17 @@
 }
 </script>
 
+<!-- Preload critical assets — improves LCP (Largest Contentful Paint) -->
+<link rel="preload" as="image" href="assets/hero.webp" type="image/webp" media="(min-width: 721px)" fetchpriority="high" />
+<link rel="preload" as="image" href="assets/hero-mobile.webp" type="image/webp" media="(max-width: 720px)" fetchpriority="high" />
+<link rel="preload" as="style" href="styles.css" />
+
 <!-- External stylesheet -->
 <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+
+<a href="#top" class="skip-link">Skip to main content</a>
 
 <header class="nav" role="banner">
   <div class="wrap nav-inner">
@@ -208,6 +215,7 @@
         <li><a href="#services">Services</a></li>
         <li><a href="#work">Work</a></li>
         <li><a href="portfolio.html">Portfolio</a></li>
+        <li><a href="cv.html">CV</a></li>
         <li><a href="#experience">Experience</a></li>
         <li><a href="#strategic-solutions">Solutions</a></li>
         <li><a href="#work-with-me">Work With Me</a></li>
@@ -374,6 +382,70 @@
       </div>
     </div>
   </section>
+
+  <!-- TECH STACK BAR — invincibility tools, greyscale → colour on hover -->
+  <aside class="tech-stack" aria-label="Featured tools and technical stack">
+    <div class="wrap">
+      <p class="tech-stack-title">Featured Tools &amp; Tech Stack</p>
+      <ul class="tech-items">
+
+        <li class="tech-item" tabindex="0">
+          <svg class="tech-icon" viewBox="0 0 60 60" role="img" aria-label="Adobe Photoshop">
+            <rect width="60" height="60" rx="10" fill="#001E36"/>
+            <text x="30" y="40" text-anchor="middle" font-family="Helvetica Neue, Inter, sans-serif" font-weight="800" font-size="22" fill="#31A8FF" letter-spacing="-1">Ps</text>
+          </svg>
+          <span class="tech-label">Photoshop</span>
+        </li>
+
+        <li class="tech-item" tabindex="0">
+          <svg class="tech-icon" viewBox="0 0 60 60" role="img" aria-label="Adobe Illustrator">
+            <rect width="60" height="60" rx="10" fill="#330000"/>
+            <text x="30" y="40" text-anchor="middle" font-family="Helvetica Neue, Inter, sans-serif" font-weight="800" font-size="22" fill="#FF9A00" letter-spacing="-1">Ai</text>
+          </svg>
+          <span class="tech-label">Illustrator</span>
+        </li>
+
+        <li class="tech-item" tabindex="0">
+          <svg class="tech-icon" viewBox="0 0 60 60" role="img" aria-label="Adobe InDesign">
+            <rect width="60" height="60" rx="10" fill="#49021F"/>
+            <text x="30" y="40" text-anchor="middle" font-family="Helvetica Neue, Inter, sans-serif" font-weight="800" font-size="22" fill="#FF3366" letter-spacing="-1">Id</text>
+          </svg>
+          <span class="tech-label">InDesign</span>
+        </li>
+
+        <li class="tech-item" tabindex="0">
+          <svg class="tech-icon" viewBox="0 0 60 60" role="img" aria-label="Adobe After Effects (motion graphics)">
+            <rect width="60" height="60" rx="10" fill="#00005B"/>
+            <text x="30" y="40" text-anchor="middle" font-family="Helvetica Neue, Inter, sans-serif" font-weight="800" font-size="22" fill="#9999FF" letter-spacing="-1">Ae</text>
+          </svg>
+          <span class="tech-label">After Effects</span>
+        </li>
+
+        <li class="tech-item" tabindex="0">
+          <svg class="tech-icon" viewBox="0 0 60 60" role="img" aria-label="SEO and Analytics — data-driven approach">
+            <rect width="60" height="60" rx="10" fill="#0a0a0a"/>
+            <rect x="14" y="40" width="6" height="6" fill="#1FB5D4"/>
+            <rect x="22" y="34" width="6" height="12" fill="#1FB5D4"/>
+            <rect x="30" y="26" width="6" height="20" fill="#1FB5D4"/>
+            <rect x="38" y="18" width="6" height="28" fill="#E26B25"/>
+            <line x1="14" y1="14" x2="46" y2="14" stroke="#444" stroke-width="0.5"/>
+          </svg>
+          <span class="tech-label">SEO &amp; Analytics</span>
+        </li>
+
+        <li class="tech-item" tabindex="0">
+          <svg class="tech-icon" viewBox="0 0 60 60" role="img" aria-label="HTML email marketing">
+            <rect width="60" height="60" rx="10" fill="#0a0a0a"/>
+            <rect x="12" y="18" width="36" height="24" rx="2" fill="none" stroke="#1FB5D4" stroke-width="2"/>
+            <path d="M 14 20 L 30 32 L 46 20" fill="none" stroke="#1FB5D4" stroke-width="2"/>
+            <text x="30" y="54" text-anchor="middle" font-family="ui-monospace, monospace" font-size="9" fill="#E26B25">&lt;/&gt;</text>
+          </svg>
+          <span class="tech-label">HTML Email</span>
+        </li>
+
+      </ul>
+    </div>
+  </aside>
 
   <!-- SERVICES -->
   <section id="services" aria-labelledby="services-heading">
