@@ -654,13 +654,49 @@ nav a:focus-visible::after { width: 100%; }
   background: var(--bg-soft);
   min-width: 0;
 }
-.zz-image svg,
-.zz-image img {
+.zz-image picture { display: block; width: 100%; }
+.zz-image svg {
   display: block;
   width: 100%;
   height: auto;
   aspect-ratio: 4 / 3;
   object-fit: cover;
+}
+.zz-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Mini-gallery inside a case-study image slot — 1 hero + 2-column row beneath */
+.zz-gallery {
+  border: none;
+  background: transparent;
+  display: grid;
+  gap: 8px;
+  overflow: visible;
+}
+.zz-gal-hero img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+}
+.zz-gal-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.zz-gal-row picture { display: block; }
+.zz-gal-row img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  aspect-ratio: 3 / 4;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
 }
 
 .zz-content { min-width: 0; }
@@ -1319,6 +1355,19 @@ footer {
    P. RESPONSIVE BREAKPOINTS
    ========================================================================== */
 
+/* Small-laptop nav: tighten gaps + type so 7 items + buttons don't overlap */
+@media (max-width: 1180px) {
+  nav[aria-label="Primary navigation"] ul { gap: 22px; }
+  nav a { font-size: 13px; }
+  .cta.cta-sm { padding: 8px 12px; font-size: 12px; }
+  .nav-actions { gap: 8px; }
+}
+@media (max-width: 1024px) {
+  nav[aria-label="Primary navigation"] ul { gap: 16px; }
+  nav a { font-size: 12.5px; letter-spacing: 0.01em; }
+  .nav-inner .cta { padding: 10px 16px; font-size: 13px; }
+}
+
 /* Tablet — refine columns and tighten spacing */
 @media (max-width: 1100px) {
   .portfolio-grid { grid-template-columns: repeat(4, 1fr); }
@@ -1545,13 +1594,43 @@ body.legal { background: var(--bg); }
   margin-bottom: 28px;
   border-bottom: 2px solid var(--ink);
 }
+.cv-banner-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 8px;
+}
 .cv-eyebrow {
   font-size: 10px;
   letter-spacing: 0.34em;
   text-transform: uppercase;
   color: var(--cyan);
   font-weight: 700;
-  margin: 0 0 8px;
+  margin: 0;
+}
+/* Static Print-to-PDF button inside the banner — visible on first scroll */
+.cv-print-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  background: var(--ink);
+  color: #ffffff;
+  border: 1px solid var(--ink);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: background var(--t-base) ease, color var(--t-base) ease, transform var(--t-base) ease;
+}
+.cv-print-btn:hover,
+.cv-print-btn:focus-visible {
+  background: var(--cyan);
+  border-color: var(--cyan);
+  color: #0a0a0a;
+  transform: translateY(-1px);
 }
 .cv-name {
   font-size: clamp(34px, 4.6vw, 50px);
@@ -1818,6 +1897,7 @@ body.legal { background: var(--bg); }
 /* CV responsive — collapse the two-column body to single column on mobile */
 @media (max-width: 720px) {
   .cv-doc { padding: 24px 18px; box-shadow: none; }
+  .cv-banner-row { flex-direction: column; align-items: flex-start; gap: 8px; }
   .cv-grid { grid-template-columns: 1fr; gap: 24px; }
   .cv-side { order: 2; }   /* sidebar drops below main on mobile */
   .cv-main-col { order: 1; }
@@ -1840,6 +1920,7 @@ body.legal { background: var(--bg); }
   .site-footer,
   .nav-actions,
   .cv-floating-save,
+  .cv-print-btn,
   .cv-references-note,
   .skip-link { display: none !important; }
 
