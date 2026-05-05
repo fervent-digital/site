@@ -56,12 +56,12 @@
 
 <a href="#main-content" class="skip-link">Skip to main content</a>
 
-<!-- Floating Save-as-PDF button (hidden in print) -->
-<button type="button" class="cv-floating-save" onclick="window.print()" aria-label="Save this CV as a PDF using the browser print dialogue">
+<!-- Floating Print-to-PDF button (hidden in print) -->
+<button type="button" class="cv-floating-save" onclick="window.print()" aria-label="Print or save this CV as a PDF using the browser print dialogue">
   <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
     <path d="M19 8h-1V3H6v5H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zM8 5h8v3H8V5zm8 14H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"/>
   </svg>
-  <span>Save as PDF</span>
+  <span>Print to PDF</span>
 </button>
 
 <!-- Standard site nav (hidden in print) -->
@@ -97,9 +97,17 @@
 <main id="main-content" class="cv-main">
   <article class="cv-doc">
 
-    <!-- BANNER — name, role line, contact strip -->
+    <!-- BANNER — name, role line, contact strip + visible Print-to-PDF action -->
     <header class="cv-banner">
-      <p class="cv-eyebrow">Curriculum Vitae</p>
+      <div class="cv-banner-row">
+        <p class="cv-eyebrow">Curriculum Vitae</p>
+        <button type="button" class="cv-print-btn" onclick="window.print()" aria-label="Print or save this CV as a PDF">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M19 8h-1V3H6v5H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zM8 5h8v3H8V5zm8 14H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"/>
+          </svg>
+          Print to PDF
+        </button>
+      </div>
       <h1 class="cv-name">Minette Hartman</h1>
       <p class="cv-tagline">Executive Creative Director &middot; Director of Operations &middot; Digital Strategist</p>
       <ul class="cv-contact-strip" aria-label="Contact details">
