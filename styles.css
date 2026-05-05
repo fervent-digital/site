@@ -514,11 +514,13 @@ nav a:focus-visible::after { width: 100%; }
 .why-list li:nth-child(2)::before { background: var(--orange); }
 .why-list li strong { color: var(--ink); font-weight: 700; margin-right: 4px; }
 
-/* Core Competencies grid — sits below the About bio */
+/* Core Competencies grid — sits below the About bio, on a soft grey panel */
 .competencies-block {
   margin-top: 64px;
-  padding-top: 48px;
-  border-top: 1px solid var(--line);
+  padding: 48px 40px;
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
 }
 .competencies-block .eyebrow { margin-bottom: 24px; }
 .competencies {
@@ -620,6 +622,11 @@ nav a:focus-visible::after { width: 100%; }
 .service:nth-child(even) .num { color: var(--orange); }
 .service h3 { margin-bottom: 14px; }
 .service p { font-size: 15px; }
+
+/* Soft grey backdrop for the whole Services section — edge to edge */
+#services {
+  background: var(--bg-soft);
+}
 
 
 /* ==========================================================================
@@ -1359,7 +1366,7 @@ footer {
   .modes         { grid-template-columns: 1fr; gap: 18px; }
   .lead          { margin: -16px 0 32px; font-size: 17px; }
   .competencies  { grid-template-columns: repeat(2, 1fr); gap: 14px; }
-  .competencies-block { margin-top: 48px; padding-top: 36px; }
+  .competencies-block { margin-top: 48px; padding: 32px 24px; }
   .pillar        { grid-template-columns: 1fr; gap: 8px; padding: 32px 0; }
   .pillar-num    { font-size: 44px; }
   /* Zig-zag case studies stack: image always on top, text below */
