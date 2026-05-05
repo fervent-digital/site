@@ -261,6 +261,21 @@ nav a:focus-visible::after { width: 100%; }
 .cta.cyan  { background: var(--cyan);  color: #0a0a0a; }
 .cta.ghost { background: transparent;  color: var(--ink); border-color: var(--line-strong); }
 
+/* Smaller CTA variant — used for the header "Download CV" so it doesn't compete
+   visually with the primary "Start a project" button */
+.cta.cta-sm {
+  padding: 9px 16px;
+  font-size: 13px;
+  min-height: 38px;
+}
+
+/* Header right-side action cluster — keeps both nav CTAs grouped */
+.nav-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
 
 /* ==========================================================================
    G. HERO
@@ -683,16 +698,16 @@ nav a:focus-visible::after { width: 100%; }
   color: var(--ink-soft);
   line-height: 1.55;
 }
-/* RESULT row — orange label + bold ink dd inside soft orange highlight */
-.star .result dt { color: var(--orange); }
+/* RESULT row — cyan (logo blue) label + bold ink dd inside soft cyan highlight */
+.star .result dt { color: var(--cyan); }
 .star .result dd {
   color: var(--ink);
-  font-weight: 600;
+  font-weight: 700;
   font-size: 15.5px;
-  background: var(--orange-soft);
+  background: var(--cyan-soft);
   padding: 10px 14px;
   border-radius: 4px;
-  border-left: 3px solid var(--orange);
+  border-left: 3px solid var(--cyan);
   line-height: 1.55;
 }
 
@@ -1191,7 +1206,7 @@ footer {
   /* Mobile nav: hide menu, show hamburger */
   nav[aria-label="Primary navigation"] ul { display: none; }
   .nav-toggle { display: inline-flex; }
-  .nav-inner .cta { display: none; } /* CTA hidden on small to give room for hamburger */
+  .nav-actions { display: none; } /* nav CTAs hidden on small to give room for hamburger */
 
   /* Open state for mobile nav */
   body.nav-open nav[aria-label="Primary navigation"] {
