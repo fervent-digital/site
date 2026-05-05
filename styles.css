@@ -266,7 +266,7 @@ nav a:focus-visible::after { width: 100%; }
    G. HERO
    ========================================================================== */
 .hero {
-  padding: 200px 0 120px;
+  padding: 80px 0 120px;   /* top padding = nav height, so the photo sits flush under the bar */
   border-top: none;
   position: relative;
   overflow: hidden;
@@ -290,32 +290,76 @@ nav a:focus-visible::after { width: 100%; }
 }
 .hero > .wrap { position: relative; z-index: 1; }
 
-/* Full-bleed hero photo — breaks out of .wrap to span the entire viewport */
+/* Full-bleed hero photo — breaks out of .wrap to span the entire viewport.
+   Cinematic strip height + subtle drift animation for an interactive feel. */
 .hero-photo {
   position: relative;
-  margin: 32px calc(50% - 50vw) 56px;
+  margin: 0 calc(50% - 50vw) 48px;
   width: 100vw;
   max-width: 100vw;
+  height: clamp(220px, 32vh, 380px);
   overflow: hidden;
   background: var(--bg-soft);
   isolation: isolate;
 }
-.hero-photo picture,
+.hero-photo picture { display: block; width: 100%; height: 100%; }
 .hero-photo img {
   display: block;
   width: 100%;
-  height: auto;
+  height: 100%;
   object-fit: cover;
+  object-position: 65% 50%;          /* focus on the hand + sketch */
+  transform: scale(1.06);             /* slight zoom so the drift never reveals edges */
+  animation: heroDrift 28s ease-in-out infinite alternate;
+  will-change: transform;
+}
+@keyframes heroDrift {
+  from { transform: scale(1.06) translate3d(0, 0, 0); }
+  to   { transform: scale(1.06) translate3d(-3%, 1.5%, 0); }
+}
+/* Pause the drift if the user prefers reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .hero-photo img { animation: none; }
 }
 /* Soft white fade at the bottom so the image transitions cleanly into the page */
 .hero-photo::after {
   content: "";
   position: absolute;
   inset: auto 0 0 0;
-  height: 22%;
+  height: 28%;
   background: linear-gradient(to bottom, transparent, var(--bg) 95%);
   pointer-events: none;
   z-index: 1;
+}
+
+/* Eyebrow text overlaid on the hero image — fluid type, orange dashes both sides */
+.hero-eyebrow {
+  position: absolute;
+  top: 22%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(10px, 1.4vw, 18px);
+  color: #ffffff;
+  font-size: clamp(11px, 1.6vw, 18px);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  font-weight: 700;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.45),
+               0 2px 14px rgba(0,0,0,0.35);
+  white-space: nowrap;
+  pointer-events: none;
+}
+.hero-eyebrow::before,
+.hero-eyebrow::after {
+  content: "";
+  width: clamp(24px, 4vw, 56px);
+  height: 1px;
+  background: var(--orange);
+  flex-shrink: 0;
+  box-shadow: 0 0 8px rgba(0,0,0,0.35);
 }
 
 .hero h1 {
@@ -799,7 +843,7 @@ footer {
 /* Tablet → Mobile transition */
 @media (max-width: 900px) {
   section { padding: 80px 0; }
-  .hero  { padding: 130px 0 60px; }
+  .hero  { padding: 80px 0 60px; }
 
   /* Mobile nav: hide menu, show hamburger */
   nav[aria-label="Primary navigation"] ul { display: none; }
@@ -838,7 +882,7 @@ footer {
   .about-stats   { grid-template-columns: 1fr 1fr; }
   .tl-row        { grid-template-columns: 1fr; gap: 12px; padding: 28px 0; }
 
-  .hero-photo    { margin: 24px calc(50% - 50vw) 40px; }
+  .hero-photo    { margin: 0 calc(50% - 50vw) 40px; }
 }
 
 /* Small mobile */
@@ -854,7 +898,7 @@ footer {
 
 /* Tiny screens — last-resort guard */
 @media (max-width: 360px) {
-  .hero-photo    { margin: 12px calc(50% - 50vw) 24px; }
+  .hero-photo    { margin: 0 calc(50% - 50vw) 24px; }
   .hero h1       { font-size: clamp(32px, 9vw, 44px); }
 }
 
