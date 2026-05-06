@@ -1590,8 +1590,8 @@ body.legal { background: var(--bg); }
 
 /* ----- BANNER ----- */
 .cv-banner {
-  padding-bottom: 22px;
-  margin-bottom: 28px;
+  padding-bottom: 18px;
+  margin-bottom: 14px;
   border-bottom: 2px solid var(--ink);
 }
 .cv-banner-row {
@@ -1679,13 +1679,19 @@ body.legal { background: var(--bg); }
 .cv-grid {
   display: grid;
   grid-template-columns: 220px 1fr;
-  gap: 22px 36px;
+  gap: 12px 36px;
   align-items: start;
 }
 .cv-col-side { grid-column: 1; }
 .cv-col-main { grid-column: 2; }
 
-.cv-block { page-break-inside: avoid; }
+/* .cv-block is a <section>, so override the global section rule
+   (padding: 120px 0; border-top: 1px solid) for tight CV spacing.
+   The thin grey border-top is preserved as the visual section divider. */
+.cv-block {
+  padding: 8px 0 0;
+  page-break-inside: avoid;
+}
 .cv-block h2 {
   font-size: 11px;
   letter-spacing: 0.24em;
