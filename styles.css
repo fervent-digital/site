@@ -1673,15 +1673,17 @@ body.legal { background: var(--bg); }
 .cv-contact-strip a:hover,
 .cv-contact-strip a:focus-visible { color: var(--cyan); }
 
-/* ----- TWO-COLUMN GRID ----- */
+/* ----- TWO-COLUMN GRID -----
+   Flat layout: every .cv-block is a direct grid item.
+   Row gap aligns the side / main blocks at the same height per row. */
 .cv-grid {
   display: grid;
   grid-template-columns: 220px 1fr;
-  gap: 36px;
+  gap: 22px 36px;
   align-items: start;
 }
-.cv-side > * + *,
-.cv-main-col > * + * { margin-top: 22px; }
+.cv-col-side { grid-column: 1; }
+.cv-col-main { grid-column: 2; }
 
 .cv-block { page-break-inside: avoid; }
 .cv-block h2 {
@@ -1899,8 +1901,8 @@ body.legal { background: var(--bg); }
   .cv-doc { padding: 24px 18px; box-shadow: none; }
   .cv-banner-row { flex-direction: column; align-items: flex-start; gap: 8px; }
   .cv-grid { grid-template-columns: 1fr; gap: 24px; }
-  .cv-side { order: 2; }   /* sidebar drops below main on mobile */
-  .cv-main-col { order: 1; }
+  .cv-col-side,
+  .cv-col-main { grid-column: 1; }   /* single column on mobile, blocks in document order */
   .cv-role-head { flex-direction: column; gap: 4px; }
   .cv-role-date { letter-spacing: 0.12em; }
   .cv-name { font-size: clamp(28px, 8vw, 38px); }
@@ -1952,11 +1954,11 @@ body.legal { background: var(--bg); }
   /* Two-column body */
   .cv-grid {
     grid-template-columns: 56mm 1fr;
-    gap: 8mm;
+    gap: 11pt 8mm;
     align-items: start;
   }
-  .cv-side > * + *,
-  .cv-main-col > * + * { margin-top: 11pt; }
+  .cv-col-side { grid-column: 1; }
+  .cv-col-main { grid-column: 2; }
 
   /* Section headings */
   .cv-block h2 {

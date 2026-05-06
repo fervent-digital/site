@@ -119,112 +119,106 @@
       </ul>
     </header>
 
-    <!-- TWO-COLUMN BODY: sidebar (left) + main narrative (right) -->
+    <!-- TWO-COLUMN BODY: each row aligns sidebar block ↔ main block -->
     <div class="cv-grid">
 
-      <aside class="cv-side" aria-label="Sidebar — Technical expertise and education">
+      <!-- ROW 1: Technical Expertise  ↔  Executive Summary -->
+      <section class="cv-block cv-col-side" aria-labelledby="cv-skills">
+        <h2 id="cv-skills">Technical Expertise</h2>
+        <dl class="cv-skill-list">
+          <dt>Design</dt>
+          <dd>Adobe Creative Suite (Expert), After Effects, Motion Graphics</dd>
+          <dt>Web &amp; Marketing</dt>
+          <dd>SEO, HTML Email Development, Google Analytics, Digital Strategy</dd>
+          <dt>Leadership</dt>
+          <dd>Remote Team Management, Project Management, Vendor Negotiation</dd>
+        </dl>
+      </section>
+      <section class="cv-block cv-col-main" aria-labelledby="cv-summary">
+        <h2 id="cv-summary">Executive Summary</h2>
+        <p class="cv-summary">
+          A <strong>powerhouse Creative Leader</strong> with over 15 years of experience bridging
+          the gap between high-level design and operational profitability. Specialising in scaling
+          brands across South Africa and Australia, I offer a unique hybrid of Art Direction and
+          Business Operations. I don't just build brands; I build the systems that make them grow.
+        </p>
+      </section>
 
-        <section class="cv-block" aria-labelledby="cv-skills">
-          <h2 id="cv-skills">Technical Expertise</h2>
-          <dl class="cv-skill-list">
-            <dt>Design</dt>
-            <dd>Adobe Creative Suite (Expert), After Effects, Motion Graphics</dd>
-            <dt>Web &amp; Marketing</dt>
-            <dd>SEO, HTML Email Development, Google Analytics, Digital Strategy</dd>
-            <dt>Leadership</dt>
-            <dd>Remote Team Management, Project Management, Vendor Negotiation</dd>
-          </dl>
-        </section>
+      <!-- ROW 2: Education & Credentials  ↔  Core Strategic Competencies -->
+      <section class="cv-block cv-col-side" aria-labelledby="cv-education">
+        <h2 id="cv-education">Education &amp; Credentials</h2>
+        <ul class="cv-edu-list">
+          <li><strong>International Diploma in Multimedia &amp; Animation</strong><span class="cv-edu-org">Damelin (Pty) Ltd</span></li>
+          <li><strong>International Diploma in Digital Publishing</strong><span class="cv-edu-org">Damelin (Pty) Ltd</span></li>
+          <li><strong>Advanced Certificate in After Effects</strong> (Film &amp; Video)<span class="cv-edu-org">The Training Centre</span></li>
+        </ul>
+      </section>
+      <section class="cv-block cv-col-main" aria-labelledby="cv-highlights">
+        <h2 id="cv-highlights">Core Strategic Competencies</h2>
+        <ul class="cv-highlights">
+          <li>
+            <strong>Creative Leadership:</strong>
+            Expert in guiding high-performance remote teams and fostering a culture of visual excellence.
+          </li>
+          <li>
+            <strong>Operations &amp; Automation:</strong>
+            Proven ability to identify inefficiencies and introduce automated workflows that significantly reduce overhead, improve Operational Efficiency, and remove bottlenecks.
+          </li>
+          <li>
+            <strong>Digital Growth &amp; SEO:</strong>
+            Data-driven Digital Strategy approach to web development and search engine optimisation to maximise market visibility and user retention.
+          </li>
+          <li>
+            <strong>High-Value Retention:</strong>
+            Skilled in client and vendor relations, ensuring premium service delivery, strong ROI, and long-term brand loyalty.
+          </li>
+        </ul>
+      </section>
 
-        <section class="cv-block" aria-labelledby="cv-education">
-          <h2 id="cv-education">Education &amp; Credentials</h2>
-          <ul class="cv-edu-list">
-            <li><strong>International Diploma in Multimedia &amp; Animation</strong><span class="cv-edu-org">Damelin (Pty) Ltd</span></li>
-            <li><strong>International Diploma in Digital Publishing</strong><span class="cv-edu-org">Damelin (Pty) Ltd</span></li>
-            <li><strong>Advanced Certificate in After Effects</strong> (Film &amp; Video)<span class="cv-edu-org">The Training Centre</span></li>
+      <!-- ROW 3: Professional Experience (full main column, sidebar empty) -->
+      <section class="cv-block cv-col-main" aria-labelledby="cv-experience">
+        <h2 id="cv-experience">Professional Experience</h2>
+
+        <article class="cv-role">
+          <header class="cv-role-head">
+            <h3>Executive Creative Director | Art Director</h3>
+            <span class="cv-role-date">2012 — Present</span>
+          </header>
+          <p class="cv-role-org">iLiveIt (Pty) Ltd &mdash; Johannesburg + Australia (Remote)</p>
+          <ul>
+            <li><strong>Global Brand Management:</strong> Architected the digital and print identity for diverse markets across two continents.</li>
+            <li><strong>Operational Restructuring:</strong> Transformed creative workflows through automation, resulting in a dramatic reduction in project turnaround times and improved Operational Efficiency.</li>
+            <li><strong>Email Marketing Mastery:</strong> Developed bespoke, personalised HTML email campaigns for the banking and retail sectors, focusing on high-conversion deliverability.</li>
+            <li><strong>Mentorship:</strong> Recruited and trained creative teams, successfully reducing staff turnover through tailored professional development.</li>
           </ul>
-        </section>
+        </article>
 
-      </aside>
-
-      <main class="cv-main-col">
-
-        <section class="cv-block" aria-labelledby="cv-summary">
-          <h2 id="cv-summary">Executive Summary</h2>
-          <p class="cv-summary">
-            A <strong>powerhouse Creative Leader</strong> with over 15 years of experience bridging
-            the gap between high-level design and operational profitability. Specialising in scaling
-            brands across South Africa and Australia, I offer a unique hybrid of Art Direction and
-            Business Operations. I don't just build brands; I build the systems that make them grow.
-          </p>
-        </section>
-
-        <section class="cv-block" aria-labelledby="cv-highlights">
-          <h2 id="cv-highlights">Core Strategic Competencies</h2>
-          <ul class="cv-highlights">
-            <li>
-              <strong>Creative Leadership:</strong>
-              Expert in guiding high-performance remote teams and fostering a culture of visual excellence.
-            </li>
-            <li>
-              <strong>Operations &amp; Automation:</strong>
-              Proven ability to identify inefficiencies and introduce automated workflows that significantly reduce overhead, improve Operational Efficiency, and remove bottlenecks.
-            </li>
-            <li>
-              <strong>Digital Growth &amp; SEO:</strong>
-              Data-driven Digital Strategy approach to web development and search engine optimisation to maximise market visibility and user retention.
-            </li>
-            <li>
-              <strong>High-Value Retention:</strong>
-              Skilled in client and vendor relations, ensuring premium service delivery, strong ROI, and long-term brand loyalty.
-            </li>
+        <article class="cv-role">
+          <header class="cv-role-head">
+            <h3>Director of Operations</h3>
+            <span class="cv-role-date">2020 — 2023</span>
+          </header>
+          <p class="cv-role-org">INRATIME (Castle Da Angelo &amp; Loui-Giano)</p>
+          <ul>
+            <li><strong>Business Transformation:</strong> Directed daily operations and marketing for luxury venues, achieving high guest satisfaction and repeat bookings.</li>
+            <li><strong>Financial Oversight:</strong> Managed multi-million rand budgets and resource allocation while negotiating vendor contracts to maximise ROI.</li>
+            <li><strong>Sustainability Leadership:</strong> Implemented digital coordination tools and eco-friendly waste reduction initiatives.</li>
           </ul>
-        </section>
+        </article>
 
-        <section class="cv-block" aria-labelledby="cv-experience">
-          <h2 id="cv-experience">Professional Experience</h2>
+        <article class="cv-role">
+          <header class="cv-role-head">
+            <h3>Web Development Manager &amp; Senior Designer</h3>
+            <span class="cv-role-date">2008 — 2011</span>
+          </header>
+          <p class="cv-role-org">Multimedia Solutions (IMmobile)</p>
+          <ul>
+            <li><strong>SEO Integration:</strong> Pioneered search engine optimisation best practices during the development phase to ensure maximum organic reach as part of a broader Digital Strategy.</li>
+            <li><strong>Visual Strategy:</strong> Led the design of interactive digital assets and print collateral to exceed aggressive client growth targets.</li>
+          </ul>
+        </article>
+      </section>
 
-          <article class="cv-role">
-            <header class="cv-role-head">
-              <h3>Executive Creative Director | Art Director</h3>
-              <span class="cv-role-date">2012 — Present</span>
-            </header>
-            <p class="cv-role-org">iLiveIt (Pty) Ltd &mdash; Johannesburg + Australia (Remote)</p>
-            <ul>
-              <li><strong>Global Brand Management:</strong> Architected the digital and print identity for diverse markets across two continents.</li>
-              <li><strong>Operational Restructuring:</strong> Transformed creative workflows through automation, resulting in a dramatic reduction in project turnaround times and improved Operational Efficiency.</li>
-              <li><strong>Email Marketing Mastery:</strong> Developed bespoke, personalised HTML email campaigns for the banking and retail sectors, focusing on high-conversion deliverability.</li>
-              <li><strong>Mentorship:</strong> Recruited and trained creative teams, successfully reducing staff turnover through tailored professional development.</li>
-            </ul>
-          </article>
-
-          <article class="cv-role">
-            <header class="cv-role-head">
-              <h3>Director of Operations</h3>
-              <span class="cv-role-date">2020 — 2023</span>
-            </header>
-            <p class="cv-role-org">INRATIME (Castle Da Angelo &amp; Loui-Giano)</p>
-            <ul>
-              <li><strong>Business Transformation:</strong> Directed daily operations and marketing for luxury venues, achieving high guest satisfaction and repeat bookings.</li>
-              <li><strong>Financial Oversight:</strong> Managed multi-million rand budgets and resource allocation while negotiating vendor contracts to maximise ROI.</li>
-              <li><strong>Sustainability Leadership:</strong> Implemented digital coordination tools and eco-friendly waste reduction initiatives.</li>
-            </ul>
-          </article>
-
-          <article class="cv-role">
-            <header class="cv-role-head">
-              <h3>Web Development Manager &amp; Senior Designer</h3>
-              <span class="cv-role-date">2008 — 2011</span>
-            </header>
-            <p class="cv-role-org">Multimedia Solutions (IMmobile)</p>
-            <ul>
-              <li><strong>SEO Integration:</strong> Pioneered search engine optimisation best practices during the development phase to ensure maximum organic reach as part of a broader Digital Strategy.</li>
-              <li><strong>Visual Strategy:</strong> Led the design of interactive digital assets and print collateral to exceed aggressive client growth targets.</li>
-            </ul>
-          </article>
-        </section>
-
-      </main>
     </div>
 
     <!-- References / privacy note -->
