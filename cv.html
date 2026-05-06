@@ -47,7 +47,16 @@
       "postalCode": "0260",
       "addressCountry": "ZA"
     },
-    "sameAs": [ "https://www.linkedin.com/in/minettehartman/" ]
+    "sameAs": [
+      "https://www.linkedin.com/in/minettehartman/",
+      "https://www.linkedin.com/company/fervent-digital-marketing/"
+    ],
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Fervent Digital Marketing",
+      "url": "https://www.ferventdigital.co.za/",
+      "sameAs": "https://www.linkedin.com/company/fervent-digital-marketing/"
+    }
   }
 }
 </script>
@@ -83,12 +92,6 @@
     </nav>
 
     <div class="nav-actions">
-      <a href="assets/MH_CV_20260302_001.pdf" class="cta ghost cta-sm" target="_blank" rel="noopener noreferrer" aria-label="Open Minette Hartman's CV PDF in a new tab">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-          <path d="M14 3h7v7h-2V6.4l-9.3 9.3-1.4-1.4L17.6 5H14V3zM5 5h6v2H5v12h12v-6h2v8H3V5h2z"/>
-        </svg>
-        Download CV
-      </a>
       <a href="index.html#contact" class="cta">Start a project →</a>
     </div>
   </div>
@@ -116,6 +119,7 @@
         <li><a href="mailto:minette@ferventdigital.co.za">minette@ferventdigital.co.za</a></li>
         <li><a href="https://www.ferventdigital.co.za" target="_blank" rel="noopener noreferrer">ferventdigital.co.za</a></li>
         <li><a href="https://www.linkedin.com/in/minettehartman/" target="_blank" rel="noopener noreferrer">/in/minettehartman</a></li>
+        <li><a href="https://www.linkedin.com/company/fervent-digital-marketing/" target="_blank" rel="noopener noreferrer">/company/fervent-digital-marketing</a></li>
       </ul>
     </header>
 
@@ -239,19 +243,39 @@
 <footer class="site-footer">
   <div class="wrap">
     <div class="foot-bottom">
-      <span>© 2026 Fervent Digital Marketing</span>
-      <span class="foot-legal">
-        <a href="index.html">Home</a> ·
-        <a href="portfolio.html">Portfolio</a> ·
-        <a href="cv.html">CV</a> ·
-        <a href="privacy.html">Privacy &amp; POPIA</a> ·
-        <a href="terms.html">Terms of Use</a>
-      </span>
-      <span>Driven by Spirit. Defined by Results.</span>
+      <div class="foot-col foot-col-left">
+        <span>© 2026 Fervent Digital Marketing</span>
+        <span class="foot-legal">
+          <a href="index.html">Home</a> ·
+          <a href="portfolio.html">Portfolio</a> ·
+          <a href="cv.html">CV</a> ·
+          <a href="privacy.html">Privacy &amp; POPIA</a> ·
+          <a href="terms.html">Terms of Use</a>
+        </span>
+      </div>
+      <div class="foot-col foot-col-right">
+        <span>Driven by Spirit. Defined by Results.</span>
+        <span class="foot-tag">Independent Creative Studio · Est. 2018</span>
+      </div>
     </div>
-    <div class="foot-tag">Independent Creative Studio · Est. 2018</div>
   </div>
 </footer>
+
+<script>
+  // If the URL contains ?print=1 (e.g. from the homepage "Download PDF" button),
+  // open the browser print dialogue automatically once the CV has rendered.
+  // This keeps the "PDF" always in sync with the live HTML CV — no static file
+  // to regenerate when the resume is updated.
+  (function () {
+    var params = new URLSearchParams(window.location.search);
+    if (params.get('print') === '1') {
+      window.addEventListener('load', function () {
+        // Small delay so fonts and layout settle before the dialogue fires
+        setTimeout(function () { window.print(); }, 350);
+      });
+    }
+  })();
+</script>
 
 </body>
 </html>
