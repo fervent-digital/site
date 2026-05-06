@@ -699,6 +699,22 @@ nav a:focus-visible::after { width: 100%; }
   border: 1px solid var(--line);
 }
 
+/* Stacked variant for wide-format supporting images (e.g. brand-guideline
+   spreads). Single column, natural aspect ratio — no portrait cropping. */
+.zz-gal-stack {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+.zz-gal-stack picture { display: block; }
+.zz-gal-stack img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+}
+
 .zz-content { min-width: 0; }
 .zz-content .tag {
   display: inline-block;
