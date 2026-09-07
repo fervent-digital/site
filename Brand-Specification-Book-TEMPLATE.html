@@ -1,0 +1,1857 @@
+<meta charset="UTF-8">
+<title>Brand Specification Book</title>
+<link rel="icon" type="image/svg+xml" href="basecamp/Brand-Specification-Book-TEMPLATE/Sample-Logo-Assets/sample-logo-icon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex_Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: #F1F1EA;
+    --surface: #FFFFFF;
+    --surface-2: #E7E5DB;
+    --ink: #1B1D1B;
+    --ink-dim: #62645C;
+    --ink-faint: #8B8D84;
+    --line: #D7D4C6;
+    --accent: #D6431B;
+    --accent-ink: #FFFFFF;
+    --core-bg: #1B1D1B;
+    --core-ink: #F1F1EA;
+    --pass: #3F6E45;
+    --caution: #A8741F;
+    --shadow: 0 1px 0 rgba(27,29,27,0.06);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #17181A;
+      --surface: #202225;
+      --surface-2: #2B2D2F;
+      --ink: #F1F0E9;
+      --ink-dim: #A6A79D;
+      --ink-faint: #757770;
+      --line: #37393A;
+      --accent: #FF6E42;
+      --accent-ink: #17181A;
+      --core-bg: #F1F0E9;
+      --core-ink: #17181A;
+      --pass: #7FBF83;
+      --caution: #E0A63E;
+      --shadow: 0 1px 0 rgba(0,0,0,0.3);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #17181A;
+    --surface: #202225;
+    --surface-2: #2B2D2F;
+    --ink: #F1F0E9;
+    --ink-dim: #A6A79D;
+    --ink-faint: #757770;
+    --line: #37393A;
+    --accent: #FF6E42;
+    --accent-ink: #17181A;
+    --core-bg: #F1F0E9;
+    --core-ink: #17181A;
+    --pass: #7FBF83;
+    --caution: #E0A63E;
+    --shadow: 0 1px 0 rgba(0,0,0,0.3);
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+  ::selection { background: var(--accent); color: var(--accent-ink); }
+
+  h1, h2, h3 {
+    font-family: 'Big Shoulders Display', 'Arial Narrow', sans-serif;
+    text-transform: uppercase;
+    text-wrap: balance;
+    margin: 0;
+    letter-spacing: 0.01em;
+  }
+
+  .mono {
+    font-family: 'IBM Plex Mono', ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35em;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.28em 0.6em;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+  .badge--core { background: var(--core-bg); color: var(--core-ink); }
+  .badge--optional { border: 1px solid var(--ink-faint); color: var(--ink-dim); }
+
+  /* ---------- shell ---------- */
+  .shell {
+    display: grid;
+    grid-template-columns: 260px minmax(0, 1fr);
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  @media (max-width: 880px) {
+    .shell { grid-template-columns: 1fr; }
+  }
+
+  .nav {
+    position: sticky;
+    top: 0;
+    align-self: start;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 28px 20px 40px;
+    border-right: 1px solid var(--line);
+    background: var(--bg);
+  }
+
+  .nav-toggle, .nav-backdrop, .nav-close { display: none; }
+
+  @media (max-width: 880px) {
+    .nav-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 80;
+      width: 42px;
+      height: 42px;
+      border-radius: 8px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      cursor: pointer;
+      gap: 4px;
+      flex-direction: column;
+    }
+    .nav-toggle span { display: block; width: 18px; height: 2px; background: var(--ink); border-radius: 1px; }
+    .nav-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+    .nav-backdrop {
+      display: block;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 70;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+    .nav-backdrop.is-open { opacity: 1; pointer-events: auto; }
+
+    .nav {
+      position: fixed;
+      inset: 0 auto 0 0;
+      width: min(320px, 86vw);
+      height: 100vh;
+      z-index: 75;
+      transform: translateX(-100%);
+      transition: transform 0.25s ease;
+      box-shadow: 4px 0 24px rgba(0,0,0,0.25);
+    }
+    .nav.is-open { transform: translateX(0); }
+
+    .nav-close {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      background: transparent;
+      border: 1px solid var(--line);
+      color: var(--ink-faint);
+      cursor: pointer;
+      font-size: 1rem;
+      line-height: 1;
+    }
+    .nav-close:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+    main { padding-top: 64px; }
+  }
+
+  html.nav-locked { overflow: hidden; }
+  .nav-brand {
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-weight: 800;
+    font-size: 1.35rem;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    margin-bottom: 2px;
+  }
+  .nav-sub { font-size: 0.78rem; color: var(--ink-dim); margin-bottom: 24px; }
+  .nav-group { margin-bottom: 22px; }
+  .nav-group-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 8px;
+  }
+  .nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    text-decoration: none;
+    color: var(--ink-dim);
+    font-size: 0.86rem;
+    padding: 6px 8px;
+    border-radius: 3px;
+    margin: 0 -8px;
+    transition: background 0.15s, color 0.15s;
+  }
+  .nav-link:hover { background: var(--surface-2); color: var(--ink); }
+  .nav-link.is-active { color: var(--ink); font-weight: 500; }
+  .nav-link.is-active .nav-tick { background: var(--accent); }
+  .nav-tick { width: 5px; height: 5px; border-radius: 50%; background: var(--line); flex-shrink: 0; }
+
+  /* ---------- main ---------- */
+  main { min-width: 0; }
+
+  .cover {
+    padding: 72px 56px 56px;
+    border-bottom: 1px solid var(--line);
+  }
+  @media (max-width: 640px) { .cover { padding: 48px 22px 36px; } }
+  .cover .eyebrow { margin-bottom: 18px; }
+  .cover h1 {
+    font-size: clamp(2.6rem, 7vw, 4.6rem);
+    font-weight: 900;
+    line-height: 0.94;
+  }
+  .cover-logo { margin-bottom: 22px; }
+  .cover-logo img { display: block; height: clamp(3.4rem, 9.5vw, 6.2rem); width: auto; }
+  .cover-logo-dark { display: none; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .cover-logo-light { display: none; }
+    :root:not([data-theme="light"]) .cover-logo-dark { display: block; }
+  }
+  :root[data-theme="dark"] .cover-logo-light { display: none; }
+  :root[data-theme="dark"] .cover-logo-dark { display: block; }
+  .cover .client-field {
+    font-family: 'IBM Plex Mono', monospace;
+    color: var(--ink-faint);
+  }
+  .cover-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    margin-top: 32px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+  }
+  .cover-meta div { font-size: 0.82rem; }
+  .cover-meta .eyebrow { margin-bottom: 4px; }
+
+  .howto {
+    margin: 40px 56px 0;
+    padding: 20px 24px;
+    background: var(--surface-2);
+    border-radius: 4px;
+    font-size: 0.88rem;
+    color: var(--ink-dim);
+  }
+  @media (max-width: 640px) { .howto { margin: 32px 22px 0; } }
+  .howto strong { color: var(--ink); }
+  .howto ul { margin: 10px 0 0; padding-left: 1.1em; }
+  .howto li { margin-bottom: 4px; }
+
+  section.module {
+    padding: 64px 56px;
+    border-bottom: 1px solid var(--line);
+    scroll-margin-top: 24px;
+  }
+  @media (max-width: 640px) { section.module { padding: 44px 22px; } }
+
+  .module-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+  .module-num {
+    font-family: 'IBM Plex Mono', monospace;
+    color: var(--ink-faint);
+    font-size: 0.8rem;
+  }
+  .module-head h2 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 800;
+    flex: 1 1 auto;
+  }
+  .module-dek {
+    max-width: 60ch;
+    color: var(--ink-dim);
+    margin-top: 10px;
+    font-size: 0.95rem;
+  }
+  .module-body { margin-top: 36px; }
+
+  /* ---------- generic placeholder frame ---------- */
+  .frame {
+    position: relative;
+    border: 1.5px dashed var(--line);
+    border-radius: 4px;
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink-faint);
+    overflow: hidden;
+  }
+  .frame-label {
+    position: absolute;
+    top: 8px;
+    left: 10px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .frame-dim {
+    position: absolute;
+    bottom: 8px;
+    right: 10px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.64rem;
+    color: var(--ink-faint);
+  }
+  .frame-glyph { font-family: 'Big Shoulders Display', sans-serif; font-weight: 700; font-size: 1.6rem; color: var(--ink-faint); text-transform: uppercase; }
+
+  /* ---------- logo grid ---------- */
+  .logo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; }
+  .logo-grid .frame { aspect-ratio: 4 / 3; }
+  .clearspace-frame { aspect-ratio: 3/1; max-width: 480px; }
+  .clearspace-frame .frame-glyph { border: 1px dashed var(--accent); padding: 18px 26px; color: var(--ink-faint); }
+  .frame-logo-img { max-width: 78%; max-height: 68%; width: auto; height: auto; object-fit: contain; }
+  a.frame { text-decoration: none; cursor: pointer; transition: border-color 0.15s, background 0.15s; }
+  a.frame:hover { border-color: var(--accent); background: var(--surface-2); }
+  a.frame:hover .frame-label { color: var(--accent); }
+  a.frame:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .download-all-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.74rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--core-ink);
+    background: var(--core-bg);
+    padding: 9px 16px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .download-all-btn:hover { opacity: 0.85; }
+  .download-all-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .format-tabs { display: flex; flex-wrap: wrap; gap: 2px; border: 1px solid var(--line); border-radius: 999px; padding: 3px; width: fit-content; margin-bottom: 22px; }
+  .format-tab-btn { all: unset; cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.05em; text-transform: uppercase; padding: 7px 16px; border-radius: 999px; color: var(--ink-faint); }
+  .format-tab-btn.is-active { background: var(--core-bg); color: var(--core-ink); }
+  .format-tab-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .format-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; }
+  .format-card { position: relative; aspect-ratio: 4/3; border: 1.5px dashed var(--line); border-radius: 4px; background: var(--surface); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .format-card .frame-logo-img { max-width: 74%; max-height: 60%; object-fit: contain; }
+  .format-card-label { position: absolute; top: 8px; left: 10px; font-family: 'IBM Plex Mono', monospace; font-size: 0.66rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint); }
+  a.format-card { text-decoration: none; cursor: pointer; transition: border-color 0.15s; }
+  a.format-card:hover { border-color: var(--accent); }
+  a.format-card:hover .format-card-label { color: var(--accent); }
+  a.format-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .format-card-sizes {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    gap: 6px;
+    padding: 14px;
+    background: rgba(241,241,234,0.96);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease;
+  }
+  :root:not([data-theme="light"]) .format-card-sizes { background: rgba(23,24,26,0.94); }
+  :root[data-theme="dark"] .format-card-sizes { background: rgba(23,24,26,0.94); }
+  .format-card:hover .format-card-sizes,
+  .format-card:focus-within .format-card-sizes { opacity: 1; pointer-events: auto; }
+  .format-card-sizes a {
+    text-decoration: none;
+    text-align: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ink);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 7px 8px;
+  }
+  .format-card-sizes a:hover { border-color: var(--accent); color: var(--accent); }
+  .format-card-sizes a:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+  .format-card.is-placeholder { cursor: default; }
+  .format-card-note { position: absolute; bottom: 8px; left: 10px; right: 10px; font-size: 0.68rem; color: var(--ink-faint); text-align: center; }
+
+  .icon-row { display: flex; flex-wrap: wrap; gap: 16px; }
+  .app-icon-frame { width: 96px; aspect-ratio: 1/1; border-radius: 22%; }
+  .avatar-frame { width: 96px; aspect-ratio: 1/1; border-radius: 50%; }
+
+  .bgvar-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; }
+  .bgvar-frame { aspect-ratio: 1/1; max-width: 190px; border-style: solid; }
+  .bgvar-frame.on-light { background: #FFFFFF; }
+  .bgvar-frame.on-dark { background: #1B1D1B; }
+  .bgvar-frame.on-dark .frame-glyph, .bgvar-frame.on-dark .frame-label { color: #F1F0E9; }
+  .bgvar-frame.on-busy { background: repeating-linear-gradient(45deg, var(--surface-2), var(--surface-2) 9px, var(--line) 9px, var(--line) 18px); }
+
+  .dodont-frame.busy { background: repeating-linear-gradient(45deg, var(--surface-2), var(--surface-2) 9px, var(--line) 9px, var(--line) 18px); }
+  .dodont-frame.busy .glyph { color: var(--ink-dim); }
+
+  .imagery-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; }
+  .imagery-frame { aspect-ratio: 4/3; }
+  .imagery-frame .frame-label, .imagery-frame .frame-glyph { color: #FFFFFF; text-shadow: 0 1px 3px rgba(0,0,0,0.45); }
+  .imagery-frame.duotone-a { background: linear-gradient(135deg, #1B1D1B, #D6431B); }
+  .imagery-frame.duotone-b { background: linear-gradient(135deg, #1B1D1B, #4E7C8A); }
+  .imagery-frame.overlay { background: linear-gradient(0deg, rgba(214,67,27,0.4), rgba(214,67,27,0.4)), var(--surface-2); }
+
+  .video-frame { aspect-ratio: 16/9; max-width: 340px; }
+  .lower-third { position: absolute; left: 0; bottom: 16%; background: var(--core-bg); color: var(--core-ink); padding: 6px 14px; font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; letter-spacing: 0.04em; text-transform: uppercase; max-width: 74%; }
+
+  /* ---------- graphical assets & ui ---------- */
+  .icon-style-row { display: flex; gap: 28px; flex-wrap: wrap; }
+  .icon-style-card { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .icon-style-card .label { font-size: 0.76rem; color: var(--ink-dim); }
+  .icon-shape { width: 44px; height: 44px; transform: rotate(45deg); border-radius: 6px; }
+  .icon-shape.line { border: 2.5px solid var(--ink); background: transparent; }
+  .icon-shape.solid { background: var(--ink); }
+  .icon-shape.dual { background: linear-gradient(90deg, var(--ink) 50%, var(--accent) 50%); }
+
+  .ui-kit-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+  .ui-kit-card { border: 1px solid var(--line); border-radius: 4px; padding: 18px; background: var(--surface); display: flex; flex-direction: column; gap: 12px; }
+  .ui-kit-label { font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-faint); font-family: 'IBM Plex Mono', monospace; }
+  .demo-btn { display: inline-flex; align-items: center; justify-content: center; padding: 9px 18px; border-radius: 4px; font-family: 'IBM Plex Sans', sans-serif; font-size: 0.84rem; font-weight: 600; width: fit-content; }
+  .demo-btn.primary { background: var(--core-bg); color: var(--core-ink); }
+  .demo-btn.secondary { background: transparent; border: 1.5px solid var(--ink); color: var(--ink); }
+  .demo-btn.accent { background: var(--accent); color: var(--accent-ink); }
+  .demo-input { border: 1px solid var(--line); border-radius: 4px; padding: 9px 12px; font-family: 'IBM Plex Sans', sans-serif; font-size: 0.84rem; color: var(--ink-faint); background: var(--surface); }
+  .demo-divider { border: none; border-top: 1px solid var(--line); margin: 0; }
+  .demo-card { border: 1px solid var(--line); border-radius: 6px; padding: 14px; box-shadow: var(--shadow); font-size: 0.8rem; color: var(--ink-dim); }
+
+  .pattern-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; }
+  .pattern-frame { aspect-ratio: 4/3; }
+  .pattern-frame.stripes { background: repeating-linear-gradient(45deg, var(--surface-2), var(--surface-2) 9px, var(--line) 9px, var(--line) 18px); }
+  .pattern-frame.dots { background-image: radial-gradient(var(--ink-faint) 1.5px, transparent 1.5px); background-size: 14px 14px; background-color: var(--surface); }
+  .pattern-frame.wash { background: linear-gradient(135deg, var(--accent), transparent 70%), var(--surface); }
+  .pattern-frame.geo { background: conic-gradient(from 45deg, var(--ink) 0deg 90deg, transparent 90deg 180deg, var(--accent) 180deg 270deg, transparent 270deg 360deg); }
+  .pattern-frame.wash .frame-label, .pattern-frame.geo .frame-label { color: #FFFFFF; text-shadow: 0 1px 3px rgba(0,0,0,0.45); }
+
+  /* ---------- color ---------- */
+  .swatch-set { margin-bottom: 30px; }
+  .swatch-set:last-child { margin-bottom: 0; }
+  .swatch-set-label { font-size: 0.9rem; font-weight: 600; margin-bottom: 12px; }
+  .swatch-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+  .swatch {
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+    background: var(--surface);
+  }
+  .swatch-color { height: 56px; }
+  .swatch-info { padding: 12px 12px 14px; }
+  .swatch-info .role { font-size: 0.78rem; font-weight: 600; margin-bottom: 6px; }
+  button.copy {
+    all: unset;
+    cursor: pointer;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.66rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  button.copy:hover { color: var(--accent); }
+  button.copy:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+
+  .spec-row { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; padding: 3px 0; }
+  .spec-k { font-family: 'IBM Plex Mono', monospace; font-size: 0.64rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint); flex-shrink: 0; }
+  .spec-v { font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem; color: var(--ink-dim); text-align: right; }
+  button.spec-v { all: unset; cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem; color: var(--ink-dim); text-align: right; }
+  button.spec-v:hover { color: var(--accent); }
+  button.spec-v:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+  .spec-v.static { font-style: italic; color: var(--ink-faint); }
+
+  .mode-toggle { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; padding: 2px; gap: 2px; }
+  .mode-btn { all: unset; cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 5px 14px; border-radius: 999px; color: var(--ink-faint); }
+  .mode-btn[aria-pressed="true"] { background: var(--core-bg); color: var(--core-ink); }
+  .mode-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .color-preview { padding: 22px; border-radius: 6px; border: 1px solid var(--line); background: var(--bg); margin-top: 14px; }
+  .color-preview[data-mode="light"] { --bg: #F1F1EA; --surface: #FFFFFF; --surface-2: #F1F1EA; --ink: #1B1D1B; --ink-dim: #62645C; --ink-faint: #8B8D84; --line: #D7D4C6; --core-bg: #1B1D1B; --core-ink: #F1F1EA; }
+  .color-preview[data-mode="dark"] { --bg: #17181A; --surface: #202225; --surface-2: #2B2D2F; --ink: #F1F0E9; --ink-dim: #A6A79D; --ink-faint: #757770; --line: #37393A; --core-bg: #F1F0E9; --core-ink: #17181A; }
+
+  .ratio-bar { display: flex; width: 100%; height: 28px; border-radius: 4px; overflow: hidden; border: 1px solid var(--line); }
+  .ratio-legend { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 12px; font-size: 0.82rem; color: var(--ink-dim); }
+  .ratio-item { display: flex; align-items: center; gap: 8px; }
+  .ratio-item .dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+  .wcag-badge { display: inline-flex; align-items: center; gap: 6px; font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; }
+  .wcag-badge::before { content: ''; width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+  .wcag-badge.pass { color: var(--pass); }
+  .wcag-badge.pass::before { background: var(--pass); }
+  .wcag-badge.caution { color: var(--caution); }
+  .wcag-badge.caution::before { background: var(--caution); }
+
+  .color-tabs { display: flex; gap: 2px; border: 1px solid var(--line); border-radius: 999px; padding: 3px; width: fit-content; margin-bottom: 28px; }
+  .color-tab-btn { all: unset; cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.05em; text-transform: uppercase; padding: 7px 16px; border-radius: 999px; color: var(--ink-faint); }
+  .color-tab-btn.is-active { background: var(--core-bg); color: var(--core-ink); }
+  .color-tab-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .mode-demo { border-radius: 10px; padding: 28px; border: 1px solid var(--line); }
+  .mode-demo-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.6; margin-bottom: 16px; }
+  .token-list { display: flex; flex-direction: column; border: 1px solid var(--demo-border, currentColor); border-radius: 6px; overflow: hidden; }
+  .token-row { display: flex; align-items: center; gap: 14px; padding: 12px 16px; border-top: 1px solid var(--demo-border, currentColor); }
+  .token-row:first-child { border-top: none; }
+  .token-swatch { width: 34px; height: 34px; border-radius: 6px; flex-shrink: 0; border: 1px solid rgba(0,0,0,0.15); }
+  .token-role { flex: 0 0 168px; font-size: 0.86rem; font-weight: 600; }
+  .token-note { flex: 1; font-size: 0.78rem; opacity: 0.65; }
+  button.token-hex { all: unset; cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 0.82rem; font-weight: 500; flex-shrink: 0; }
+  button.token-hex:hover { opacity: 0.7; }
+  button.token-hex:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+  .token-ratio { font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; opacity: 0.55; flex-shrink: 0; width: 76px; text-align: right; }
+
+  /* ---------- typography ---------- */
+  .type-role { display: flex; flex-direction: column; gap: 4px; padding: 22px 0; border-top: 1px solid var(--line); }
+  .type-role:first-child { border-top: none; }
+  .type-role-meta { display: flex; justify-content: space-between; gap: 16px; align-items: baseline; }
+  .type-role-name { font-size: 0.78rem; color: var(--ink-faint); }
+  .type-role-spec { font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; color: var(--ink-faint); }
+  .type-sample-display { font-family: 'Big Shoulders Display', sans-serif; font-weight: 800; font-size: clamp(1.8rem, 5vw, 3.2rem); text-transform: uppercase; }
+  .type-sample-body { font-family: 'IBM Plex Sans', sans-serif; font-size: 1.05rem; max-width: 60ch; }
+  .type-sample-mono { font-family: 'IBM Plex Mono', monospace; font-size: 0.92rem; color: var(--ink-dim); }
+  .type-specs { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 2px 24px; margin-top: 14px; max-width: 560px; }
+  .type-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+
+  /* ---------- do / dont ---------- */
+  .dodont-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; }
+  .dodont-card { border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
+  .dodont-frame { aspect-ratio: 4/3; background: var(--surface-2); display: flex; align-items: center; justify-content: center; position: relative; }
+  .dodont-frame .glyph { font-family: 'Big Shoulders Display', sans-serif; font-weight: 700; font-size: 1.5rem; color: var(--ink-faint); text-transform: uppercase; }
+  .dodont-frame.stretch .glyph { transform: scaleX(1.8); }
+  .dodont-frame.shadow .glyph { text-shadow: 6px 8px 4px rgba(0,0,0,0.35); }
+  .dodont-frame.recolor .glyph { color: var(--accent); }
+  .dodont-frame.outline .glyph { -webkit-text-stroke: 1.5px var(--ink-faint); color: transparent; }
+  .dodont-frame.rotate .glyph { transform: rotate(-18deg); }
+  .dodont-frame.opacity .glyph { opacity: 0.28; }
+  .dodont-caption { padding: 9px 12px; font-size: 0.8rem; }
+  .dodont-caption b { color: var(--accent); }
+
+  /* ---------- strategy & voice ---------- */
+  .field-block { margin-bottom: 26px; }
+  .field-block:last-child { margin-bottom: 0; }
+  .field-label { font-size: 0.78rem; color: var(--ink-faint); margin-bottom: 8px; }
+  .field-value { font-size: 1rem; color: var(--ink-dim); max-width: 62ch; }
+  .field-value.placeholder { font-family: 'IBM Plex Mono', monospace; font-size: 0.88rem; }
+
+  .value-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; }
+  .value-card { border: 1px solid var(--line); border-radius: 4px; padding: 16px; background: var(--surface); }
+  .value-card .num { font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; color: var(--accent); margin-bottom: 8px; display: block; }
+  .value-card .name { font-family: 'Big Shoulders Display', sans-serif; font-weight: 700; text-transform: uppercase; font-size: 1.1rem; margin-bottom: 4px; }
+  .value-card .desc { font-size: 0.82rem; color: var(--ink-dim); }
+
+  .trait-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .trait-chip { border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px; font-size: 0.82rem; color: var(--ink-dim); }
+  .trait-chip.is-accent { border-color: var(--accent); color: var(--accent); }
+
+  .persona-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+  .persona-card { border: 1px solid var(--line); border-radius: 4px; padding: 18px; background: var(--surface); }
+  .persona-card .role { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; font-family: 'IBM Plex Mono', monospace; color: var(--ink-faint); margin-bottom: 6px; }
+  .persona-card .name { font-weight: 600; margin-bottom: 8px; }
+  .persona-card dl { margin: 0; font-size: 0.82rem; color: var(--ink-dim); }
+  .persona-card dt { font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; color: var(--ink-faint); margin-top: 8px; }
+  .persona-card dd { margin: 2px 0 0; }
+
+  .table-wrap { overflow-x: auto; }
+  table.tone-matrix { width: 100%; border-collapse: collapse; font-size: 0.86rem; min-width: 460px; }
+  table.tone-matrix th, table.tone-matrix td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+  table.tone-matrix th { font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-faint); font-weight: 500; }
+  table.tone-matrix td.touchpoint { font-weight: 600; }
+
+  details.font-ref { border: 1px solid var(--line); border-radius: 6px; margin-top: 10px; }
+  details.font-ref + details.font-ref { margin-top: 10px; }
+  details.font-ref summary { cursor: pointer; padding: 12px 16px; font-size: 0.86rem; font-weight: 600; list-style: none; display: flex; align-items: center; justify-content: space-between; }
+  details.font-ref summary::-webkit-details-marker { display: none; }
+  details.font-ref summary::after { content: '+'; font-family: 'IBM Plex Mono', monospace; color: var(--ink-faint); font-weight: 400; }
+  details.font-ref[open] summary::after { content: '–'; }
+
+  .tv-matrix-head { display: grid; grid-template-columns: 1.1fr 0.9fr 1.3fr 1.6fr; gap: 24px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+  .tv-matrix-head span { font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-faint); }
+  .tv-group { border-bottom: 1px solid var(--line); padding-bottom: 16px; margin-bottom: 16px; }
+  .tv-group:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .tv-row { display: grid; grid-template-columns: 1.1fr 0.9fr 1.3fr 1.6fr; gap: 24px; align-items: start; padding: 18px 0 16px; }
+  .tv-row .tv-touchpoint { font-weight: 700; font-size: 0.95rem; }
+  .tv-row .tv-tone, .tv-row .tv-chars, .tv-row .tv-example { font-size: 0.86rem; color: var(--ink-dim); }
+  .tv-group details.font-ref { margin-top: 0; }
+  @media (max-width: 760px) {
+    .tv-matrix-head { display: none; }
+    .tv-row { grid-template-columns: 1fr; gap: 6px; padding-top: 0; }
+  }
+
+  .touchpoint-detail { padding: 18px 20px; border-top: 1px solid var(--line); }
+  .touchpoint-detail .tp-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 8px; }
+  .touchpoint-detail .tp-tone-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+  .touchpoint-detail .tp-sounds { font-size: 0.88rem; color: var(--ink-dim); max-width: 62ch; margin-bottom: 18px; }
+  .touchpoint-detail .tp-example { border-left: 2px solid var(--accent); padding-left: 16px; font-size: 0.92rem; color: var(--ink); font-style: italic; max-width: 60ch; }
+
+  .word-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 560px) { .word-columns { grid-template-columns: 1fr; } }
+  .word-col { border: 1px solid var(--line); border-radius: 4px; padding: 16px; }
+  .word-col.avoid { border-color: var(--accent); }
+  .word-col-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; color: var(--ink-faint); }
+  .word-col.avoid .word-col-label { color: var(--accent); }
+  .word-list { list-style: none; margin: 0; padding: 0; font-size: 0.86rem; }
+  .word-list li { padding: 4px 0; border-top: 1px solid var(--line); }
+  .word-list li:first-child { border-top: none; }
+
+  .tagline-block { border-left: 2px solid var(--accent); padding-left: 16px; margin-bottom: 16px; }
+  .tagline-block .field-label { margin-bottom: 2px; }
+  .tagline-block .tagline-text { font-family: 'Big Shoulders Display', sans-serif; font-weight: 700; font-size: 1.3rem; text-transform: none; }
+
+  .editorial-row { display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-top: 1px solid var(--line); }
+  .editorial-row:first-child { border-top: none; }
+  .editorial-row .k { font-size: 0.86rem; color: var(--ink-dim); }
+  .editorial-row .v { font-family: 'IBM Plex Mono', monospace; font-size: 0.82rem; color: var(--ink-faint); text-align: right; }
+
+  /* ---------- mockup groups ---------- */
+  .print-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+  .letterhead-frame { aspect-ratio: 8.5/11; max-width: 220px; }
+  .bizcard-frame { aspect-ratio: 3.5/2; max-width: 320px; }
+  .envelope-frame { aspect-ratio: 9.5/4.125; max-width: 320px; }
+  .brochure-frame { aspect-ratio: 297/210; max-width: 320px; background-image: linear-gradient(90deg, transparent 0 33.2%, var(--line) 33.2% 33.8%, transparent 33.8% 66.2%, var(--line) 66.2% 66.8%, transparent 66.8% 100%); }
+  .flyer-frame { aspect-ratio: 148/210; max-width: 160px; }
+  .datasheet-frame { aspect-ratio: 8.5/11; max-width: 180px; }
+  .folder-frame { aspect-ratio: 9/12; max-width: 200px; }
+  .package-frame { aspect-ratio: 1/1; max-width: 180px; }
+  .label-frame { aspect-ratio: 3/1; max-width: 220px; border-radius: 8px; }
+  .exterior-sign-frame { aspect-ratio: 5/2; max-width: 320px; }
+  .office-brand-frame { aspect-ratio: 16/9; max-width: 320px; }
+  .booth-frame { aspect-ratio: 33/80; max-width: 110px; }
+  .vehicle-frame { aspect-ratio: 16/7; max-width: 320px; }
+
+  /* ---------- digital & template assets ---------- */
+  .story-frame { aspect-ratio: 9/16; max-width: 120px; }
+  .story-safezone { position: absolute; inset: 14% 10%; border: 1px dashed var(--accent); border-radius: 2px; }
+
+  .wireframe-block { border-radius: 2px; background: var(--surface-2); }
+
+  .newsletter-frame { aspect-ratio: 3/4; max-width: 190px; flex-direction: column; align-items: stretch; justify-content: flex-start; padding: 12px; gap: 5px; }
+  .newsletter-frame .wireframe-block.header { height: 12%; }
+  .newsletter-frame .wireframe-block.hero { height: 26%; background: var(--line); }
+  .newsletter-frame .wireframe-block.copy { height: 8%; }
+  .newsletter-frame .wireframe-block.cta { height: 9%; background: var(--accent); opacity: 0.3; }
+  .newsletter-frame .wireframe-block.footer { flex: 1; background: transparent; border-top: 1px solid var(--line); border-radius: 0; }
+
+  .signature-frame { aspect-ratio: 3/1; max-width: 320px; flex-direction: row; align-items: center; justify-content: flex-start; gap: 12px; padding: 14px; }
+  .signature-frame .mark { width: 40px; height: 40px; border-radius: 4px; background: var(--line); flex-shrink: 0; }
+  .signature-frame .lines { display: flex; flex-direction: column; gap: 6px; flex: 1; }
+  .signature-frame .lines span { height: 7px; border-radius: 2px; background: var(--ink-faint); opacity: 0.35; display: block; }
+
+  .slide-frame { aspect-ratio: 16/9; max-width: 220px; }
+  .slide-frame.divider { background: var(--core-bg); }
+  .slide-frame.divider .frame-glyph, .slide-frame.divider .frame-label { color: var(--core-ink); }
+  .slide-frame.content { flex-direction: column; align-items: stretch; justify-content: flex-start; padding: 16px; gap: 8px; }
+  .slide-frame.content .wireframe-block.head { height: 16%; margin-top: 18px; }
+  .slide-frame.content .wireframe-block.line { height: 9%; background: var(--line); }
+
+  .device-row { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 22px; }
+  .device-frame.phone { width: 120px; aspect-ratio: 9/19.5; border-radius: 16px; }
+  .device-frame.tablet { width: 200px; aspect-ratio: 4/3; border-radius: 10px; }
+  .device-frame.desktop { width: 340px; aspect-ratio: 16/10; border-radius: 6px; }
+
+  .browser-frame { border-radius: 6px; overflow: hidden; }
+  .browser-chrome { height: 26px; background: var(--surface-2); display: flex; align-items: center; gap: 5px; padding: 0 10px; }
+  .browser-chrome span { width: 7px; height: 7px; border-radius: 50%; background: var(--line); }
+  .browser-body { flex: 1; }
+  .theme-pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  .browser-shell { border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+  .browser-shell .frame { border: none; border-radius: 0; aspect-ratio: 16/10; }
+  .browser-shell.dark-demo .frame { background: #17181A; color: #757770; }
+  .browser-shell.dark-demo .browser-chrome { background: #202225; }
+  .browser-shell.dark-demo .browser-chrome span { background: #37393A; }
+
+  .ad-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; align-items: end; }
+  .ad-frame.leaderboard { aspect-ratio: 728/90; grid-column: 1 / -1; max-width: 480px; }
+  .ad-frame.mpu { aspect-ratio: 300/250; max-width: 220px; }
+  .ad-frame.skyscraper { aspect-ratio: 160/600; max-width: 120px; }
+  .ad-frame.square { aspect-ratio: 1/1; max-width: 160px; }
+
+  .merch-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 16px; }
+  .merch-frame.tee { aspect-ratio: 3/4; }
+  .merch-frame.bottle { aspect-ratio: 2.2/5; max-width: 130px; }
+  .merch-frame.tote { aspect-ratio: 4/4.6; }
+  .merch-frame.mug { aspect-ratio: 4/3.4; }
+  .merch-frame.pen { aspect-ratio: 5/1; }
+  .merch-frame.banner { aspect-ratio: 3/7; grid-row: span 2; }
+  .merch-frame.cap { aspect-ratio: 4/2.6; }
+
+  footer {
+    padding: 40px 56px 60px;
+    color: var(--ink-faint);
+    font-size: 0.78rem;
+  }
+  @media (max-width: 640px) { footer { padding: 30px 22px 50px; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+
+<button type="button" class="nav-toggle" aria-label="Open section navigation" aria-expanded="false" aria-controls="site-nav">
+  <span></span><span></span><span></span>
+</button>
+<div class="nav-backdrop"></div>
+
+<div class="shell">
+  <nav class="nav" id="site-nav" aria-label="Section navigation">
+    <button type="button" class="nav-close" aria-label="Close section navigation">&times;</button>
+    <div class="nav-brand">Spec&nbsp;Book</div>
+    <div class="nav-sub">Brand identity template</div>
+
+    <div class="nav-group">
+      <div class="nav-group-label">Optional — strategy &amp; voice</div>
+      <a class="nav-link" href="#strategy" data-nav><span>Brand Strategy</span><span class="nav-tick"></span></a>
+      <a class="nav-link" href="#voice" data-nav><span>Voice &amp; Messaging</span><span class="nav-tick"></span></a>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-label">Core — every client</div>
+      <a class="nav-link" href="#logo" data-nav><span>Logo Suite</span><span class="nav-tick"></span></a>
+      <a class="nav-link" href="#color" data-nav><span>Color</span><span class="nav-tick"></span></a>
+      <a class="nav-link" href="#type" data-nav><span>Typography</span><span class="nav-tick"></span></a>    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-label">Optional — extended collateral</div>
+      <a class="nav-link" href="#imagery" data-nav><span>Imagery &amp; Video</span><span class="nav-tick"></span></a>
+      <a class="nav-link" href="#graphics" data-nav><span>Graphical Assets &amp; UI</span><span class="nav-tick"></span></a>
+      <a class="nav-link" href="#print-physical" data-nav><span>Print &amp; Physical</span><span class="nav-tick"></span></a>
+      <a class="nav-link" href="#digital-template" data-nav><span>Digital &amp; Templates</span><span class="nav-tick"></span></a>
+    </div>
+  </nav>
+
+  <main>
+    <div class="cover">
+      <div class="eyebrow">Brand Specification Book — Rev. 01</div>
+      <div class="cover-logo">
+        <img src="basecamp/Brand-Specification-Book-TEMPLATE/Sample-Logo-Assets/sample-logo.svg" alt="Sample logo" class="cover-logo-light">
+        <img src="basecamp/Brand-Specification-Book-TEMPLATE/Sample-Logo-Assets/sample-logo-reversed.svg" alt="Sample logo" class="cover-logo-dark">
+      </div>
+      <h1>[Client Name]<br>Brand Bible</h1>
+      <div class="cover-meta">
+        <div><div class="eyebrow">Prepared for</div><div class="client-field">[client / project name]</div></div>
+        <div><div class="eyebrow">Prepared by</div><div class="client-field">[your studio name]</div></div>
+        <div><div class="eyebrow">Date</div><div class="client-field">[DD / MM / YYYY]</div></div>
+        <div><div class="eyebrow">Scope</div><div class="client-field">[core + optional modules included]</div></div>
+      </div>
+    </div>
+
+    <div class="howto">
+      <strong>How to use this template.</strong> Duplicate this file per client, then replace the placeholder frames, hex values and type samples with their real assets.
+      <ul>
+        <li>The three <span class="badge badge--core" style="vertical-align:1px">core</span> modules belong in every brand bible — logo (including usage rules), color, type.</li>
+        <li>The six <span class="badge badge--optional" style="vertical-align:1px">optional</span> modules are extras — delete whichever sections a given client didn't scope, and remove their links from the nav above. Strategy and voice usually only apply to clients without an existing strategy document.</li>
+        <li>Dashed boxes are placeholder frames sized to real-world dimensions — drop in the actual logo, mockup, or artwork at that ratio.</li>
+        <li>Every new client needs four things updated on the cover before anything else: the <strong>logo</strong> (swap the sample logo and favicon for the client's real one), the <strong>client name</strong>, the <strong>date</strong>, and the <strong>scope</strong> line — then keep the date current every time the file is amended after that.</li>
+      </ul>
+    </div>
+
+    <!-- ============ BRAND STRATEGY ============ -->
+    <section class="module" id="strategy">
+      <div class="module-head">
+        <div>
+          <div class="module-num">01</div>
+          <h2>Brand Strategy &amp; Core Identity</h2>
+        </div>
+        <span class="badge badge--optional">Optional</span>
+      </div>
+      <p class="module-dek">The thinking behind the mark — why the brand exists, who it's for, and how it should feel. Scope this in for clients who don't already have a strategy document of their own.</p>
+
+      <div class="module-body">
+        <div class="field-block">
+          <div class="field-label">Brand Purpose &amp; Mission — why the brand exists</div>
+          <div class="field-value placeholder">[one to two sentences on the reason this business exists, beyond profit]</div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Vision Statement — long-term direction and aspirations</div>
+          <div class="field-value placeholder">[where the brand is headed over the next 5–10 years]</div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Core Values — 3–5 guiding principles</div>
+          <div class="value-grid">
+            <div class="value-card"><span class="num">01</span><div class="name">[Value]</div><div class="desc">[what it means in day-to-day conduct]</div></div>
+            <div class="value-card"><span class="num">02</span><div class="name">[Value]</div><div class="desc">[what it means in day-to-day conduct]</div></div>
+            <div class="value-card"><span class="num">03</span><div class="name">[Value]</div><div class="desc">[what it means in day-to-day conduct]</div></div>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Brand Personality &amp; Archetype — tone traits</div>
+          <div class="trait-chips">
+            <span class="trait-chip is-accent">[Bold]</span>
+            <span class="trait-chip">[Premium]</span>
+            <span class="trait-chip">[Approachable]</span>
+            <span class="trait-chip">[Trait]</span>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Value Proposition &amp; Positioning Statement — what sets it apart</div>
+          <div class="field-value placeholder">For [target audience], [brand] is the only [category] that [unique differentiator], because [reason to believe].</div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Target Audience &amp; Key Personas</div>
+          <div class="persona-grid">
+            <div class="persona-card">
+              <div class="role">Primary</div>
+              <div class="name">[Persona name]</div>
+              <dl>
+                <dt>Demographics</dt><dd>[age, location, income, etc.]</dd>
+                <dt>Motivations</dt><dd>[what they want from the brand]</dd>
+              </dl>
+            </div>
+            <div class="persona-card">
+              <div class="role">Secondary</div>
+              <div class="name">[Persona name]</div>
+              <dl>
+                <dt>Demographics</dt><dd>[age, location, income, etc.]</dd>
+                <dt>Motivations</dt><dd>[what they want from the brand]</dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ VOICE & MESSAGING ============ -->
+    <section class="module" id="voice">
+      <div class="module-head">
+        <div>
+          <div class="module-num">02</div>
+          <h2>Voice &amp; Messaging Guidelines</h2>
+        </div>
+        <span class="badge badge--optional">Optional</span>
+      </div>
+      <p class="module-dek">How the brand sounds in writing, across every touchpoint it speaks from.</p>
+
+      <div class="module-body">
+        <div class="field-block">
+          <div class="field-label">Tone of Voice Matrix — how to speak across touchpoints</div>
+          <div class="tv-matrix-head"><span>Touchpoint</span><span>Tone Profile</span><span>Key Characteristics</span><span>Example Copy / Line</span></div>
+
+          <div class="tv-group">
+            <div class="tv-row">
+              <div class="tv-touchpoint">Social media</div>
+              <div class="tv-tone">[Casual, playful]</div>
+              <div class="tv-chars">[what this tone should feel like in practice]</div>
+              <div class="tv-example">[sample line]</div>
+            </div>
+            <details class="font-ref">
+              <summary>Extended Breakdown &amp; Guidance for Social Media</summary>
+              <div class="touchpoint-detail">
+                <div class="tp-label">Tone</div>
+                <div class="tp-tone-chips"><span class="trait-chip">[Trait]</span><span class="trait-chip">[Trait]</span><span class="trait-chip">[Trait]</span></div>
+                <div class="tp-label">How It Sounds</div>
+                <div class="tp-sounds">[a short paragraph describing what this tone feels like in practice — what it leans into, what it avoids]</div>
+                <div class="tp-label">Example</div>
+                <div class="tp-example">"[a full sample line of copy in this voice, for this touchpoint]"</div>
+              </div>
+            </details>
+          </div>
+
+          <div class="tv-group">
+            <div class="tv-row">
+              <div class="tv-touchpoint">Website / marketing</div>
+              <div class="tv-tone">[Confident, warm]</div>
+              <div class="tv-chars">[what this tone should feel like in practice]</div>
+              <div class="tv-example">[sample line]</div>
+            </div>
+            <details class="font-ref">
+              <summary>Extended Breakdown &amp; Guidance for Website / Marketing</summary>
+              <div class="touchpoint-detail">
+                <div class="tp-label">Tone</div>
+                <div class="tp-tone-chips"><span class="trait-chip">[Trait]</span><span class="trait-chip">[Trait]</span><span class="trait-chip">[Trait]</span></div>
+                <div class="tp-label">How It Sounds</div>
+                <div class="tp-sounds">[a short paragraph describing what this tone feels like in practice — what it leans into, what it avoids]</div>
+                <div class="tp-label">Example</div>
+                <div class="tp-example">"[a full sample line of copy in this voice, for this touchpoint]"</div>
+              </div>
+            </details>
+          </div>
+
+          <div class="tv-group">
+            <div class="tv-row">
+              <div class="tv-touchpoint">Technical specs / support</div>
+              <div class="tv-tone">[Authoritative, precise]</div>
+              <div class="tv-chars">[what this tone should feel like in practice]</div>
+              <div class="tv-example">[sample line]</div>
+            </div>
+            <details class="font-ref">
+              <summary>Extended Breakdown &amp; Guidance for Technical Specs / Support</summary>
+              <div class="touchpoint-detail">
+                <div class="tp-label">Tone</div>
+                <div class="tp-tone-chips"><span class="trait-chip">[Trait]</span><span class="trait-chip">[Trait]</span><span class="trait-chip">[Trait]</span></div>
+                <div class="tp-label">How It Sounds</div>
+                <div class="tp-sounds">[a short paragraph describing what this tone feels like in practice — what it leans into, what it avoids]</div>
+                <div class="tp-label">Example</div>
+                <div class="tp-example">"[a full sample line of copy in this voice, for this touchpoint]"</div>
+              </div>
+            </details>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Do's &amp; Don'ts of Copywriting</div>
+          <div class="word-columns">
+            <div class="word-col">
+              <div class="word-col-label">Preferred terms</div>
+              <ul class="word-list"><li>[word]</li><li>[word]</li><li>[word]</li></ul>
+            </div>
+            <div class="word-col avoid">
+              <div class="word-col-label">Avoid</div>
+              <ul class="word-list"><li>[word]</li><li>[word]</li><li>[word]</li></ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Taglines &amp; Slogans</div>
+          <div class="tagline-block">
+            <div class="field-label">Primary</div>
+            <div class="tagline-text">[Primary tagline]</div>
+          </div>
+          <div class="tagline-block">
+            <div class="field-label">Secondary</div>
+            <div class="tagline-text">[Secondary tagline]</div>
+          </div>
+          <div class="field-value placeholder">[placement rules — where it can and can't appear]</div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Editorial Mechanics</div>
+          <div class="editorial-list">
+            <div class="editorial-row"><span class="k">Spelling convention</span><span class="v">[UK / US English]</span></div>
+            <div class="editorial-row"><span class="k">Punctuation preferences</span><span class="v">[Oxford comma, em dash style, etc.]</span></div>
+            <div class="editorial-row"><span class="k">Formatting standards</span><span class="v">[headline case, number style, etc.]</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ LOGO ============ -->
+    <section class="module" id="logo">
+      <div class="module-head">
+        <div>
+          <div class="module-num">03</div>
+          <h2>Logo Suite</h2>
+        </div>
+        <span class="badge badge--core">Core</span>
+      </div>
+      <p class="module-dek">Every approved lockup, in the color and format it ships in, plus the rules for how it should — and shouldn't — be used. Swap each frame for the exported artwork at matching proportions.</p>
+      <a class="download-all-btn" href="basecamp/Brand-Specification-Book-TEMPLATE/Sample-Logo-Assets/Sample-Logo-Files.zip" download style="margin-top:18px;">⬇ Download All Logo Files (.zip)</a>
+
+      <div class="module-body">
+        <div class="field-block">
+          <div class="field-label">Logo Files — every lockup, every format</div>
+          <div class="field-value placeholder" style="max-width:none; margin-bottom:14px;">[sample only — Main Suite frames marked "SVG.zip ↓" show how click-to-download works once real logo files replace these. AI &amp; EPS stay placeholder until real exports exist — those formats can't be faked. SVG, PNG &amp; JPG are working samples; PNG/JPG — hover a card to choose 500px, 2000px, or both sizes.]</div>
+          <div class="format-tabs" role="tablist" aria-label="Logo file view">
+            <button type="button" class="format-tab-btn is-active" data-format-tab="main" aria-selected="true">Main Suite</button>
+            <button type="button" class="format-tab-btn" data-format-tab="ai" aria-selected="false">AI</button>
+            <button type="button" class="format-tab-btn" data-format-tab="eps" aria-selected="false">EPS</button>
+            <button type="button" class="format-tab-btn" data-format-tab="svg" aria-selected="false">SVG</button>
+            <button type="button" class="format-tab-btn" data-format-tab="png" aria-selected="false">PNG</button>
+            <button type="button" class="format-tab-btn" data-format-tab="jpg" aria-selected="false">JPG</button>
+          </div>
+
+          <div class="format-panel" data-format-panel="main">
+            <div class="logo-grid">
+              <a class="frame" href="basecamp/Brand-Specification-Book-TEMPLATE/Sample-Logo-Assets/sample-logo-svg.zip" download><span class="frame-label">Primary / Linear</span><img class="frame-logo-img" src="basecamp/Brand-Specification-Book-TEMPLATE/Sample-Logo-Assets/sample-logo.svg" alt="Sample logo — primary lockup placeholder"><span class="frame-dim">SVG.zip ↓</span></a>
+              <a class="frame" href="basecamp/Brand-Specification-Book-TEMPLATE/Sample-Logo-Assets/sample-logo-stacked-svg.zip" download><span class="frame-label">Stacked</span><img class="frame-logo-img" src="basecamp/Brand-Specification-Book-TEMPLATE/Sample-Logo-Assets/sample-logo-stacked.svg" alt="Sample logo — stacked placeholder"><span class="frame-dim">SVG.zip ↓</span></a>
+              <a class="frame" href="basecamp/Brand-Specification-Book-TEMPLATE/Sample-Logo-Assets/sample-logo-icon-svg.zip" download><span class="frame-label">Icon / Mark</span><img class="frame-logo-img" src="basecamp/Brand-Specification-Book-TEMPLATE/Sample-Logo-Assets/sample-logo-icon.svg" alt="Sample logo — icon/mark placeholder"><span class="frame-dim">SVG.zip ↓</span></a>
+              <a class="frame" href="basecamp/Brand-Specification-Book-TEMPLATE/Sample-Logo-Assets/sample-logo-linear-tagline-svg.zip" download><span class="frame-label">Linear + Tagline</span><img class="frame-logo-img" src="basecamp/Brand-Specification-Book-TEMPLATE/Sample-Logo-Assets/sample-logo-linear-tagline.svg" alt="Sample logo — linear with tagline placeholder"><span class="frame-dim">SVG.zip ↓</span></a>
+              <a class="frame" href="basecamp/Brand-Specification-Book-TEMPLATE/Sample-Logo-Assets/sample-logo-stacked-tagline-svg.zip" download><span class="frame-label">Stacked + Tagline</span><img class="frame-logo-img" src="basecamp/Brand-Specification-Book-TEMPLATE/Sample-Logo-Assets/sample-logo-stacked-tagline.svg" alt="Sample logo — stacked with tagline placeholder"><span class="frame-dim">SVG.zip ↓</span></a>
+              <a class="frame" href="basecamp/Brand-Specification-Book-TEMPLATE/Sample-Logo-Assets/sample-logo-svg.zip" download><span class="frame-label">Logotype Only</span><img class="frame-logo-img" src="basecamp/Brand-Specification-Book-TEMPLATE/Sample-Logo-Assets/sample-logo.svg" alt="Sample logo — logotype placeholder"><span class="frame-dim">SVG.zip ↓</span></a>
+              <a class="frame" href="basecamp/Brand-Specification-Book-TEMPLATE/Sample-Logo-Assets/sample-logo-reversed-svg.zip" download style="background:#1B1D1B"><span class="frame-label" style="color:#F1F0E9">Reversed (on dark)</span><img class="frame-logo-img" src="basecamp/Brand-Specification-Book-TEMPLATE/Sample-Logo-Assets/sample-logo-reversed.svg" alt="Sample logo — reversed for dark backgrounds placeholder"><span class="frame-dim" style="color:#F1F0E9">SVG.zip ↓</span></a>
+              <a class="frame" href="basecamp/Brand-Specification-Book-TEMPLATE/Sample-Logo-Assets/sample-logo-svg.zip" download><span class="frame-label">Single Color / Black</span><img class="frame-logo-img" src="basecamp/Brand-Specification-Book-TEMPLATE/Sample-Logo-Assets/sample-logo.svg" alt="Sample logo — single colour placeholder"><span class="frame-dim">SVG.zip ↓</span></a>
+            </div>
+          </div>
+
+          <div class="format-panel" data-format-panel="ai" hidden>
+            <div class="field-value placeholder" style="max-width:none; margin-bottom:14px;">[no .AI export exists yet for this sample — once the client's real Illustrator files are ready, drop them in Sample-Logo-Assets/ (or the client's own logo folder) and link each card below, same as SVG/PNG/JPG]</div>
+            <div class="format-grid">
+              <div class="format-card is-placeholder"><span class="format-card-label">Black</span><img class="frame-logo-img" src="basecamp/Brand-Specification-Book-TEMPLATE/Sample-Logo-Assets/sample-logo.svg" alt="Placeholder — Black, AI"><span class="format-card-note">[link .ai.zip]</span></div>
+              <div class="format-card is-placeholder" style="background:#1B1D1B"><span class="format-card-label" style="color:#F1F0E9">White</span><img class="frame-logo-img" src="basecamp/Brand-Specification-Book-TEMPLATE/Sample-Logo-Assets/sample-logo-reversed.svg" alt="Placeholder — White, AI"><span class="format-card-note" style="color:#8B8D84">[link .ai.zip]</span></div>
+            </div>
+          </div>
+
+          <div class="format-panel" data-format-panel="eps" hidden>
+            <div class="field-value placeholder" style="max-width:none; margin-bottom:14px;">[no .EPS export exists yet for this sample — same as AI, link each card once the real files exist]</div>
+            <div class="format-grid">
+              <div class="format-card is-placeholder"><span class="format-card-label">Black</span><img class="frame-logo-img" src="basecamp/Brand-Specification-Book-TEMPLATE/Sample-Logo-Assets/sample-logo.svg" alt="Placeholder — Black, EPS"><span class="format-card-note">[link .eps.zip]</span></div>
+              <div class="format-card is-placeholder" style="background:#1B1D1B"><span class="format-card-label" style="color:#F1F0E9">White</span><img class="frame-logo-img" src="basecamp/Brand-Specification-Book-TEMPLATE/Sample-Logo-Assets/sample-logo-reversed.svg" alt="Placeholder — White, EPS"><span class="format-card-note" style="color:#8B8D84">[link .eps.zip]</span></div>
+            </div>
+          </div>
+
+          <div class="format-panel" data-format-panel="svg" hidden>
+            <a class="download-all-btn" href="basecamp/Brand-Specification-Book-TEMPLATE/Sample-Logo-Assets/sample-logo-all-svg.zip" download style="margin-bottom:18px;">⬇ Download All .SVG Files (.zip)</a>
+            <div class="format-grid">
+              <a class="format-card" href="basecamp/Brand-Specification-Book-TEMPLATE/Sample-Logo-Assets/sample-logo-svg.zip" download><span class="format-card-label">Black</span><img class="frame-logo-img" src="basecamp/Brand-Specification-Book-TEMPLATE/Sample-Logo-Assets/sample-logo.svg" alt="Black sample logo, SVG"></a>
+              <a class="format-card" href="basecamp/Brand-Specification-Book-TEMPLATE/Sample-Logo-Assets/sample-logo-reversed-svg.zip" download style="background:#1B1D1B"><span class="format-card-label" style="color:#F1F0E9">White</span><img class="frame-logo-img" src="basecamp/Brand-Specification-Book-TEMPLATE/Sample-Logo-Assets/sample-logo-reversed.svg" alt="White sample logo, SVG"></a>
+            </div>
+          </div>
+
+          <div class="format-panel" data-format-panel="png" hidden>
+            <a class="download-all-btn" href="basecamp/Brand-Specification-Book-TEMPLATE/Sample-Logo-Assets/sample-logo-all-png.zip" download style="margin-bottom:18px;">⬇ Download All .PNG Files (.zip)</a>
+            <div class="format-grid">
+              <div class="format-card"><span class="format-card-label">Black</span><img class="frame-logo-img" src="basecamp/Brand-Specification-Book-TEMPLATE/Sample-Logo-Assets/sample-logo.svg" alt="Black sample logo, PNG">
+                <div class="format-card-sizes">
+                  <a href="basecamp/Brand-Specification-Book-TEMPLATE/Sample-Logo-Assets/sample-logo-png-500.zip" download>500px ↓</a>
+                  <a href="basecamp/Brand-Specification-Book-TEMPLATE/Sample-Logo-Assets/sample-logo-png-2000.zip" download>2000px ↓</a>
+                  <a href="basecamp/Brand-Specification-Book-TEMPLATE/Sample-Logo-Assets/sample-logo-png-both.zip" download>Both sizes ↓</a>
+                </div>
+              </div>
+              <div class="format-card" style="background:#1B1D1B"><span class="format-card-label" style="color:#F1F0E9">White</span><img class="frame-logo-img" src="basecamp/Brand-Specification-Book-TEMPLATE/Sample-Logo-Assets/sample-logo-reversed.svg" alt="White sample logo, PNG">
+                <div class="format-card-sizes">
+                  <a href="basecamp/Brand-Specification-Book-TEMPLATE/Sample-Logo-Assets/sample-logo-reversed-png-500.zip" download>500px ↓</a>
+                  <a href="basecamp/Brand-Specification-Book-TEMPLATE/Sample-Logo-Assets/sample-logo-reversed-png-2000.zip" download>2000px ↓</a>
+                  <a href="basecamp/Brand-Specification-Book-TEMPLATE/Sample-Logo-Assets/sample-logo-reversed-png-both.zip" download>Both sizes ↓</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="format-panel" data-format-panel="jpg" hidden>
+            <a class="download-all-btn" href="basecamp/Brand-Specification-Book-TEMPLATE/Sample-Logo-Assets/sample-logo-all-jpg.zip" download style="margin-bottom:18px;">⬇ Download All .JPEG Files (.zip)</a>
+            <div class="format-grid">
+              <div class="format-card"><span class="format-card-label">Black</span><img class="frame-logo-img" src="basecamp/Brand-Specification-Book-TEMPLATE/Sample-Logo-Assets/sample-logo.svg" alt="Black sample logo, JPG">
+                <div class="format-card-sizes">
+                  <a href="basecamp/Brand-Specification-Book-TEMPLATE/Sample-Logo-Assets/sample-logo-jpg-500.zip" download>500px ↓</a>
+                  <a href="basecamp/Brand-Specification-Book-TEMPLATE/Sample-Logo-Assets/sample-logo-jpg-2000.zip" download>2000px ↓</a>
+                  <a href="basecamp/Brand-Specification-Book-TEMPLATE/Sample-Logo-Assets/sample-logo-jpg-both.zip" download>Both sizes ↓</a>
+                </div>
+              </div>
+              <div class="format-card" style="background:#1B1D1B"><span class="format-card-label" style="color:#F1F0E9">White</span><img class="frame-logo-img" src="basecamp/Brand-Specification-Book-TEMPLATE/Sample-Logo-Assets/sample-logo-reversed.svg" alt="White sample logo, JPG">
+                <div class="format-card-sizes">
+                  <a href="basecamp/Brand-Specification-Book-TEMPLATE/Sample-Logo-Assets/sample-logo-reversed-jpg-500.zip" download>500px ↓</a>
+                  <a href="basecamp/Brand-Specification-Book-TEMPLATE/Sample-Logo-Assets/sample-logo-reversed-jpg-2000.zip" download>2000px ↓</a>
+                  <a href="basecamp/Brand-Specification-Book-TEMPLATE/Sample-Logo-Assets/sample-logo-reversed-jpg-both.zip" download>Both sizes ↓</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:28px">
+          <div class="swatch-set-label">Minimum clear space</div>
+          <div class="frame clearspace-frame"><span class="frame-glyph">Logo</span></div>
+        </div>
+
+        <div style="margin-top:28px">
+          <div class="swatch-set-label">Brandmark / Monogram / Icon — for app icons and social avatars</div>
+          <div class="icon-row">
+            <div class="frame app-icon-frame"><span class="frame-glyph">◆</span></div>
+            <div class="frame avatar-frame"><span class="frame-glyph">◆</span></div>
+          </div>
+        </div>
+
+        <div style="margin-top:28px">
+          <div class="swatch-set-label">Color Variations — approved on light, dark, and full-color backgrounds</div>
+          <div class="bgvar-row">
+            <div class="frame bgvar-frame on-light"><span class="frame-label">On light</span><span class="frame-glyph">Logo</span></div>
+            <div class="frame bgvar-frame on-dark"><span class="frame-label">On dark</span><span class="frame-glyph">Logo</span></div>
+            <div class="frame bgvar-frame on-busy"><span class="frame-label">On full-color / photo</span><span class="frame-glyph">Logo</span></div>
+          </div>
+        </div>
+
+        <div style="margin-top:28px">
+          <div class="swatch-set-label">Incorrect Logo Usage (Don'ts)</div>
+          <div class="dodont-grid">
+            <div class="dodont-card"><div class="dodont-frame stretch"><span class="glyph">Logo</span></div><div class="dodont-caption"><b>Do not</b> stretch</div></div>
+            <div class="dodont-card"><div class="dodont-frame rotate"><span class="glyph">Logo</span></div><div class="dodont-caption"><b>Do not</b> rotate</div></div>
+            <div class="dodont-card"><div class="dodont-frame recolor"><span class="glyph">Logo</span></div><div class="dodont-caption"><b>Do not</b> re-color</div></div>
+            <div class="dodont-card"><div class="dodont-frame shadow"><span class="glyph">Logo</span></div><div class="dodont-caption"><b>Do not</b> add drop shadows</div></div>
+            <div class="dodont-card"><div class="dodont-frame busy"><span class="glyph">Logo</span></div><div class="dodont-caption"><b>Do not</b> place over busy images</div></div>
+            <div class="dodont-card"><div class="dodont-frame outline"><span class="glyph">Logo</span></div><div class="dodont-caption"><b>Do not</b> outline</div></div>
+            <div class="dodont-card"><div class="dodont-frame opacity"><span class="glyph">Logo</span></div><div class="dodont-caption"><b>Do not</b> reduce opacity</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ COLOR ============ -->
+    <section class="module" id="color">
+      <div class="module-head">
+        <div>
+          <div class="module-num">04</div>
+          <h2>Color</h2>
+        </div>
+        <span class="badge badge--core">Core</span>
+      </div>
+      <p class="module-dek">The full palette, grouped by role, with reproduction values for every medium. Main Palette covers print and general use; Light Mode and Dark Mode give web/app development the exact tokens to build with.</p>
+
+      <div class="module-body">
+        <div class="color-tabs" role="tablist" aria-label="Color view">
+          <button type="button" class="color-tab-btn is-active" data-color-tab="main" aria-selected="true">Main Palette</button>
+          <button type="button" class="color-tab-btn" data-color-tab="light" aria-selected="false">Light Mode</button>
+          <button type="button" class="color-tab-btn" data-color-tab="dark" aria-selected="false">Dark Mode</button>
+        </div>
+
+        <div class="color-panel" data-color-panel="main">
+        <div class="field-block">
+          <div class="field-label">Core Palette</div>
+
+            <div class="swatch-set">
+              <div class="swatch-set-label">Primary</div>
+              <div class="swatch-row">
+                <div class="swatch">
+                  <div class="swatch-color" style="background:#1B1D1B"></div>
+                  <div class="swatch-info">
+                    <div class="role">Primary — Ink</div>
+                    <div class="spec-row"><span class="spec-k">Hex</span><button class="copy spec-v" data-copy="#1B1D1B">#1B1D1B</button></div>
+                    <div class="spec-row"><span class="spec-k">Rgb</span><button class="copy spec-v" data-copy="27, 29, 27">27, 29, 27</button></div>
+                    <div class="spec-row"><span class="spec-k">Cmyk</span><span class="spec-v static">[C, M, Y, K]</span></div>
+                    <div class="spec-row"><span class="spec-k">Pms</span><span class="spec-v static">[coated / uncoated]</span></div>
+                  </div>
+                </div>
+                <div class="swatch">
+                  <div class="swatch-color" style="background:#D6431B"></div>
+                  <div class="swatch-info">
+                    <div class="role">Primary — Accent</div>
+                    <div class="spec-row"><span class="spec-k">Hex</span><button class="copy spec-v" data-copy="#D6431B">#D6431B</button></div>
+                    <div class="spec-row"><span class="spec-k">Rgb</span><button class="copy spec-v" data-copy="214, 67, 27">214, 67, 27</button></div>
+                    <div class="spec-row"><span class="spec-k">Cmyk</span><span class="spec-v static">[C, M, Y, K]</span></div>
+                    <div class="spec-row"><span class="spec-k">Pms</span><span class="spec-v static">[coated / uncoated]</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="swatch-set">
+              <div class="swatch-set-label">Secondary</div>
+              <div class="swatch-row">
+                <div class="swatch">
+                  <div class="swatch-color" style="background:#7C8A6E"></div>
+                  <div class="swatch-info">
+                    <div class="role">Secondary 01</div>
+                    <div class="spec-row"><span class="spec-k">Hex</span><button class="copy spec-v" data-copy="#7C8A6E">#7C8A6E</button></div>
+                    <div class="spec-row"><span class="spec-k">Rgb</span><button class="copy spec-v" data-copy="124, 138, 110">124, 138, 110</button></div>
+                    <div class="spec-row"><span class="spec-k">Cmyk</span><span class="spec-v static">[C, M, Y, K]</span></div>
+                    <div class="spec-row"><span class="spec-k">Pms</span><span class="spec-v static">[coated / uncoated]</span></div>
+                  </div>
+                </div>
+                <div class="swatch">
+                  <div class="swatch-color" style="background:#C9A24A"></div>
+                  <div class="swatch-info">
+                    <div class="role">Secondary 02</div>
+                    <div class="spec-row"><span class="spec-k">Hex</span><button class="copy spec-v" data-copy="#C9A24A">#C9A24A</button></div>
+                    <div class="spec-row"><span class="spec-k">Rgb</span><button class="copy spec-v" data-copy="201, 162, 74">201, 162, 74</button></div>
+                    <div class="spec-row"><span class="spec-k">Cmyk</span><span class="spec-v static">[C, M, Y, K]</span></div>
+                    <div class="spec-row"><span class="spec-k">Pms</span><span class="spec-v static">[coated / uncoated]</span></div>
+                  </div>
+                </div>
+                <div class="swatch">
+                  <div class="swatch-color" style="background:#4E7C8A"></div>
+                  <div class="swatch-info">
+                    <div class="role">Secondary 03</div>
+                    <div class="spec-row"><span class="spec-k">Hex</span><button class="copy spec-v" data-copy="#4E7C8A">#4E7C8A</button></div>
+                    <div class="spec-row"><span class="spec-k">Rgb</span><button class="copy spec-v" data-copy="78, 124, 138">78, 124, 138</button></div>
+                    <div class="spec-row"><span class="spec-k">Cmyk</span><span class="spec-v static">[C, M, Y, K]</span></div>
+                    <div class="spec-row"><span class="spec-k">Pms</span><span class="spec-v static">[coated / uncoated]</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="swatch-set">
+              <div class="swatch-set-label">Neutrals</div>
+              <div class="swatch-row">
+                <div class="swatch">
+                  <div class="swatch-color" style="background:#F1F1EA"></div>
+                  <div class="swatch-info">
+                    <div class="role">Paper</div>
+                    <div class="spec-row"><span class="spec-k">Hex</span><button class="copy spec-v" data-copy="#F1F1EA">#F1F1EA</button></div>
+                    <div class="spec-row"><span class="spec-k">Rgb</span><button class="copy spec-v" data-copy="241, 241, 234">241, 241, 234</button></div>
+                    <div class="spec-row"><span class="spec-k">Cmyk</span><span class="spec-v static">[C, M, Y, K]</span></div>
+                    <div class="spec-row"><span class="spec-k">Pms</span><span class="spec-v static">[coated / uncoated]</span></div>
+                  </div>
+                </div>
+                <div class="swatch">
+                  <div class="swatch-color" style="background:#D7D4C6"></div>
+                  <div class="swatch-info">
+                    <div class="role">Line</div>
+                    <div class="spec-row"><span class="spec-k">Hex</span><button class="copy spec-v" data-copy="#D7D4C6">#D7D4C6</button></div>
+                    <div class="spec-row"><span class="spec-k">Rgb</span><button class="copy spec-v" data-copy="215, 212, 198">215, 212, 198</button></div>
+                    <div class="spec-row"><span class="spec-k">Cmyk</span><span class="spec-v static">[C, M, Y, K]</span></div>
+                    <div class="spec-row"><span class="spec-k">Pms</span><span class="spec-v static">[coated / uncoated]</span></div>
+                  </div>
+                </div>
+                <div class="swatch">
+                  <div class="swatch-color" style="background:#62645C"></div>
+                  <div class="swatch-info">
+                    <div class="role">Dim text</div>
+                    <div class="spec-row"><span class="spec-k">Hex</span><button class="copy spec-v" data-copy="#62645C">#62645C</button></div>
+                    <div class="spec-row"><span class="spec-k">Rgb</span><button class="copy spec-v" data-copy="98, 100, 92">98, 100, 92</button></div>
+                    <div class="spec-row"><span class="spec-k">Cmyk</span><span class="spec-v static">[C, M, Y, K]</span></div>
+                    <div class="spec-row"><span class="spec-k">Pms</span><span class="spec-v static">[coated / uncoated]</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Color Ratio / Usage Hierarchy — recommended distribution</div>
+
+          <div class="ratio-bar">
+            <div style="width:60%; background:#1B1D1B"></div>
+            <div style="width:30%; background:#7C8A6E"></div>
+            <div style="width:10%; background:#D6431B"></div>
+          </div>
+          <div class="ratio-legend">
+            <div class="ratio-item"><span class="dot" style="background:#1B1D1B"></span>Primary — 60%</div>
+            <div class="ratio-item"><span class="dot" style="background:#7C8A6E"></span>Secondary — 30%</div>
+            <div class="ratio-item"><span class="dot" style="background:#D6431B"></span>Accent — 10%</div>
+          </div>
+          <div class="field-value placeholder" style="margin-top:10px">[adjust once the client's palette is final — keep the accent the minority share so it holds its signal value]</div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Accessibility &amp; Contrast Guidelines — WCAG-compliant combinations</div>
+          <div class="table-wrap">
+            <table class="tone-matrix">
+              <thead><tr><th>Combination</th><th>Ratio</th><th>WCAG</th></tr></thead>
+              <tbody>
+                <tr><td class="touchpoint">Ink on Paper</td><td class="mono">14.9 : 1</td><td><span class="wcag-badge pass">AAA · all text</span></td></tr>
+                <tr><td class="touchpoint">Paper on Ink</td><td class="mono">14.9 : 1</td><td><span class="wcag-badge pass">AAA · all text</span></td></tr>
+                <tr><td class="touchpoint">Accent on Paper</td><td class="mono">4.0 : 1</td><td><span class="wcag-badge caution">AA · large text only</span></td></tr>
+                <tr><td class="touchpoint">Accent on Ink</td><td class="mono">3.8 : 1</td><td><span class="wcag-badge caution">AA · large text only</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="field-value placeholder" style="margin-top:10px">[recheck every pairing once real client colors replace these — an accent that only clears large-text thresholds should stay out of small body copy]</div>
+        </div>
+        </div>
+
+        <div class="color-panel" data-color-panel="light" hidden>
+          <div class="field-value placeholder" style="max-width:none; margin-bottom:16px;">[web &amp; app tokens for light-mode UI — background, surface, text, and accent, each with the contrast ratio already checked against its background]</div>
+          <div class="mode-demo" style="background:#F1F1EA; color:#1B1D1B; --demo-border:#D7D4C6;">
+            <div class="mode-demo-label">Light Mode</div>
+            <div class="token-list">
+              <div class="token-row"><div class="token-swatch" style="background:#F1F1EA"></div><div class="token-role">Background</div><div class="token-note">Paper</div><button type="button" class="copy token-hex" data-copy="#F1F1EA">#F1F1EA</button></div>
+              <div class="token-row"><div class="token-swatch" style="background:#FFFFFF"></div><div class="token-role">Surface / Container</div><div class="token-note">White</div><button type="button" class="copy token-hex" data-copy="#FFFFFF">#FFFFFF</button></div>
+              <div class="token-row"><div class="token-swatch" style="background:#D7D4C6"></div><div class="token-role">Border / Divider</div><div class="token-note">Line</div><button type="button" class="copy token-hex" data-copy="#D7D4C6">#D7D4C6</button></div>
+              <div class="token-row"><div class="token-swatch" style="background:#1B1D1B"></div><div class="token-role">Text Primary</div><div class="token-note">Ink</div><span class="token-ratio">15.0:1 AAA</span><button type="button" class="copy token-hex" data-copy="#1B1D1B">#1B1D1B</button></div>
+              <div class="token-row"><div class="token-swatch" style="background:#62645C"></div><div class="token-role">Text Secondary</div><div class="token-note">Dim text</div><span class="token-ratio">5.3:1 AA</span><button type="button" class="copy token-hex" data-copy="#62645C">#62645C</button></div>
+              <div class="token-row"><div class="token-swatch" style="background:#D6431B"></div><div class="token-role">Accent / CTA</div><div class="token-note">Buttons &amp; links, pair with Ink label text</div><span class="token-ratio">4.0:1 AA*</span><button type="button" class="copy token-hex" data-copy="#D6431B">#D6431B</button></div>
+              <div class="token-row"><div class="token-swatch" style="background:#C9A24A"></div><div class="token-role">Accent Secondary</div><div class="token-note">Secondary 02 — badges, icons</div><button type="button" class="copy token-hex" data-copy="#C9A24A">#C9A24A</button></div>
+              <div class="token-row"><div class="token-swatch" style="background:#7C8A6E"></div><div class="token-role">Micro-accent</div><div class="token-note">Secondary 01 — hover states, status dots</div><span class="token-ratio">4.6:1 AA</span><button type="button" class="copy token-hex" data-copy="#7C8A6E">#7C8A6E</button></div>
+            </div>
+          </div>
+          <div class="field-value placeholder" style="margin-top:10px">[* ratio marked is the colour used as a text/icon fill on the Background above — as a button fill, check the label text separately]</div>
+        </div>
+
+        <div class="color-panel" data-color-panel="dark" hidden>
+          <div class="field-value placeholder" style="max-width:none; margin-bottom:16px;">[web &amp; app tokens for dark-mode UI]</div>
+          <div class="mode-demo" style="background:#1B1D1B; color:#F1F1EA; --demo-border:#62645C;">
+            <div class="mode-demo-label">Dark Mode</div>
+            <div class="token-list">
+              <div class="token-row"><div class="token-swatch" style="background:#1B1D1B; border-color:rgba(255,255,255,0.2);"></div><div class="token-role">Background</div><div class="token-note">Ink</div><button type="button" class="copy token-hex" data-copy="#1B1D1B">#1B1D1B</button></div>
+              <div class="token-row"><div class="token-swatch" style="background:#62645C; border-color:rgba(255,255,255,0.2);"></div><div class="token-role">Surface / Container</div><div class="token-note">[pick a tone between Background and Text — dim text reused here as a placeholder]</div><button type="button" class="copy token-hex" data-copy="#62645C">#62645C</button></div>
+              <div class="token-row"><div class="token-swatch" style="background:#62645C; border-color:rgba(255,255,255,0.2);"></div><div class="token-role">Border / Divider</div><div class="token-note">[pick a tone slightly lighter than Surface]</div><button type="button" class="copy token-hex" data-copy="#62645C">#62645C</button></div>
+              <div class="token-row"><div class="token-swatch" style="background:#F1F1EA"></div><div class="token-role">Text Primary</div><div class="token-note">Paper</div><span class="token-ratio">15.0:1 AAA</span><button type="button" class="copy token-hex" data-copy="#F1F1EA">#F1F1EA</button></div>
+              <div class="token-row"><div class="token-swatch" style="background:#D7D4C6"></div><div class="token-role">Text Secondary</div><div class="token-note">Line</div><span class="token-ratio">11.4:1 AAA</span><button type="button" class="copy token-hex" data-copy="#D7D4C6">#D7D4C6</button></div>
+              <div class="token-row"><div class="token-swatch" style="background:#D6431B"></div><div class="token-role">Accent / CTA</div><div class="token-note">Buttons, links, active states</div><span class="token-ratio">3.8:1 AA*</span><button type="button" class="copy token-hex" data-copy="#D6431B">#D6431B</button></div>
+              <div class="token-row"><div class="token-swatch" style="background:#C9A24A"></div><div class="token-role">Accent Secondary</div><div class="token-note">Secondary 02</div><span class="token-ratio">7.1:1 AAA</span><button type="button" class="copy token-hex" data-copy="#C9A24A">#C9A24A</button></div>
+              <div class="token-row"><div class="token-swatch" style="background:#7C8A6E"></div><div class="token-role">Micro-accent</div><div class="token-note">Secondary 01 — hover rings, status dots</div><span class="token-ratio">4.6:1 AA</span><button type="button" class="copy token-hex" data-copy="#7C8A6E">#7C8A6E</button></div>
+            </div>
+          </div>
+          <div class="field-value placeholder" style="margin-top:10px">[* large text / UI only at this ratio. Surface and Border are placeholders — this generic palette has no built-in tint of Ink to draw from; pick real tones once the client's palette exists]</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TYPOGRAPHY ============ -->
+    <section class="module" id="type">
+      <div class="module-head">
+        <div>
+          <div class="module-num">05</div>
+          <h2>Typography</h2>
+        </div>
+        <span class="badge badge--core">Core</span>
+      </div>
+      <p class="module-dek">Every family and its job, from headline weight down to the fallback stack. Set the real typefaces, weights, and rules below once the client's type is chosen.</p>
+
+      <div class="module-body">
+        <div class="field-block">
+          <div class="field-label">Primary Display / Heading Font</div>
+          <div class="type-role">
+            <div class="type-role-meta"><span class="type-role-name">Headlines, section titles</span><span class="type-role-spec">[Typeface Name]</span></div>
+            <div class="type-sample-display">Aa Bb Cc 123</div>
+            <div class="type-specs">
+              <div class="spec-row"><span class="spec-k">Weight</span><span class="spec-v static">[700–900]</span></div>
+              <div class="spec-row"><span class="spec-k">Tracking</span><span class="spec-v static">[-0.01em]</span></div>
+              <div class="spec-row"><span class="spec-k">Leading</span><span class="spec-v static">[1.0–1.1]</span></div>
+              <div class="spec-row"><span class="spec-k">Casing</span><span class="spec-v static">[All Caps / Title Case — pick one]</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Body &amp; Subtitle Fonts — mapped to hierarchy levels</div>
+          <div class="type-role">
+            <div class="type-role-meta"><span class="type-role-name">Subtitle — lead paragraphs, standfirsts</span><span class="type-role-spec">[Typeface Name]</span></div>
+            <div class="type-sample-body" style="font-size:1.3rem">The quick brown fox jumps over the lazy dog.</div>
+            <div class="type-specs">
+              <div class="spec-row"><span class="spec-k">Weight</span><span class="spec-v static">[400–500]</span></div>
+              <div class="spec-row"><span class="spec-k">Leading</span><span class="spec-v static">[1.4–1.5]</span></div>
+            </div>
+          </div>
+          <div class="type-role">
+            <div class="type-role-meta"><span class="type-role-name">Body — paragraphs, UI copy</span><span class="type-role-spec">[Typeface Name]</span></div>
+            <div class="type-sample-body">The quick brown fox jumps over the lazy dog. Set body copy at a size and measure that stays comfortable across print and screen.</div>
+            <div class="type-specs">
+              <div class="spec-row"><span class="spec-k">Weight</span><span class="spec-v static">[400–500]</span></div>
+              <div class="spec-row"><span class="spec-k">Leading</span><span class="spec-v static">[1.5–1.6]</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Monospace / Technical Fonts</div>
+          <div class="type-role">
+            <div class="type-role-meta"><span class="type-role-name">Code, data, callouts</span><span class="type-role-spec">[Typeface Name]</span></div>
+            <div class="type-sample-mono">CAPTIONS · HEX CODES · 0123456789</div>
+            <div class="type-specs">
+              <div class="spec-row"><span class="spec-k">Weight</span><span class="spec-v static">[400–500]</span></div>
+              <div class="spec-row"><span class="spec-k">Leading</span><span class="spec-v static">[1.5]</span></div>
+            </div>
+            <div class="type-chips">
+              <span class="trait-chip">Code snippets</span>
+              <span class="trait-chip">Data tables</span>
+              <span class="trait-chip">Callout panels</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">System Fallback Fonts — web-safe alternatives if custom fonts fail to load</div>
+          <div class="table-wrap">
+            <table class="tone-matrix">
+              <thead><tr><th>Role</th><th>Fallback stack</th></tr></thead>
+              <tbody>
+                <tr><td class="touchpoint">Display / Heading</td><td class="mono">[e.g. Arial Narrow, Arial, sans-serif]</td></tr>
+                <tr><td class="touchpoint">Body / Subtitle</td><td class="mono">[e.g. Helvetica, Arial, sans-serif]</td></tr>
+                <tr><td class="touchpoint">Monospace / Technical</td><td class="mono">[e.g. Courier New, monospace]</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Type Hierarchy Scale — H1 down to fine print</div>
+          <div class="table-wrap">
+            <table class="tone-matrix">
+              <thead><tr><th>Level</th><th>Size</th><th>Leading</th><th>Tracking</th></tr></thead>
+              <tbody>
+                <tr><td class="touchpoint">H1</td><td class="mono">56px / 3.5rem</td><td class="mono">1.05</td><td class="mono">-0.01em</td></tr>
+                <tr><td class="touchpoint">H2</td><td class="mono">40px / 2.5rem</td><td class="mono">1.1</td><td class="mono">-0.005em</td></tr>
+                <tr><td class="touchpoint">H3</td><td class="mono">28px / 1.75rem</td><td class="mono">1.2</td><td class="mono">0em</td></tr>
+                <tr><td class="touchpoint">H4</td><td class="mono">22px / 1.375rem</td><td class="mono">1.25</td><td class="mono">0em</td></tr>
+                <tr><td class="touchpoint">Subtitle</td><td class="mono">20px / 1.25rem</td><td class="mono">1.4</td><td class="mono">0em</td></tr>
+                <tr><td class="touchpoint">Body</td><td class="mono">16px / 1rem</td><td class="mono">1.6</td><td class="mono">0em</td></tr>
+                <tr><td class="touchpoint">Caption / fine print</td><td class="mono">12px / 0.75rem</td><td class="mono">1.4</td><td class="mono">0.02em</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ IMAGERY, PHOTOGRAPHY & VIDEO ============ -->
+    <section class="module" id="imagery">
+      <div class="module-head">
+        <div>
+          <div class="module-num">06</div>
+          <h2>Imagery, Photography &amp; Video</h2>
+        </div>
+        <span class="badge badge--optional">Optional</span>
+      </div>
+      <p class="module-dek">How the brand looks in real photography and motion — style, subject matter, treatment, and the standards for anything filmed or animated.</p>
+
+      <div class="module-body">
+        <div class="field-block">
+          <div class="field-label">Photography Style &amp; Mood</div>
+          <div class="editorial-list">
+            <div class="editorial-row"><span class="k">Lighting direction</span><span class="v">[natural, backlit, studio-flat, etc.]</span></div>
+            <div class="editorial-row"><span class="k">Color grading</span><span class="v">[warm, cool, desaturated, high-contrast]</span></div>
+            <div class="editorial-row"><span class="k">Tone</span><span class="v">[aspirational, documentary, editorial]</span></div>
+            <div class="editorial-row"><span class="k">Subject focus</span><span class="v">[shallow depth of field, wide environmental, etc.]</span></div>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Subject Matter Guidelines</div>
+          <div class="editorial-list">
+            <div class="editorial-row"><span class="k">Candid human imagery</span><span class="v">[posed vs. candid, diversity, expressions to use / avoid]</span></div>
+            <div class="editorial-row"><span class="k">Product staging</span><span class="v">[in-context vs. isolated, surfaces, props]</span></div>
+            <div class="editorial-row"><span class="k">Background environments</span><span class="v">[approved settings, clutter level]</span></div>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Image Treatment &amp; Filters — approved overlays, duotones, and grading profiles</div>
+          <div class="imagery-row">
+            <div class="frame imagery-frame duotone-a"><span class="frame-label">Duotone A</span><span class="frame-glyph">Photo</span></div>
+            <div class="frame imagery-frame duotone-b"><span class="frame-label">Duotone B</span><span class="frame-glyph">Photo</span></div>
+            <div class="frame imagery-frame overlay"><span class="frame-label">Color overlay</span><span class="frame-glyph">Photo</span></div>
+            <div class="frame imagery-frame"><span class="frame-label">Untreated (reference)</span><span class="frame-glyph">Photo</span></div>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Video Production Standards</div>
+          <div class="frame video-frame">
+            <span class="frame-label">Video — 16:9</span>
+            <span class="frame-glyph">Video</span>
+            <span class="lower-third">Lower third — Name / Title</span>
+          </div>
+          <div class="editorial-list" style="margin-top:16px">
+            <div class="editorial-row"><span class="k">Motion graphics</span><span class="v">[approved easing, speed, brand motifs]</span></div>
+            <div class="editorial-row"><span class="k">Lower-third overlays</span><span class="v">[position, duration, typography]</span></div>
+            <div class="editorial-row"><span class="k">Intro / outro bumpers</span><span class="v">[length, logo animation, sound cue]</span></div>
+            <div class="editorial-row"><span class="k">Title card style</span><span class="v">[layout, background, hold duration]</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ GRAPHICAL ASSETS & UI ============ -->
+    <section class="module" id="graphics">
+      <div class="module-head">
+        <div>
+          <div class="module-num">07</div>
+          <h2>Graphical Assets &amp; UI Elements</h2>
+        </div>
+        <span class="badge badge--optional">Optional</span>
+      </div>
+      <p class="module-dek">The visual vocabulary beyond the logo itself — icons, illustration, interface components, and the surface treatments that tie them together.</p>
+
+      <div class="module-body">
+        <div class="field-block">
+          <div class="field-label">Iconography Library — style and stroke weight standards</div>
+          <div class="icon-style-row">
+            <div class="icon-style-card"><div class="icon-shape line"></div><div class="label">Line art</div></div>
+            <div class="icon-style-card"><div class="icon-shape solid"></div><div class="label">Solid glyph</div></div>
+            <div class="icon-style-card"><div class="icon-shape dual"></div><div class="label">Dual-tone</div></div>
+          </div>
+          <div class="type-specs" style="margin-top:18px">
+            <div class="spec-row"><span class="spec-k">Stroke weight</span><span class="spec-v static">[1.5–2px]</span></div>
+            <div class="spec-row"><span class="spec-k">Corner style</span><span class="spec-v static">[rounded / sharp]</span></div>
+            <div class="spec-row"><span class="spec-k">Keyline grid</span><span class="spec-v static">[24px]</span></div>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Illustrations &amp; 3D Assets</div>
+          <div class="editorial-list">
+            <div class="editorial-row"><span class="k">Illustration style</span><span class="v">[flat, isometric, hand-drawn]</span></div>
+            <div class="editorial-row"><span class="k">Character models</span><span class="v">[proportions, diversity, approved poses]</span></div>
+            <div class="editorial-row"><span class="k">Rendering guidelines</span><span class="v">[lighting, materials, render engine]</span></div>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">UI Components &amp; Design System — web and app rules</div>
+          <div class="ui-kit-grid">
+            <div class="ui-kit-card">
+              <div class="ui-kit-label">Buttons</div>
+              <button type="button" class="demo-btn primary">Primary</button>
+              <button type="button" class="demo-btn secondary">Secondary</button>
+              <button type="button" class="demo-btn accent">Accent</button>
+            </div>
+            <div class="ui-kit-card">
+              <div class="ui-kit-label">Form field</div>
+              <input class="demo-input" type="text" placeholder="[placeholder text]" disabled>
+            </div>
+            <div class="ui-kit-card">
+              <div class="ui-kit-label">Badges</div>
+              <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                <span class="badge badge--core">Active</span>
+                <span class="badge badge--optional">Pending</span>
+                <span class="wcag-badge pass">Success</span>
+                <span class="wcag-badge caution">Warning</span>
+              </div>
+            </div>
+            <div class="ui-kit-card">
+              <div class="ui-kit-label">Divider</div>
+              <hr class="demo-divider">
+            </div>
+            <div class="ui-kit-card">
+              <div class="ui-kit-label">Card container</div>
+              <div class="demo-card">Card content sits here, on [border-radius] with [shadow depth].</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Patterns, Textures &amp; Gradients — backgrounds and vector accent overlays</div>
+          <div class="pattern-row">
+            <div class="frame pattern-frame stripes"><span class="frame-label">Stripe</span></div>
+            <div class="frame pattern-frame dots"><span class="frame-label">Dot grid</span></div>
+            <div class="frame pattern-frame wash"><span class="frame-label">Gradient wash</span></div>
+            <div class="frame pattern-frame geo"><span class="frame-label">Geometric accent</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PRINT & PHYSICAL APPLICATIONS ============ -->
+    <section class="module" id="print-physical">
+      <div class="module-head">
+        <div>
+          <div class="module-num">08</div>
+          <h2>Print &amp; Physical Applications</h2>
+        </div>
+        <span class="badge badge--optional">Optional</span>
+      </div>
+      <p class="module-dek">Everything the brand touches off-screen — stationery, marketing materials, packaged goods, and the spaces it occupies in the physical world.</p>
+
+      <div class="module-body">
+        <div class="field-block">
+          <div class="field-label">Corporate Stationery — business card layouts, letterhead templates, and envelope configurations</div>
+          <div class="print-row">
+            <div class="frame letterhead-frame"><span class="frame-glyph">A4</span><span class="frame-dim">210×297mm</span></div>
+            <div class="frame bizcard-frame"><span class="frame-label">Front</span><span class="frame-glyph">Card</span></div>
+            <div class="frame bizcard-frame"><span class="frame-label">Back</span><span class="frame-glyph">Card</span></div>
+            <div class="frame envelope-frame"><span class="frame-glyph">DL</span><span class="frame-dim">220×110mm</span></div>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Marketing Collateral — layout grid frameworks for brochures, flyers, datasheets, and presentation folders</div>
+          <div class="print-row">
+            <div class="frame brochure-frame"><span class="frame-label">Tri-fold brochure</span><span class="frame-dim">297×210mm</span></div>
+            <div class="frame flyer-frame"><span class="frame-label">Flyer</span><span class="frame-dim">A5</span></div>
+            <div class="frame datasheet-frame"><span class="frame-label">Datasheet</span><span class="frame-dim">Letter</span></div>
+            <div class="frame folder-frame"><span class="frame-label">Presentation folder</span><span class="frame-dim">9×12in</span></div>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Packaging &amp; Merchandise — product packaging, labels, apparel, and promotional swag</div>
+          <div class="print-row" style="margin-bottom:14px">
+            <div class="frame package-frame"><span class="frame-label">Packaging</span><span class="frame-glyph">Box</span></div>
+            <div class="frame label-frame"><span class="frame-label">Product label</span></div>
+          </div>
+          <div class="merch-row">
+            <div class="frame merch-frame tee"><span class="frame-label">T-shirt</span><span class="frame-glyph">◇</span></div>
+            <div class="frame merch-frame cap"><span class="frame-label">Cap</span><span class="frame-glyph">◇</span></div>
+            <div class="frame merch-frame tote"><span class="frame-label">Tote bag</span><span class="frame-glyph">◇</span></div>
+            <div class="frame merch-frame mug"><span class="frame-label">Mug</span><span class="frame-glyph">◇</span></div>
+            <div class="frame merch-frame bottle"><span class="frame-label">Water bottle</span><span class="frame-glyph">◇</span></div>
+            <div class="frame merch-frame banner"><span class="frame-label">Banner</span><span class="frame-glyph">◇</span></div>
+            <div class="frame merch-frame pen"><span class="frame-label">Pen</span><span class="frame-glyph">◇</span></div>
+          </div>
+          <div class="type-chips">
+            <span class="trait-chip">Embroidery</span>
+            <span class="trait-chip">Screen printing</span>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Signage &amp; Spatial Design — exterior building signage, indoor office branding, trade show booths, and vehicle wraps</div>
+          <div class="print-row">
+            <div class="frame exterior-sign-frame"><span class="frame-label">Exterior signage</span><span class="frame-glyph">Sign</span></div>
+            <div class="frame office-brand-frame"><span class="frame-label">Indoor / office branding</span><span class="frame-glyph">Wall</span></div>
+            <div class="frame booth-frame"><span class="frame-label">Trade show — roll-up</span></div>
+            <div class="frame vehicle-frame"><span class="frame-label">Vehicle wrap</span><span class="frame-glyph">Wrap</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ DIGITAL & TEMPLATE ASSETS ============ -->
+    <section class="module" id="digital-template">
+      <div class="module-head">
+        <div>
+          <div class="module-num">09</div>
+          <h2>Digital &amp; Template Assets</h2>
+        </div>
+        <span class="badge badge--optional">Optional</span>
+      </div>
+      <p class="module-dek">Every recurring digital surface the brand fills in — product screens, the site, paid placements, social, and the everyday documents staff send out.</p>
+
+      <div class="module-body">
+        <div class="field-block">
+          <div class="field-label">App Templates — screen frames across device sizes</div>
+          <div class="device-row">
+            <div class="frame device-frame phone"><span class="frame-label">Phone</span><span class="frame-glyph">◇</span></div>
+            <div class="frame device-frame tablet"><span class="frame-label">Tablet</span><span class="frame-glyph">◇</span></div>
+            <div class="frame device-frame desktop"><span class="frame-label">Desktop</span><span class="frame-glyph">◇</span></div>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Web Templates — site frames in light and dark mode</div>
+          <div class="theme-pair">
+            <div class="browser-shell">
+              <div class="browser-chrome"><span></span><span></span><span></span></div>
+              <div class="frame"><span class="frame-label">Light mode</span><span class="frame-glyph">Site</span></div>
+            </div>
+            <div class="browser-shell dark-demo">
+              <div class="browser-chrome"><span></span><span></span><span></span></div>
+              <div class="frame"><span class="frame-label">Dark mode</span><span class="frame-glyph">Site</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Online Ads — standard IAB banner sizes</div>
+          <div class="ad-row">
+            <div class="frame ad-frame leaderboard"><span class="frame-glyph">Leaderboard</span><span class="frame-dim">728×90</span></div>
+            <div class="frame ad-frame mpu"><span class="frame-glyph">MPU</span><span class="frame-dim">300×250</span></div>
+            <div class="frame ad-frame square"><span class="frame-glyph">Square</span><span class="frame-dim">250×250</span></div>
+            <div class="frame ad-frame skyscraper"><span class="frame-glyph" style="writing-mode:vertical-rl">Skyscraper</span><span class="frame-dim">160×600</span></div>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Social Media Kit — grid layouts, profile templates, banner dimensions, and story overlays</div>
+          <div class="print-row">
+            <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+              <div class="frame avatar-frame"><span class="frame-glyph">◆</span></div>
+              <span style="font-size:0.76rem; color:var(--ink-dim);">Profile picture</span>
+            </div>
+            <div class="frame label-frame"><span class="frame-label">Cover / banner</span></div>
+            <div class="frame package-frame"><span class="frame-label">Post grid</span><span class="frame-glyph">1:1</span></div>
+            <div class="frame story-frame"><span class="frame-label">Story</span><div class="story-safezone"></div></div>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Email Marketing &amp; Signatures — HTML newsletter structure and staff signatures</div>
+          <div class="print-row">
+            <div class="frame newsletter-frame">
+              <span class="frame-label">Newsletter</span>
+              <div class="wireframe-block header"></div>
+              <div class="wireframe-block hero"></div>
+              <div class="wireframe-block copy"></div>
+              <div class="wireframe-block copy"></div>
+              <div class="wireframe-block cta"></div>
+              <div class="wireframe-block footer"></div>
+            </div>
+            <div class="frame signature-frame">
+              <span class="frame-label">Signature</span>
+              <div class="mark"></div>
+              <div class="lines"><span style="width:70%"></span><span style="width:50%"></span><span style="width:60%"></span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Presentation Decks — master slide standards for PowerPoint, Keynote, or Google Slides</div>
+          <div class="print-row">
+            <div class="frame slide-frame title"><span class="frame-label">Title slide</span><span class="frame-glyph">16:9</span></div>
+            <div class="frame slide-frame content">
+              <span class="frame-label">Content slide</span>
+              <div class="wireframe-block head"></div>
+              <div class="wireframe-block line" style="width:82%"></div>
+              <div class="wireframe-block line" style="width:70%"></div>
+              <div class="wireframe-block line" style="width:75%"></div>
+            </div>
+            <div class="frame slide-frame divider"><span class="frame-label">Section divider</span><span class="frame-glyph">16:9</span></div>
+          </div>
+          <div class="type-specs" style="margin-top:14px">
+            <div class="spec-row"><span class="spec-k">Aspect ratio</span><span class="spec-v static">[16:9 widescreen]</span></div>
+            <div class="spec-row"><span class="spec-k">Safe margin</span><span class="spec-v static">[5% edge padding]</span></div>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Document Templates — invoice layouts, proposal frameworks, and technical report sheets</div>
+          <div class="print-row">
+            <div class="frame letterhead-frame"><span class="frame-label">Invoice</span><span class="frame-glyph">Doc</span></div>
+            <div class="frame letterhead-frame"><span class="frame-label">Proposal</span><span class="frame-glyph">Doc</span></div>
+            <div class="frame letterhead-frame"><span class="frame-label">Technical report</span><span class="frame-glyph">Doc</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      Master template — duplicate per client, keep core modules 03–05, scope 01–02 and 06–09 as needed. <span class="mono">Rev. 01</span>
+    </footer>
+  </main>
+</div>
+
+<script>
+(function () {
+  try {
+    document.querySelectorAll('button.copy').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var val = btn.getAttribute('data-copy');
+        navigator.clipboard.writeText(val).then(function () {
+          var original = btn.textContent;
+          btn.textContent = 'Copied';
+          setTimeout(function () { btn.textContent = original; }, 1200);
+        }).catch(function () {});
+      });
+    });
+  } catch (e) {}
+
+  try {
+    var navToggle = document.querySelector('.nav-toggle');
+    var navClose = document.querySelector('.nav-close');
+    var navEl = document.querySelector('.nav');
+    var navBackdrop = document.querySelector('.nav-backdrop');
+
+    function openNav() {
+      navEl.classList.add('is-open');
+      navBackdrop.classList.add('is-open');
+      navToggle.setAttribute('aria-expanded', 'true');
+      document.documentElement.classList.add('nav-locked');
+    }
+    function closeNav() {
+      navEl.classList.remove('is-open');
+      navBackdrop.classList.remove('is-open');
+      navToggle.setAttribute('aria-expanded', 'false');
+      document.documentElement.classList.remove('nav-locked');
+    }
+
+    if (navToggle && navEl && navBackdrop) {
+      navToggle.addEventListener('click', openNav);
+      navClose.addEventListener('click', closeNav);
+      navBackdrop.addEventListener('click', closeNav);
+      navEl.querySelectorAll('.nav-link').forEach(function (link) {
+        link.addEventListener('click', closeNav);
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeNav();
+      });
+      window.addEventListener('resize', function () {
+        if (window.innerWidth > 880) closeNav();
+      });
+    }
+  } catch (e) {}
+
+  try {
+    document.querySelectorAll('.format-tabs').forEach(function (tabs) {
+      var wrap = tabs.parentElement;
+      var panels = wrap.querySelectorAll('.format-panel');
+      tabs.querySelectorAll('.format-tab-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var target = btn.getAttribute('data-format-tab');
+          tabs.querySelectorAll('.format-tab-btn').forEach(function (b) {
+            var active = b === btn;
+            b.classList.toggle('is-active', active);
+            b.setAttribute('aria-selected', active ? 'true' : 'false');
+          });
+          panels.forEach(function (p) {
+            p.hidden = p.getAttribute('data-format-panel') !== target;
+          });
+        });
+      });
+    });
+  } catch (e) {}
+
+  try {
+    document.querySelectorAll('.color-tabs').forEach(function (tabs) {
+      var wrap = tabs.parentElement;
+      var panels = wrap.querySelectorAll('.color-panel');
+      tabs.querySelectorAll('.color-tab-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var target = btn.getAttribute('data-color-tab');
+          tabs.querySelectorAll('.color-tab-btn').forEach(function (b) {
+            var active = b === btn;
+            b.classList.toggle('is-active', active);
+            b.setAttribute('aria-selected', active ? 'true' : 'false');
+          });
+          panels.forEach(function (p) {
+            p.hidden = p.getAttribute('data-color-panel') !== target;
+          });
+        });
+      });
+    });
+  } catch (e) {}
+
+  try {
+    document.querySelectorAll('.mode-toggle').forEach(function (group) {
+      var block = group.closest('.field-block');
+      var preview = block ? block.querySelector('.color-preview') : null;
+      if (!preview) return;
+      group.querySelectorAll('.mode-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          preview.setAttribute('data-mode', btn.getAttribute('data-mode-btn'));
+          group.querySelectorAll('.mode-btn').forEach(function (b) {
+            b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+          });
+        });
+      });
+    });
+  } catch (e) {}
+
+  try {
+    var links = Array.prototype.slice.call(document.querySelectorAll('[data-nav]'));
+    var sections = links.map(function (l) { return document.querySelector(l.getAttribute('href')); });
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var idx = sections.indexOf(entry.target);
+        if (idx === -1) return;
+        if (entry.isIntersecting) {
+          links.forEach(function (l) { l.classList.remove('is-active'); });
+          links[idx].classList.add('is-active');
+        }
+      });
+    }, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
+    sections.forEach(function (s) { if (s) observer.observe(s); });
+  } catch (e) {}
+})();
+</script>

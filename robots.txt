@@ -5,6 +5,7 @@ User-agent: *
 Allow: /
 Disallow: /basecamp.html
 Disallow: /infra.html
+Disallow: /Brand-Specification-Book-TEMPLATE.html
 
 # Sitemap location
 Sitemap: https://www.ferventdigital.co.za/sitemap.xml
