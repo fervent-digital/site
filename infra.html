@@ -255,7 +255,7 @@
     line-height: 0.94;
   }
   .cover-logo { margin-bottom: 4px; }
-  .cover-logo img { display: block; height: clamp(2.4rem, 6.5vw, 4rem); width: auto; }
+  .cover-logo img { display: block; height: clamp(3.4rem, 9.5vw, 6.2rem); width: auto; }
   .cover-logo-dark { display: none; }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) .cover-logo-light { display: none; }
@@ -380,6 +380,54 @@
   }
   .download-all-btn:hover { opacity: 0.85; }
   .download-all-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .format-tabs { display: flex; flex-wrap: wrap; gap: 2px; border: 1px solid var(--line); border-radius: 999px; padding: 3px; width: fit-content; margin-bottom: 22px; }
+  .format-tab-btn { all: unset; cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.05em; text-transform: uppercase; padding: 7px 16px; border-radius: 999px; color: var(--ink-faint); }
+  .format-tab-btn.is-active { background: var(--core-bg); color: var(--core-ink); }
+  .format-tab-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .format-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; }
+  .format-card { position: relative; aspect-ratio: 4/3; border: 1.5px dashed var(--line); border-radius: 4px; background: var(--surface); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .format-card .frame-logo-img { max-width: 74%; max-height: 60%; object-fit: contain; }
+  .format-card-label { position: absolute; top: 8px; left: 10px; font-family: 'IBM Plex Mono', monospace; font-size: 0.66rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint); }
+  a.format-card { text-decoration: none; cursor: pointer; transition: border-color 0.15s; }
+  a.format-card:hover { border-color: var(--accent); }
+  a.format-card:hover .format-card-label { color: var(--accent); }
+  a.format-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .format-card-sizes {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    gap: 6px;
+    padding: 14px;
+    background: rgba(241,241,234,0.96);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease;
+  }
+  :root:not([data-theme="light"]) .format-card-sizes { background: rgba(23,24,26,0.94); }
+  :root[data-theme="dark"] .format-card-sizes { background: rgba(23,24,26,0.94); }
+  .format-card:hover .format-card-sizes,
+  .format-card:focus-within .format-card-sizes { opacity: 1; pointer-events: auto; }
+  .format-card-sizes a {
+    text-decoration: none;
+    text-align: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ink);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 7px 8px;
+  }
+  .format-card-sizes a:hover { border-color: var(--accent); color: var(--accent); }
+  .format-card-sizes a:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
   .clearspace-frame { aspect-ratio: 3/1; max-width: 480px; }
   .clearspace-frame .frame-glyph { border: 1px dashed var(--accent); padding: 18px 26px; color: var(--ink-faint); }
   .frame-logo-img { max-width: 78%; max-height: 68%; width: auto; height: auto; object-fit: contain; }
@@ -1059,17 +1107,129 @@
       <a class="download-all-btn" href="basecamp/infra/Logo Suite/Infra-Logo-Files.zip" download style="margin-top:18px;">⬇ Download All Logo Files (.zip)</a>
 
       <div class="module-body">
-        <div class="field-value placeholder" style="max-width:none; margin-bottom:18px;">[interim wordmark-only lockups — the icon (fig with network nodes) is still in progress and will be added once final. Stacked, Icon/Mark, and both tagline lockups stay placeholder until then.]</div>
-        <div class="field-value placeholder" style="max-width:none; margin-bottom:14px;">[frames marked "SVG ↓" are clickable — they download that exact lockup instantly]</div>
-        <div class="logo-grid">
-          <a class="frame" href="basecamp/infra/Logo Suite/infra-name-logo-black-2toned-svg.zip" download><span class="frame-label">Primary / Linear</span><img class="frame-logo-img" src="basecamp/infra/Logo Suite/infra-name-logo-black-2toned.svg" alt="Infra logo, two-tone, primary lockup"><span class="frame-dim">SVG.zip ↓</span></a>
-          <div class="frame"><span class="frame-label">Stacked</span><span class="frame-glyph">Logo</span></div>
-          <div class="frame"><span class="frame-label">Icon / Mark</span><span class="frame-glyph">◆</span></div>
-          <div class="frame"><span class="frame-label">Linear + Tagline</span><span class="frame-glyph">Logo</span></div>
-          <div class="frame"><span class="frame-label">Stacked + Tagline</span><span class="frame-glyph">Logo</span></div>
-          <a class="frame" href="basecamp/infra/Logo Suite/infra-name-logo-black-svg.zip" download><span class="frame-label">Logotype Only</span><img class="frame-logo-img" src="basecamp/infra/Logo Suite/infra-name-logo-black.svg" alt="Infra logotype, black"><span class="frame-dim">SVG.zip ↓</span></a>
-          <a class="frame" href="basecamp/infra/Logo Suite/infra-name-logo-white-svg.zip" download style="background:#1F142E"><span class="frame-label" style="color:#F1F0E9">Reversed (on dark)</span><img class="frame-logo-img" src="basecamp/infra/Logo Suite/infra-name-logo-white.svg" alt="Infra logo, white, reversed for dark backgrounds"><span class="frame-dim" style="color:#F1F0E9">SVG.zip ↓</span></a>
-          <a class="frame" href="basecamp/infra/Logo Suite/infra-name-logo-black-svg.zip" download><span class="frame-label">Single Color / Black</span><img class="frame-logo-img" src="basecamp/infra/Logo Suite/infra-name-logo-black.svg" alt="Infra logo, single colour black"><span class="frame-dim">SVG.zip ↓</span></a>
+        <div class="field-block">
+          <div class="field-label">Logo Files — every lockup, every format</div>
+          <div class="field-value placeholder" style="max-width:none; margin-bottom:14px;">[Main Suite shows every approved lockup — click a frame marked "SVG.zip ↓" to download it instantly. AI, EPS &amp; SVG also download instantly on click. PNG &amp; JPG — hover a card to choose 500px, 2000px, or both sizes.]</div>
+          <div class="format-tabs" role="tablist" aria-label="Logo file view">
+            <button type="button" class="format-tab-btn is-active" data-format-tab="main" aria-selected="true">Main Suite</button>
+            <button type="button" class="format-tab-btn" data-format-tab="ai" aria-selected="false">AI</button>
+            <button type="button" class="format-tab-btn" data-format-tab="eps" aria-selected="false">EPS</button>
+            <button type="button" class="format-tab-btn" data-format-tab="svg" aria-selected="false">SVG</button>
+            <button type="button" class="format-tab-btn" data-format-tab="png" aria-selected="false">PNG</button>
+            <button type="button" class="format-tab-btn" data-format-tab="jpg" aria-selected="false">JPG</button>
+          </div>
+
+          <div class="format-panel" data-format-panel="main">
+            <div class="field-value placeholder" style="max-width:none; margin-bottom:18px;">[interim wordmark-only lockups — the icon (fig with network nodes) is still in progress and will be added once final. Stacked, Icon/Mark, and both tagline lockups stay placeholder until then.]</div>
+            <div class="logo-grid">
+              <a class="frame" href="basecamp/infra/Logo Suite/infra-name-logo-black-2toned-svg.zip" download><span class="frame-label">Primary / Linear</span><img class="frame-logo-img" src="basecamp/infra/Logo Suite/infra-name-logo-black-2toned.svg" alt="Infra logo, two-tone, primary lockup"><span class="frame-dim">SVG.zip ↓</span></a>
+              <div class="frame"><span class="frame-label">Stacked</span><span class="frame-glyph">Logo</span></div>
+              <div class="frame"><span class="frame-label">Icon / Mark</span><span class="frame-glyph">◆</span></div>
+              <div class="frame"><span class="frame-label">Linear + Tagline</span><span class="frame-glyph">Logo</span></div>
+              <div class="frame"><span class="frame-label">Stacked + Tagline</span><span class="frame-glyph">Logo</span></div>
+              <a class="frame" href="basecamp/infra/Logo Suite/infra-name-logo-black-svg.zip" download><span class="frame-label">Logotype Only</span><img class="frame-logo-img" src="basecamp/infra/Logo Suite/infra-name-logo-black.svg" alt="Infra logotype, black"><span class="frame-dim">SVG.zip ↓</span></a>
+              <a class="frame" href="basecamp/infra/Logo Suite/infra-name-logo-white-svg.zip" download style="background:#1F142E"><span class="frame-label" style="color:#F1F0E9">Reversed (on dark)</span><img class="frame-logo-img" src="basecamp/infra/Logo Suite/infra-name-logo-white.svg" alt="Infra logo, white, reversed for dark backgrounds"><span class="frame-dim" style="color:#F1F0E9">SVG.zip ↓</span></a>
+              <a class="frame" href="basecamp/infra/Logo Suite/infra-name-logo-black-svg.zip" download><span class="frame-label">Single Color / Black</span><img class="frame-logo-img" src="basecamp/infra/Logo Suite/infra-name-logo-black.svg" alt="Infra logo, single colour black"><span class="frame-dim">SVG.zip ↓</span></a>
+            </div>
+          </div>
+
+          <div class="format-panel" data-format-panel="ai" hidden>
+            <a class="download-all-btn" href="basecamp/infra/Logo Suite/infra-name-logo-all-ai.zip" download style="margin-bottom:18px;">⬇ Download All .AI Files (.zip)</a>
+            <div class="format-grid">
+              <a class="format-card" href="basecamp/infra/Logo Suite/infra-name-logo-black-ai.zip" download><span class="format-card-label">Black</span><img class="frame-logo-img" src="basecamp/infra/Logo Suite/infra-name-logo-black.svg" alt="Black logo, AI"></a>
+              <a class="format-card" href="basecamp/infra/Logo Suite/infra-name-logo-white-ai.zip" download style="background:#1F142E"><span class="format-card-label" style="color:#F1F0E9">White</span><img class="frame-logo-img" src="basecamp/infra/Logo Suite/infra-name-logo-white.svg" alt="White logo, AI"></a>
+              <a class="format-card" href="basecamp/infra/Logo Suite/infra-name-logo-black-2toned-ai.zip" download><span class="format-card-label">Black (2-Tone)</span><img class="frame-logo-img" src="basecamp/infra/Logo Suite/infra-name-logo-black-2toned.svg" alt="Black two-tone logo, AI"></a>
+              <a class="format-card" href="basecamp/infra/Logo Suite/infra-name-logo-white-2toned-ai.zip" download style="background:#1F142E"><span class="format-card-label" style="color:#F1F0E9">White (2-Tone)</span><img class="frame-logo-img" src="basecamp/infra/Logo Suite/infra-name-logo-white-2toned.svg" alt="White two-tone logo, AI"></a>
+            </div>
+          </div>
+
+          <div class="format-panel" data-format-panel="eps" hidden>
+            <a class="download-all-btn" href="basecamp/infra/Logo Suite/infra-name-logo-all-eps.zip" download style="margin-bottom:18px;">⬇ Download All .EPS Files (.zip)</a>
+            <div class="format-grid">
+              <a class="format-card" href="basecamp/infra/Logo Suite/infra-name-logo-black-eps.zip" download><span class="format-card-label">Black</span><img class="frame-logo-img" src="basecamp/infra/Logo Suite/infra-name-logo-black.svg" alt="Black logo, EPS"></a>
+              <a class="format-card" href="basecamp/infra/Logo Suite/infra-name-logo-white-eps.zip" download style="background:#1F142E"><span class="format-card-label" style="color:#F1F0E9">White</span><img class="frame-logo-img" src="basecamp/infra/Logo Suite/infra-name-logo-white.svg" alt="White logo, EPS"></a>
+              <a class="format-card" href="basecamp/infra/Logo Suite/infra-name-logo-black-2toned-eps.zip" download><span class="format-card-label">Black (2-Tone)</span><img class="frame-logo-img" src="basecamp/infra/Logo Suite/infra-name-logo-black-2toned.svg" alt="Black two-tone logo, EPS"></a>
+              <a class="format-card" href="basecamp/infra/Logo Suite/infra-name-logo-white-2toned-eps.zip" download style="background:#1F142E"><span class="format-card-label" style="color:#F1F0E9">White (2-Tone)</span><img class="frame-logo-img" src="basecamp/infra/Logo Suite/infra-name-logo-white-2toned.svg" alt="White two-tone logo, EPS"></a>
+            </div>
+          </div>
+
+          <div class="format-panel" data-format-panel="svg" hidden>
+            <a class="download-all-btn" href="basecamp/infra/Logo Suite/infra-name-logo-all-svg.zip" download style="margin-bottom:18px;">⬇ Download All .SVG Files (.zip)</a>
+            <div class="format-grid">
+              <a class="format-card" href="basecamp/infra/Logo Suite/infra-name-logo-black-svg.zip" download><span class="format-card-label">Black</span><img class="frame-logo-img" src="basecamp/infra/Logo Suite/infra-name-logo-black.svg" alt="Black logo, SVG"></a>
+              <a class="format-card" href="basecamp/infra/Logo Suite/infra-name-logo-white-svg.zip" download style="background:#1F142E"><span class="format-card-label" style="color:#F1F0E9">White</span><img class="frame-logo-img" src="basecamp/infra/Logo Suite/infra-name-logo-white.svg" alt="White logo, SVG"></a>
+              <a class="format-card" href="basecamp/infra/Logo Suite/infra-name-logo-black-2toned-svg.zip" download><span class="format-card-label">Black (2-Tone)</span><img class="frame-logo-img" src="basecamp/infra/Logo Suite/infra-name-logo-black-2toned.svg" alt="Black two-tone logo, SVG"></a>
+              <a class="format-card" href="basecamp/infra/Logo Suite/infra-name-logo-white-2toned-svg.zip" download style="background:#1F142E"><span class="format-card-label" style="color:#F1F0E9">White (2-Tone)</span><img class="frame-logo-img" src="basecamp/infra/Logo Suite/infra-name-logo-white-2toned.svg" alt="White two-tone logo, SVG"></a>
+            </div>
+          </div>
+
+          <div class="format-panel" data-format-panel="png" hidden>
+            <a class="download-all-btn" href="basecamp/infra/Logo Suite/infra-name-logo-all-png.zip" download style="margin-bottom:18px;">⬇ Download All .PNG Files (.zip)</a>
+            <div class="format-grid">
+              <div class="format-card"><span class="format-card-label">Black</span><img class="frame-logo-img" src="basecamp/infra/Logo Suite/infra-name-logo-black.svg" alt="Black logo, PNG">
+                <div class="format-card-sizes">
+                  <a href="basecamp/infra/Logo Suite/infra-name-logo-black-png-500.zip" download>500px ↓</a>
+                  <a href="basecamp/infra/Logo Suite/infra-name-logo-black-png-2000.zip" download>2000px ↓</a>
+                  <a href="basecamp/infra/Logo Suite/infra-name-logo-black-png-both.zip" download>Both sizes ↓</a>
+                </div>
+              </div>
+              <div class="format-card" style="background:#1F142E"><span class="format-card-label" style="color:#F1F0E9">White</span><img class="frame-logo-img" src="basecamp/infra/Logo Suite/infra-name-logo-white.svg" alt="White logo, PNG">
+                <div class="format-card-sizes">
+                  <a href="basecamp/infra/Logo Suite/infra-name-logo-white-png-500.zip" download>500px ↓</a>
+                  <a href="basecamp/infra/Logo Suite/infra-name-logo-white-png-2000.zip" download>2000px ↓</a>
+                  <a href="basecamp/infra/Logo Suite/infra-name-logo-white-png-both.zip" download>Both sizes ↓</a>
+                </div>
+              </div>
+              <div class="format-card"><span class="format-card-label">Black (2-Tone)</span><img class="frame-logo-img" src="basecamp/infra/Logo Suite/infra-name-logo-black-2toned.svg" alt="Black two-tone logo, PNG">
+                <div class="format-card-sizes">
+                  <a href="basecamp/infra/Logo Suite/infra-name-logo-black-2toned-png-500.zip" download>500px ↓</a>
+                  <a href="basecamp/infra/Logo Suite/infra-name-logo-black-2toned-png-2000.zip" download>2000px ↓</a>
+                  <a href="basecamp/infra/Logo Suite/infra-name-logo-black-2toned-png-both.zip" download>Both sizes ↓</a>
+                </div>
+              </div>
+              <div class="format-card" style="background:#1F142E"><span class="format-card-label" style="color:#F1F0E9">White (2-Tone)</span><img class="frame-logo-img" src="basecamp/infra/Logo Suite/infra-name-logo-white-2toned.svg" alt="White two-tone logo, PNG">
+                <div class="format-card-sizes">
+                  <a href="basecamp/infra/Logo Suite/infra-name-logo-white-2toned-png-500.zip" download>500px ↓</a>
+                  <a href="basecamp/infra/Logo Suite/infra-name-logo-white-2toned-png-2000.zip" download>2000px ↓</a>
+                  <a href="basecamp/infra/Logo Suite/infra-name-logo-white-2toned-png-both.zip" download>Both sizes ↓</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="format-panel" data-format-panel="jpg" hidden>
+            <a class="download-all-btn" href="basecamp/infra/Logo Suite/infra-name-logo-all-jpg.zip" download style="margin-bottom:18px;">⬇ Download All .JPEG Files (.zip)</a>
+            <div class="format-grid">
+              <div class="format-card"><span class="format-card-label">Black</span><img class="frame-logo-img" src="basecamp/infra/Logo Suite/infra-name-logo-black.svg" alt="Black logo, JPG">
+                <div class="format-card-sizes">
+                  <a href="basecamp/infra/Logo Suite/infra-name-logo-black-jpg-500.zip" download>500px ↓</a>
+                  <a href="basecamp/infra/Logo Suite/infra-name-logo-black-jpg-2000.zip" download>2000px ↓</a>
+                  <a href="basecamp/infra/Logo Suite/infra-name-logo-black-jpg-both.zip" download>Both sizes ↓</a>
+                </div>
+              </div>
+              <div class="format-card" style="background:#1F142E"><span class="format-card-label" style="color:#F1F0E9">White</span><img class="frame-logo-img" src="basecamp/infra/Logo Suite/infra-name-logo-white.svg" alt="White logo, JPG">
+                <div class="format-card-sizes">
+                  <a href="basecamp/infra/Logo Suite/infra-name-logo-white-jpg-500.zip" download>500px ↓</a>
+                  <a href="basecamp/infra/Logo Suite/infra-name-logo-white-jpg-2000.zip" download>2000px ↓</a>
+                  <a href="basecamp/infra/Logo Suite/infra-name-logo-white-jpg-both.zip" download>Both sizes ↓</a>
+                </div>
+              </div>
+              <div class="format-card"><span class="format-card-label">Black (2-Tone)</span><img class="frame-logo-img" src="basecamp/infra/Logo Suite/infra-name-logo-black-2toned.svg" alt="Black two-tone logo, JPG">
+                <div class="format-card-sizes">
+                  <a href="basecamp/infra/Logo Suite/infra-name-logo-black-2toned-jpg-500.zip" download>500px ↓</a>
+                  <a href="basecamp/infra/Logo Suite/infra-name-logo-black-2toned-jpg-2000.zip" download>2000px ↓</a>
+                  <a href="basecamp/infra/Logo Suite/infra-name-logo-black-2toned-jpg-both.zip" download>Both sizes ↓</a>
+                </div>
+              </div>
+              <div class="format-card" style="background:#1F142E"><span class="format-card-label" style="color:#F1F0E9">White (2-Tone)</span><img class="frame-logo-img" src="basecamp/infra/Logo Suite/infra-name-logo-white-2toned.svg" alt="White two-tone logo, JPG">
+                <div class="format-card-sizes">
+                  <a href="basecamp/infra/Logo Suite/infra-name-logo-white-2toned-jpg-500.zip" download>500px ↓</a>
+                  <a href="basecamp/infra/Logo Suite/infra-name-logo-white-2toned-jpg-2000.zip" download>2000px ↓</a>
+                  <a href="basecamp/infra/Logo Suite/infra-name-logo-white-2toned-jpg-both.zip" download>Both sizes ↓</a>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div style="margin-top:28px">
@@ -2807,6 +2967,26 @@
         if (window.innerWidth > 880) closeNav();
       });
     }
+  } catch (e) {}
+
+  try {
+    document.querySelectorAll('.format-tabs').forEach(function (tabs) {
+      var wrap = tabs.parentElement;
+      var panels = wrap.querySelectorAll('.format-panel');
+      tabs.querySelectorAll('.format-tab-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var target = btn.getAttribute('data-format-tab');
+          tabs.querySelectorAll('.format-tab-btn').forEach(function (b) {
+            var active = b === btn;
+            b.classList.toggle('is-active', active);
+            b.setAttribute('aria-selected', active ? 'true' : 'false');
+          });
+          panels.forEach(function (p) {
+            p.hidden = p.getAttribute('data-format-panel') !== target;
+          });
+        });
+      });
+    });
   } catch (e) {}
 
   try {
