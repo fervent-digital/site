@@ -1,0 +1,2826 @@
+<title>Infra — Brand Specification Book</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@700;800;900&family=Barlow+Semi+Condensed:wght@500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: #F1F1EA;
+    --surface: #FFFFFF;
+    --surface-2: #E7E5DB;
+    --ink: #1B1D1B;
+    --ink-dim: #62645C;
+    --ink-faint: #8B8D84;
+    --line: #D7D4C6;
+    --accent: #D6431B;
+    --accent-ink: #FFFFFF;
+    --core-bg: #1B1D1B;
+    --core-ink: #F1F1EA;
+    --pass: #3F6E45;
+    --caution: #A8741F;
+    --fail: #B3261E;
+    --shadow: 0 1px 0 rgba(27,29,27,0.06);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #17181A;
+      --surface: #202225;
+      --surface-2: #2B2D2F;
+      --ink: #F1F0E9;
+      --ink-dim: #A6A79D;
+      --ink-faint: #757770;
+      --line: #37393A;
+      --accent: #FF6E42;
+      --accent-ink: #17181A;
+      --core-bg: #F1F0E9;
+      --core-ink: #17181A;
+      --pass: #7FBF83;
+      --caution: #E0A63E;
+      --fail: #FF6B5C;
+      --shadow: 0 1px 0 rgba(0,0,0,0.3);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #17181A;
+    --surface: #202225;
+    --surface-2: #2B2D2F;
+    --ink: #F1F0E9;
+    --ink-dim: #A6A79D;
+    --ink-faint: #757770;
+    --line: #37393A;
+    --accent: #FF6E42;
+    --accent-ink: #17181A;
+    --core-bg: #F1F0E9;
+    --core-ink: #17181A;
+    --pass: #7FBF83;
+    --caution: #E0A63E;
+    --fail: #FF6B5C;
+    --shadow: 0 1px 0 rgba(0,0,0,0.3);
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+  ::selection { background: var(--accent); color: var(--accent-ink); }
+
+  h1, h2, h3 {
+    font-family: 'Big Shoulders Display', 'Arial Narrow', sans-serif;
+    text-transform: uppercase;
+    text-wrap: balance;
+    margin: 0;
+    letter-spacing: 0.01em;
+  }
+
+  .mono {
+    font-family: 'IBM Plex Mono', ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35em;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.28em 0.6em;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+  .badge--core { background: var(--core-bg); color: var(--core-ink); }
+  .badge--optional { border: 1px solid var(--ink-faint); color: var(--ink-dim); }
+
+  /* ---------- shell ---------- */
+  .shell {
+    display: grid;
+    grid-template-columns: 260px minmax(0, 1fr);
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  @media (max-width: 880px) {
+    .shell { grid-template-columns: 1fr; }
+  }
+
+  .nav {
+    position: sticky;
+    top: 0;
+    align-self: start;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 28px 20px 40px;
+    border-right: 1px solid var(--line);
+    background: var(--bg);
+  }
+
+  .nav-toggle, .nav-backdrop, .nav-close { display: none; }
+
+  @media (max-width: 880px) {
+    .nav-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 80;
+      width: 42px;
+      height: 42px;
+      border-radius: 8px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      cursor: pointer;
+      gap: 4px;
+      flex-direction: column;
+    }
+    .nav-toggle span { display: block; width: 18px; height: 2px; background: var(--ink); border-radius: 1px; }
+    .nav-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+    .nav-backdrop {
+      display: block;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 70;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+    .nav-backdrop.is-open { opacity: 1; pointer-events: auto; }
+
+    .nav {
+      position: fixed;
+      inset: 0 auto 0 0;
+      width: min(320px, 86vw);
+      height: 100vh;
+      z-index: 75;
+      transform: translateX(-100%);
+      transition: transform 0.25s ease;
+      box-shadow: 4px 0 24px rgba(0,0,0,0.25);
+    }
+    .nav.is-open { transform: translateX(0); }
+
+    .nav-close {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      background: transparent;
+      border: 1px solid var(--line);
+      color: var(--ink-faint);
+      cursor: pointer;
+      font-size: 1rem;
+      line-height: 1;
+    }
+    .nav-close:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+    main { padding-top: 64px; }
+  }
+
+  html.nav-locked { overflow: hidden; }
+  .nav-brand {
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-weight: 800;
+    font-size: 1.35rem;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    margin-bottom: 2px;
+  }
+  .nav-sub { font-size: 0.78rem; color: var(--ink-dim); margin-bottom: 24px; }
+  .nav-group { margin-bottom: 22px; }
+  .nav-group-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 8px;
+  }
+  .nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    text-decoration: none;
+    color: var(--ink-dim);
+    font-size: 0.86rem;
+    padding: 6px 8px;
+    border-radius: 3px;
+    margin: 0 -8px;
+    transition: background 0.15s, color 0.15s;
+  }
+  .nav-link:hover { background: var(--surface-2); color: var(--ink); }
+  .nav-link.is-active { color: var(--ink); font-weight: 500; }
+  .nav-link.is-active .nav-tick { background: var(--accent); }
+  .nav-tick { width: 5px; height: 5px; border-radius: 50%; background: var(--line); flex-shrink: 0; }
+
+  /* ---------- main ---------- */
+  main { min-width: 0; }
+
+  .cover {
+    padding: 72px 56px 56px;
+    border-bottom: 1px solid var(--line);
+  }
+  @media (max-width: 640px) { .cover { padding: 48px 22px 36px; } }
+  .cover .eyebrow { margin-bottom: 18px; }
+  .cover h1 {
+    font-size: clamp(2.6rem, 7vw, 4.6rem);
+    font-weight: 900;
+    line-height: 0.94;
+  }
+  .cover .client-field {
+    font-family: 'IBM Plex Mono', monospace;
+    color: var(--ink-faint);
+  }
+  .cover-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    margin-top: 32px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+  }
+  .cover-meta div { font-size: 0.82rem; }
+  .cover-meta .eyebrow { margin-bottom: 4px; }
+
+  .howto {
+    margin: 40px 56px 0;
+    padding: 20px 24px;
+    background: var(--surface-2);
+    border-radius: 4px;
+    font-size: 0.88rem;
+    color: var(--ink-dim);
+  }
+  @media (max-width: 640px) { .howto { margin: 32px 22px 0; } }
+  .howto strong { color: var(--ink); }
+  .howto ul { margin: 10px 0 0; padding-left: 1.1em; }
+  .howto li { margin-bottom: 4px; }
+
+  section.module {
+    padding: 64px 56px;
+    border-bottom: 1px solid var(--line);
+    scroll-margin-top: 24px;
+  }
+  @media (max-width: 640px) { section.module { padding: 44px 22px; } }
+
+  .module-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+  .module-num {
+    font-family: 'IBM Plex Mono', monospace;
+    color: var(--ink-faint);
+    font-size: 0.8rem;
+  }
+  .module-head h2 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 800;
+    flex: 1 1 auto;
+  }
+  .module-dek {
+    max-width: 60ch;
+    color: var(--ink-dim);
+    margin-top: 10px;
+    font-size: 0.95rem;
+  }
+  .module-body { margin-top: 36px; }
+
+  /* ---------- generic placeholder frame ---------- */
+  .frame {
+    position: relative;
+    border: 1.5px dashed var(--line);
+    border-radius: 4px;
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink-faint);
+    overflow: hidden;
+  }
+  .frame-label {
+    position: absolute;
+    top: 8px;
+    left: 10px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .frame-dim {
+    position: absolute;
+    bottom: 8px;
+    right: 10px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.64rem;
+    color: var(--ink-faint);
+  }
+  .frame-glyph { font-family: 'Big Shoulders Display', sans-serif; font-weight: 700; font-size: 1.6rem; color: var(--ink-faint); text-transform: uppercase; }
+
+  /* ---------- logo grid ---------- */
+  .logo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; }
+  .logo-grid .frame { aspect-ratio: 4 / 3; }
+  .clearspace-frame { aspect-ratio: 3/1; max-width: 480px; }
+  .clearspace-frame .frame-glyph { border: 1px dashed var(--accent); padding: 18px 26px; color: var(--ink-faint); }
+  .frame-logo-img { max-width: 78%; max-height: 68%; width: auto; height: auto; object-fit: contain; }
+  .icon-row .frame-logo-img, .avatar-frame .frame-logo-img { max-width: 88%; max-height: 88%; }
+
+  .icon-row { display: flex; flex-wrap: wrap; gap: 16px; }
+  .app-icon-frame { width: 96px; aspect-ratio: 1/1; border-radius: 22%; }
+  .avatar-frame { width: 96px; aspect-ratio: 1/1; border-radius: 50%; }
+
+  .bgvar-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; }
+  .bgvar-frame { aspect-ratio: 1/1; max-width: 190px; border-style: solid; }
+  .bgvar-frame.on-light { background: #FFFFFF; }
+  .bgvar-frame.on-dark { background: #1B1D1B; }
+  .bgvar-frame.on-dark .frame-glyph, .bgvar-frame.on-dark .frame-label { color: #F1F0E9; }
+  .bgvar-frame.on-busy { background: repeating-linear-gradient(45deg, var(--surface-2), var(--surface-2) 9px, var(--line) 9px, var(--line) 18px); }
+
+  .dodont-frame.busy { background: repeating-linear-gradient(45deg, var(--surface-2), var(--surface-2) 9px, var(--line) 9px, var(--line) 18px); }
+  .dodont-frame.busy .glyph { color: var(--ink-dim); }
+  .dodont-frame img.glyph { max-width: 60%; max-height: 55%; object-fit: contain; }
+  .dodont-frame.shadow img.glyph { filter: drop-shadow(6px 8px 4px rgba(0,0,0,0.35)); }
+
+  .imagery-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; }
+  .imagery-frame { aspect-ratio: 4/3; }
+  .imagery-frame .frame-label, .imagery-frame .frame-glyph { color: #FFFFFF; text-shadow: 0 1px 3px rgba(0,0,0,0.45); }
+  .imagery-frame.duotone-a { background: linear-gradient(135deg, #1B1D1B, #D6431B); }
+  .imagery-frame.duotone-b { background: linear-gradient(135deg, #1B1D1B, #4E7C8A); }
+  .imagery-frame.overlay { background: linear-gradient(0deg, rgba(214,67,27,0.4), rgba(214,67,27,0.4)), var(--surface-2); }
+
+  .video-frame { aspect-ratio: 16/9; max-width: 340px; }
+  .lower-third { position: absolute; left: 0; bottom: 16%; background: var(--core-bg); color: var(--core-ink); padding: 6px 14px; font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; letter-spacing: 0.04em; text-transform: uppercase; max-width: 74%; }
+
+  /* ---------- graphical assets & ui ---------- */
+  .icon-style-row { display: flex; gap: 28px; flex-wrap: wrap; }
+  .icon-style-card { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .icon-style-card .label { font-size: 0.76rem; color: var(--ink-dim); }
+  .icon-shape { width: 44px; height: 44px; transform: rotate(45deg); border-radius: 6px; }
+  .icon-shape.line { border: 2.5px solid var(--ink); background: transparent; }
+  .icon-shape.solid { background: var(--ink); }
+  .icon-shape.dual { background: linear-gradient(90deg, var(--ink) 50%, var(--accent) 50%); }
+
+  .ui-kit-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+  .ui-kit-card { border: 1px solid var(--line); border-radius: 4px; padding: 18px; background: var(--surface); display: flex; flex-direction: column; gap: 12px; }
+  .ui-kit-label { font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-faint); font-family: 'IBM Plex Mono', monospace; }
+  .demo-btn { display: inline-flex; align-items: center; justify-content: center; padding: 9px 18px; border-radius: 4px; font-family: 'IBM Plex Sans', sans-serif; font-size: 0.84rem; font-weight: 600; width: fit-content; }
+  .demo-btn.primary { background: var(--core-bg); color: var(--core-ink); }
+  .demo-btn.secondary { background: transparent; border: 1.5px solid var(--ink); color: var(--ink); }
+  .demo-btn.accent { background: var(--accent); color: var(--accent-ink); }
+  .demo-input { border: 1px solid var(--line); border-radius: 4px; padding: 9px 12px; font-family: 'IBM Plex Sans', sans-serif; font-size: 0.84rem; color: var(--ink-faint); background: var(--surface); }
+  .demo-divider { border: none; border-top: 1px solid var(--line); margin: 0; }
+  .demo-card { border: 1px solid var(--line); border-radius: 6px; padding: 14px; box-shadow: var(--shadow); font-size: 0.8rem; color: var(--ink-dim); }
+
+  .pattern-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; }
+  .pattern-frame { aspect-ratio: 4/3; }
+  .pattern-frame.stripes { background: repeating-linear-gradient(45deg, var(--surface-2), var(--surface-2) 9px, var(--line) 9px, var(--line) 18px); }
+  .pattern-frame.dots { background-image: radial-gradient(var(--ink-faint) 1.5px, transparent 1.5px); background-size: 14px 14px; background-color: var(--surface); }
+  .pattern-frame.wash { background: linear-gradient(135deg, var(--accent), transparent 70%), var(--surface); }
+  .pattern-frame.geo { background: conic-gradient(from 45deg, var(--ink) 0deg 90deg, transparent 90deg 180deg, var(--accent) 180deg 270deg, transparent 270deg 360deg); }
+  .pattern-frame.wash .frame-label, .pattern-frame.geo .frame-label { color: #FFFFFF; text-shadow: 0 1px 3px rgba(0,0,0,0.45); }
+
+  /* ---------- color ---------- */
+  .swatch-set { margin-bottom: 30px; }
+  .swatch-set:last-child { margin-bottom: 0; }
+  .swatch-set-label { font-size: 0.9rem; font-weight: 600; margin-bottom: 12px; }
+  .swatch-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+  .swatch {
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+    background: var(--surface);
+  }
+  .swatch-color { height: 56px; }
+  .swatch-info { padding: 12px 12px 14px; }
+  .swatch-info .role { font-size: 0.78rem; font-weight: 600; margin-bottom: 6px; }
+  button.copy {
+    all: unset;
+    cursor: pointer;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.66rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  button.copy:hover { color: var(--accent); }
+  button.copy:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+
+  .spec-row { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; padding: 3px 0; }
+  .spec-k { font-family: 'IBM Plex Mono', monospace; font-size: 0.64rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint); flex-shrink: 0; }
+  .spec-v { font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem; color: var(--ink-dim); text-align: right; }
+  button.spec-v { all: unset; cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem; color: var(--ink-dim); text-align: right; }
+  button.spec-v:hover { color: var(--accent); }
+  button.spec-v:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+  .spec-v.static { font-style: italic; color: var(--ink-faint); }
+
+  .mode-toggle { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; padding: 2px; gap: 2px; }
+  .mode-btn { all: unset; cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 5px 14px; border-radius: 999px; color: var(--ink-faint); }
+  .mode-btn[aria-pressed="true"] { background: var(--core-bg); color: var(--core-ink); }
+  .mode-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .color-preview { padding: 22px; border-radius: 6px; border: 1px solid var(--line); background: var(--bg); margin-top: 14px; }
+  .color-preview[data-mode="light"] { --bg: #F1F1EA; --surface: #FFFFFF; --surface-2: #F1F1EA; --ink: #1B1D1B; --ink-dim: #62645C; --ink-faint: #8B8D84; --line: #D7D4C6; --core-bg: #1B1D1B; --core-ink: #F1F1EA; }
+  .color-preview[data-mode="dark"] { --bg: #17181A; --surface: #202225; --surface-2: #2B2D2F; --ink: #F1F0E9; --ink-dim: #A6A79D; --ink-faint: #757770; --line: #37393A; --core-bg: #F1F0E9; --core-ink: #17181A; }
+
+  .ratio-bar { display: flex; width: 100%; height: 28px; border-radius: 4px; overflow: hidden; border: 1px solid var(--line); }
+  .ratio-legend { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 12px; font-size: 0.82rem; color: var(--ink-dim); }
+  .ratio-item { display: flex; align-items: center; gap: 8px; }
+  .ratio-item .dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+  .wcag-badge { display: inline-flex; align-items: center; gap: 6px; font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; }
+  .wcag-badge::before { content: ''; width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+  .wcag-badge.pass { color: var(--pass); }
+  .wcag-badge.pass::before { background: var(--pass); }
+  .wcag-badge.caution { color: var(--caution); }
+  .wcag-badge.caution::before { background: var(--caution); }
+  .wcag-badge.fail { color: var(--fail); }
+  .wcag-badge.fail::before { background: var(--fail); }
+
+  .family-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 6px; }
+  .family-num { font-family: 'IBM Plex Mono', monospace; color: var(--accent); font-size: 0.8rem; flex-shrink: 0; }
+  .family-title { font-size: 0.95rem; font-weight: 600; }
+  .family-role { font-size: 0.78rem; color: var(--ink-faint); }
+  .family-desc { font-size: 0.86rem; color: var(--ink-dim); max-width: 62ch; margin: 0 0 16px; }
+
+  .tone-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+  .tone-chip { all: unset; cursor: pointer; display: flex; flex-direction: column; width: 84px; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; background: var(--surface); }
+  .tone-chip .sw { height: 38px; }
+  .tone-chip .lbl { font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem; text-align: center; padding: 4px 2px; color: var(--ink-faint); }
+  .tone-chip:hover .lbl { color: var(--accent); }
+  .tone-chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .tone-row-label { font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint); font-family: 'IBM Plex Mono', monospace; margin-top: 18px; margin-bottom: 4px; }
+
+  .color-tabs { display: flex; gap: 2px; border: 1px solid var(--line); border-radius: 999px; padding: 3px; width: fit-content; margin-bottom: 28px; }
+  .color-tab-btn { all: unset; cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.05em; text-transform: uppercase; padding: 7px 16px; border-radius: 999px; color: var(--ink-faint); }
+  .color-tab-btn.is-active { background: var(--core-bg); color: var(--core-ink); }
+  .color-tab-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .mode-demo { border-radius: 10px; padding: 28px; border: 1px solid var(--line); }
+  .mode-demo-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.6; margin-bottom: 16px; }
+  .token-list { display: flex; flex-direction: column; border: 1px solid var(--demo-border, currentColor); border-radius: 6px; overflow: hidden; }
+  .token-row { display: flex; align-items: center; gap: 14px; padding: 12px 16px; border-top: 1px solid var(--demo-border, currentColor); }
+  .token-row:first-child { border-top: none; }
+  .token-swatch { width: 34px; height: 34px; border-radius: 6px; flex-shrink: 0; border: 1px solid rgba(0,0,0,0.15); }
+  .token-role { flex: 0 0 168px; font-size: 0.86rem; font-weight: 600; }
+  .token-note { flex: 1; font-size: 0.78rem; opacity: 0.65; }
+  button.token-hex { all: unset; cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 0.82rem; font-weight: 500; flex-shrink: 0; }
+  button.token-hex:hover { opacity: 0.7; }
+  button.token-hex:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+  .token-ratio { font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; opacity: 0.55; flex-shrink: 0; width: 76px; text-align: right; }
+
+  /* ---------- typography ---------- */
+  .type-role { display: flex; flex-direction: column; gap: 4px; padding: 22px 0; border-top: 1px solid var(--line); }
+  .type-role:first-child { border-top: none; }
+  .type-role-meta { display: flex; justify-content: space-between; gap: 16px; align-items: baseline; }
+  .type-role-name { font-size: 0.78rem; color: var(--ink-faint); }
+  .type-role-spec { font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; color: var(--ink-faint); }
+  .type-sample-display { font-family: 'Big Shoulders Display', sans-serif; font-weight: 800; font-size: clamp(1.8rem, 5vw, 3.2rem); text-transform: uppercase; }
+  .type-sample-body { font-family: 'IBM Plex Sans', sans-serif; font-size: 1.05rem; max-width: 60ch; }
+  .type-sample-mono { font-family: 'IBM Plex Mono', monospace; font-size: 0.92rem; color: var(--ink-dim); }
+  .type-specs { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 2px 24px; margin-top: 14px; max-width: 560px; }
+  .type-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+
+  /* ---------- do / dont ---------- */
+  .dodont-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; }
+  .dodont-card { border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
+  .dodont-frame { aspect-ratio: 4/3; background: var(--surface-2); display: flex; align-items: center; justify-content: center; position: relative; }
+  .dodont-frame .glyph { font-family: 'Big Shoulders Display', sans-serif; font-weight: 700; font-size: 1.5rem; color: var(--ink-faint); text-transform: uppercase; }
+  .dodont-frame.stretch .glyph { transform: scaleX(1.8); }
+  .dodont-frame.shadow .glyph { text-shadow: 6px 8px 4px rgba(0,0,0,0.35); }
+  .dodont-frame.recolor .glyph { color: var(--accent); }
+  .dodont-frame.outline .glyph { -webkit-text-stroke: 1.5px var(--ink-faint); color: transparent; }
+  .dodont-frame.rotate .glyph { transform: rotate(-18deg); }
+  .dodont-frame.opacity .glyph { opacity: 0.28; }
+  .dodont-caption { padding: 9px 12px; font-size: 0.8rem; }
+  .dodont-caption b { color: var(--accent); }
+
+  /* ---------- strategy & voice ---------- */
+  .field-block { margin-bottom: 26px; }
+  .field-block:last-child { margin-bottom: 0; }
+  .field-label { font-size: 0.78rem; color: var(--ink-faint); margin-bottom: 8px; }
+  .field-value { font-size: 1rem; color: var(--ink-dim); max-width: 62ch; }
+  .field-value.placeholder { font-family: 'IBM Plex Mono', monospace; font-size: 0.88rem; }
+
+  .value-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; }
+  .value-card { border: 1px solid var(--line); border-radius: 4px; padding: 16px; background: var(--surface); }
+  .value-card .num { font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; color: var(--accent); margin-bottom: 8px; display: block; }
+  .value-card .name { font-family: 'Big Shoulders Display', sans-serif; font-weight: 700; text-transform: uppercase; font-size: 1.1rem; margin-bottom: 4px; }
+  .value-card .desc { font-size: 0.82rem; color: var(--ink-dim); }
+
+  .trait-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .trait-chip { border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px; font-size: 0.82rem; color: var(--ink-dim); }
+  .trait-chip.is-accent { border-color: var(--accent); color: var(--accent); }
+
+  .persona-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+  .persona-card { border: 1px solid var(--line); border-radius: 4px; padding: 18px; background: var(--surface); }
+  .persona-card .role { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; font-family: 'IBM Plex Mono', monospace; color: var(--ink-faint); margin-bottom: 6px; }
+  .persona-card .name { font-weight: 600; margin-bottom: 8px; }
+  .persona-card dl { margin: 0; font-size: 0.82rem; color: var(--ink-dim); }
+  .persona-card dt { font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; color: var(--ink-faint); margin-top: 8px; }
+  .persona-card dd { margin: 2px 0 0; }
+
+  .table-wrap { overflow-x: auto; }
+  table.tone-matrix { width: 100%; border-collapse: collapse; font-size: 0.86rem; min-width: 460px; }
+  table.tone-matrix th, table.tone-matrix td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+  table.tone-matrix th { font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-faint); font-weight: 500; }
+  table.tone-matrix td.touchpoint { font-weight: 600; }
+  table.tone-matrix a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+  table.tone-matrix a:hover { color: var(--ink); }
+
+  .code-panel { position: relative; background: var(--surface-2); border: 1px solid var(--line); border-radius: 6px; padding: 16px 46px 16px 16px; }
+  .code-panel pre { margin: 0; overflow-x: auto; }
+  .code-panel code { font-family: 'IBM Plex Mono', monospace; font-size: 0.76rem; line-height: 1.7; color: var(--ink-dim); white-space: pre; }
+  .code-panel.scroll pre { max-height: 320px; overflow-y: auto; }
+  .code-panel button.copy { position: absolute; top: 12px; right: 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 4px; padding: 4px 9px; }
+  .code-caption { font-size: 0.76rem; color: var(--ink-faint); margin: 8px 0 14px; }
+
+  details.font-ref { border: 1px solid var(--line); border-radius: 6px; margin-top: 10px; }
+  details.font-ref + details.font-ref { margin-top: 10px; }
+  details.font-ref summary { cursor: pointer; padding: 12px 16px; font-size: 0.86rem; font-weight: 600; list-style: none; display: flex; align-items: center; justify-content: space-between; }
+  details.font-ref summary::-webkit-details-marker { display: none; }
+  details.font-ref summary::after { content: '+'; font-family: 'IBM Plex Mono', monospace; color: var(--ink-faint); font-weight: 400; }
+  details.font-ref[open] summary::after { content: '–'; }
+  details.font-ref .code-panel { border: none; border-top: 1px solid var(--line); border-radius: 0 0 6px 6px; }
+
+  .tv-matrix-head { display: grid; grid-template-columns: 1.1fr 0.9fr 1.3fr 1.6fr; gap: 24px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+  .tv-matrix-head span { font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-faint); }
+  .tv-group { border-bottom: 1px solid var(--line); padding-bottom: 16px; margin-bottom: 16px; }
+  .tv-group:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .tv-row { display: grid; grid-template-columns: 1.1fr 0.9fr 1.3fr 1.6fr; gap: 24px; align-items: start; padding: 18px 0 16px; }
+  .tv-row .tv-touchpoint { font-weight: 700; font-size: 0.95rem; }
+  .tv-row .tv-tone, .tv-row .tv-chars, .tv-row .tv-example { font-size: 0.86rem; color: var(--ink-dim); }
+  .tv-group details.font-ref { margin-top: 0; }
+  @media (max-width: 760px) {
+    .tv-matrix-head { display: none; }
+    .tv-row { grid-template-columns: 1fr; gap: 6px; padding-top: 0; }
+  }
+
+  .touchpoint-detail { padding: 18px 20px; border-top: 1px solid var(--line); }
+  .touchpoint-detail .tp-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 8px; }
+  .touchpoint-detail .tp-tone-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+  .touchpoint-detail .tp-sounds { font-size: 0.88rem; color: var(--ink-dim); max-width: 62ch; margin-bottom: 18px; }
+  .touchpoint-detail .tp-example { border-left: 2px solid var(--accent); padding-left: 16px; font-size: 0.92rem; color: var(--ink); font-style: italic; max-width: 60ch; }
+
+  .word-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 560px) { .word-columns { grid-template-columns: 1fr; } }
+  .word-col { border: 1px solid var(--line); border-radius: 4px; padding: 16px; }
+  .word-col.avoid { border-color: var(--accent); }
+  .word-col-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; color: var(--ink-faint); }
+  .word-col.avoid .word-col-label { color: var(--accent); }
+  .word-list { list-style: none; margin: 0; padding: 0; font-size: 0.86rem; }
+  .word-list li { padding: 4px 0; border-top: 1px solid var(--line); }
+  .word-list li:first-child { border-top: none; }
+  .word-col:not(.avoid) .word-list li { font-weight: 600; }
+
+  .tagline-block { border-left: 2px solid var(--accent); padding-left: 16px; margin-bottom: 16px; }
+  .tagline-block .field-label { margin-bottom: 2px; }
+  .tagline-block .tagline-text { font-family: 'Big Shoulders Display', sans-serif; font-weight: 700; font-size: 1.3rem; text-transform: none; }
+
+  .editorial-row { display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-top: 1px solid var(--line); }
+  .editorial-row:first-child { border-top: none; }
+  .editorial-row .k { font-size: 0.86rem; color: var(--ink-dim); }
+  .editorial-row .v { font-family: 'IBM Plex Mono', monospace; font-size: 0.82rem; color: var(--ink-faint); text-align: right; }
+
+  /* ---------- mockup groups ---------- */
+  .print-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+  .letterhead-frame { aspect-ratio: 8.5/11; max-width: 220px; }
+  .bizcard-frame { aspect-ratio: 3.5/2; max-width: 320px; }
+  .envelope-frame { aspect-ratio: 9.5/4.125; max-width: 320px; }
+  .brochure-frame { aspect-ratio: 297/210; max-width: 320px; background-image: linear-gradient(90deg, transparent 0 33.2%, var(--line) 33.2% 33.8%, transparent 33.8% 66.2%, var(--line) 66.2% 66.8%, transparent 66.8% 100%); }
+  .flyer-frame { aspect-ratio: 148/210; max-width: 160px; }
+  .datasheet-frame { aspect-ratio: 8.5/11; max-width: 180px; }
+  .folder-frame { aspect-ratio: 9/12; max-width: 200px; }
+  .package-frame { aspect-ratio: 1/1; max-width: 180px; }
+  .label-frame { aspect-ratio: 3/1; max-width: 220px; border-radius: 8px; }
+  .exterior-sign-frame { aspect-ratio: 5/2; max-width: 320px; }
+  .office-brand-frame { aspect-ratio: 16/9; max-width: 320px; }
+  .booth-frame { aspect-ratio: 33/80; max-width: 110px; }
+  .vehicle-frame { aspect-ratio: 16/7; max-width: 320px; }
+
+  /* ---------- digital & template assets ---------- */
+  .story-frame { aspect-ratio: 9/16; max-width: 120px; }
+  .story-safezone { position: absolute; inset: 14% 10%; border: 1px dashed var(--accent); border-radius: 2px; }
+
+  .wireframe-block { border-radius: 2px; background: var(--surface-2); }
+
+  .newsletter-frame { aspect-ratio: 3/4; max-width: 190px; flex-direction: column; align-items: stretch; justify-content: flex-start; padding: 12px; gap: 5px; }
+  .newsletter-frame .wireframe-block.header { height: 12%; }
+  .newsletter-frame .wireframe-block.hero { height: 26%; background: var(--line); }
+  .newsletter-frame .wireframe-block.copy { height: 8%; }
+  .newsletter-frame .wireframe-block.cta { height: 9%; background: var(--accent); opacity: 0.3; }
+  .newsletter-frame .wireframe-block.footer { flex: 1; background: transparent; border-top: 1px solid var(--line); border-radius: 0; }
+
+  .signature-frame { aspect-ratio: 3/1; max-width: 320px; flex-direction: row; align-items: center; justify-content: flex-start; gap: 12px; padding: 14px; }
+  .signature-frame .mark { width: 40px; height: 40px; border-radius: 4px; background: var(--line); flex-shrink: 0; }
+  .signature-frame .lines { display: flex; flex-direction: column; gap: 6px; flex: 1; }
+  .signature-frame .lines span { height: 7px; border-radius: 2px; background: var(--ink-faint); opacity: 0.35; display: block; }
+
+  .slide-frame { aspect-ratio: 16/9; max-width: 220px; }
+  .slide-frame.divider { background: var(--core-bg); }
+  .slide-frame.divider .frame-glyph, .slide-frame.divider .frame-label { color: var(--core-ink); }
+  .slide-frame.content { flex-direction: column; align-items: stretch; justify-content: flex-start; padding: 16px; gap: 8px; }
+  .slide-frame.content .wireframe-block.head { height: 16%; margin-top: 18px; }
+  .slide-frame.content .wireframe-block.line { height: 9%; background: var(--line); }
+
+  .device-row { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 22px; }
+  .device-frame.phone { width: 120px; aspect-ratio: 9/19.5; border-radius: 16px; }
+  .device-frame.tablet { width: 200px; aspect-ratio: 4/3; border-radius: 10px; }
+  .device-frame.desktop { width: 340px; aspect-ratio: 16/10; border-radius: 6px; }
+
+  .browser-frame { border-radius: 6px; overflow: hidden; }
+  .browser-chrome { height: 26px; background: var(--surface-2); display: flex; align-items: center; gap: 5px; padding: 0 10px; }
+  .browser-chrome span { width: 7px; height: 7px; border-radius: 50%; background: var(--line); }
+  .browser-body { flex: 1; }
+  .theme-pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  .browser-shell { border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+  .browser-shell .frame { border: none; border-radius: 0; aspect-ratio: 16/10; }
+  .browser-shell.dark-demo .frame { background: #17181A; color: #757770; }
+  .browser-shell.dark-demo .browser-chrome { background: #202225; }
+  .browser-shell.dark-demo .browser-chrome span { background: #37393A; }
+
+  .ad-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; align-items: end; }
+  .ad-frame.leaderboard { aspect-ratio: 728/90; grid-column: 1 / -1; max-width: 480px; }
+  .ad-frame.mpu { aspect-ratio: 300/250; max-width: 220px; }
+  .ad-frame.skyscraper { aspect-ratio: 160/600; max-width: 120px; }
+  .ad-frame.square { aspect-ratio: 1/1; max-width: 160px; }
+
+  .merch-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 16px; }
+  .merch-frame.tee { aspect-ratio: 3/4; }
+  .merch-frame.bottle { aspect-ratio: 2.2/5; max-width: 130px; }
+  .merch-frame.tote { aspect-ratio: 4/4.6; }
+  .merch-frame.mug { aspect-ratio: 4/3.4; }
+  .merch-frame.pen { aspect-ratio: 5/1; }
+  .merch-frame.banner { aspect-ratio: 3/7; grid-row: span 2; }
+  .merch-frame.cap { aspect-ratio: 4/2.6; }
+
+  footer {
+    padding: 40px 56px 60px;
+    color: var(--ink-faint);
+    font-size: 0.78rem;
+  }
+  @media (max-width: 640px) { footer { padding: 30px 22px 50px; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+
+<button type="button" class="nav-toggle" aria-label="Open section navigation" aria-expanded="false" aria-controls="site-nav">
+  <span></span><span></span><span></span>
+</button>
+<div class="nav-backdrop"></div>
+
+<div class="shell">
+  <nav class="nav" id="site-nav" aria-label="Section navigation">
+    <button type="button" class="nav-close" aria-label="Close section navigation">&times;</button>
+    <div class="nav-brand">Spec&nbsp;Book</div>
+    <div class="nav-sub">Brand identity template</div>
+
+    <div class="nav-group">
+      <div class="nav-group-label">Strategy &amp; Voice</div>
+      <a class="nav-link" href="#strategy" data-nav><span>Brand Strategy</span><span class="nav-tick"></span></a>
+      <a class="nav-link" href="#voice" data-nav><span>Voice &amp; Messaging</span><span class="nav-tick"></span></a>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-label">Core — every client</div>
+      <a class="nav-link" href="#logo" data-nav><span>Logo Suite</span><span class="nav-tick"></span></a>
+      <a class="nav-link" href="#color" data-nav><span>Color</span><span class="nav-tick"></span></a>
+      <a class="nav-link" href="#type" data-nav><span>Typography</span><span class="nav-tick"></span></a>    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-label">Optional — extended collateral</div>
+      <a class="nav-link" href="#imagery" data-nav><span>Imagery &amp; Video</span><span class="nav-tick"></span></a>
+      <a class="nav-link" href="#graphics" data-nav><span>Graphical Assets &amp; UI</span><span class="nav-tick"></span></a>
+      <a class="nav-link" href="#print-physical" data-nav><span>Print &amp; Physical</span><span class="nav-tick"></span></a>
+      <a class="nav-link" href="#digital-template" data-nav><span>Digital &amp; Templates</span><span class="nav-tick"></span></a>
+    </div>
+  </nav>
+
+  <main>
+    <div class="cover">
+      <div class="eyebrow">Brand Specification Book — Rev. 01</div>
+      <h1>Infra<br>Brand Bible</h1>
+      <div class="cover-meta">
+        <div><div class="eyebrow">Prepared for</div><div class="client-field">Infra</div></div>
+        <div><div class="eyebrow">Prepared by</div><div class="client-field">Fervent Digital Marketing</div></div>
+        <div><div class="eyebrow">Date</div><div class="client-field">02 / 09 / 2026</div></div>
+        <div style="max-width:360px;"><div class="eyebrow">Scope</div><div class="client-field">Core — Brand Strategy, Logo Suite, Color, Typography. Optional — Voice &amp; Messaging, Imagery &amp; Video, Graphical Assets &amp; UI, Print &amp; Physical, Digital &amp; Templates (all retained)</div></div>
+      </div>
+    </div>
+
+    <!-- ============ BRAND STRATEGY ============ -->
+    <section class="module" id="strategy">
+      <div class="module-head">
+        <div>
+          <div class="module-num">01</div>
+          <h2>Brand Strategy &amp; Core Identity</h2>
+        </div>
+        <span class="badge badge--core">Core</span>
+      </div>
+      <p class="module-dek">Why Infra exists, who it's for, and how it should feel — engineered clarity for technology companies that need an unwavering visual foundation.</p>
+
+      <div class="module-body">
+        <div class="field-block">
+          <div class="field-label">Core Concept — the thinking behind the mark</div>
+          <div class="field-value">The name Infra stems from infrastructure — the quiet, essential backbone that powers intelligent digital experiences.</div>
+          <div class="field-value" style="margin-top:12px">The visual mark and identity system reflect digital architecture, technical discipline and human-computer harmony. The design language utilises high-contrast dark slates, precise monospaced accents and structured typography (Ubuntu, Poppins, Space Grotesk and Space Mono) to bridge the gap between complex remote server modules and intuitive personal computing. It is engineered to feel deliberate, robust and enduringly personal.</div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Brand Purpose &amp; Mission — why the brand exists</div>
+          <div class="field-value">Infra exists to humanise advanced artificial intelligence by giving individuals remote access to dedicated, private server modules with the tailored touch of an at-home personal setup. We strip away the sterile, impersonal friction of public AI tools, empowering users to interact with intelligent computing on their own terms, securely and effortlessly.</div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Vision Statement — long-term direction and aspirations</div>
+          <div class="field-value">To become the leading global standard for personal digital infrastructure, redefining how individuals connect with, control and experience private AI modules across the world through seamless, human-first interfaces.</div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Core Values — guiding principles</div>
+          <div class="value-grid">
+            <div class="value-card"><span class="num">01</span><div class="name">Human-Centric Precision</div><div class="desc">Technology must adapt to the human, not the other way around. Every interface, connection point and prompt workflow is built for intuitive, natural interaction.</div></div>
+            <div class="value-card"><span class="num">02</span><div class="name">Absolute Privacy &amp; Integrity</div><div class="desc">Private computing is sacred. We ensure dedicated server architecture gives users complete sovereignty over their data, sessions and environment without compromise.</div></div>
+            <div class="value-card"><span class="num">03</span><div class="name">Radical Clarity</div><div class="desc">We eliminate technical jargon and operational friction. We speak directly, demystifying server technology so the experience feels as direct and familiar as a desktop application.</div></div>
+            <div class="value-card"><span class="num">04</span><div class="name">Bespoke Utility</div><div class="desc">We do not believe in one-size-fits-all AI. Every interaction and module configuration is crafted to deliver a deliberate, high-touch experience tailored to individual workflows.</div></div>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Brand Personality &amp; Tone Traits</div>
+          <div class="value-grid">
+            <div class="value-card"><div class="name">Architectural &amp; Grounded</div><div class="desc">Authoritative without being distant. Speaks with quiet confidence, precision and technical clarity.</div></div>
+            <div class="value-card"><div class="name">Intimate &amp; Responsive</div><div class="desc">Personal, approachable and refined. Feels like a private, dedicated concierge for high-performance computing.</div></div>
+            <div class="value-card"><div class="name">Decisive &amp; Uncluttered</div><div class="desc">Avoids marketing hyperbole, hype cycles or AI buzzwords. Focuses purely on reliability, performance and user experience.</div></div>
+            <div class="value-card"><div class="name">Modern Digital Premium</div><div class="desc">High-end, minimalist and sleek. Conveys sophistication through clean UI architecture, dark-mode slates and precise typography.</div></div>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Value Proposition &amp; Positioning Statement — what sets it apart</div>
+          <div class="tagline-block">
+            <div class="field-label" style="margin-bottom:6px">Positioning Statement</div>
+            <div class="field-value">For discerning digital users, professionals and technology enthusiasts who want the privacy and control of running personal AI modules without the hardware overhead at home, Infra is the premium digital service platform that delivers dedicated, high-touch remote server environments. Unlike generic public cloud platforms or impersonal AI chat tools, Infra bridges global server infrastructure with a tailored, human-centred computing experience designed specifically for individual, private interaction.</div>
+          </div>
+          <div class="tagline-block">
+            <div class="field-label" style="margin-bottom:6px">The "Only" Statement &amp; Reason to Believe</div>
+            <div class="field-value">Infra is the only digital platform that pairs private, dedicated global server modules with a tailored personal touch — delivering the intimacy, security and immediacy of a home-hosted AI setup directly to any web interface.</div>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Target Audience &amp; Key Personas</div>
+          <div class="persona-grid">
+            <div class="persona-card">
+              <div class="role">Primary</div>
+              <div class="name">Marcus Vance — The Privacy-Conscious Professional</div>
+              <dl>
+                <dt>Demographics</dt><dd>Age 35–52 · Tech-savvy executive / consultant · Major urban centre · High disposable income</dd>
+                <dt>Motivations</dt><dd>Relies heavily on AI workflows but refuses to stream sensitive data or proprietary work through public, shared AI models. Lacks the time or desire to build and maintain a noisy liquid-cooled server rig at home, but insists on a dedicated, private system that feels completely his own.</dd>
+                <dt>What he needs from Infra</dt><dd>A seamless, zero-friction portal to his own dedicated remote server module that feels instant, secure and uniquely tailored to his daily habits.</dd>
+              </dl>
+            </div>
+            <div class="persona-card">
+              <div class="role">Secondary</div>
+              <div class="name">Elena Rostova — The High-Touch Tech Enthusiast</div>
+              <dl>
+                <dt>Demographics</dt><dd>Age 28–44 · Creative technologist / independent specialist · Remote / digital nomad</dd>
+                <dt>Motivations</dt><dd>Craves the flexibility of accessing high-performance AI modules anywhere in the world, but misses the personal, crafted feel of a local desktop setup. Values smooth interface responsiveness, elegant dark-mode environments and knowing exactly where and how her private computing tasks are executed.</dd>
+                <dt>What she needs from Infra</dt><dd>An ultra-responsive, beautiful interface, clear system metrics, and the peace of mind that her dedicated server environment is running exclusively for her.</dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ VOICE & MESSAGING ============ -->
+    <section class="module" id="voice">
+      <div class="module-head">
+        <div>
+          <div class="module-num">02</div>
+          <h2>Voice &amp; Messaging Guidelines</h2>
+        </div>
+        <span class="badge badge--optional">Optional</span>
+      </div>
+      <p class="module-dek">How the brand sounds in writing, across every touchpoint it speaks from.</p>
+
+      <div class="module-body">
+        <div class="field-block">
+          <div class="field-label">Core Voice Principles</div>
+          <div class="field-value">Across every platform and medium, Infra speaks with a voice anchored in three fundamental qualities:</div>
+          <div class="value-grid" style="margin-top:14px">
+            <div class="value-card"><span class="num">01</span><div class="name">Architectural &amp; Grounded</div><div class="desc">We write with quiet confidence and structural precision. We state facts clearly and avoid marketing fluff, exaggerated claims or hype.</div></div>
+            <div class="value-card"><span class="num">02</span><div class="name">Human &amp; Personal</div><div class="desc">We are dealing with private computing and dedicated AI, so we never sound cold, mechanical or robotic. We write like a trusted technical partner — approachable, attentive and respectful.</div></div>
+            <div class="value-card"><span class="num">03</span><div class="name">Radically Clear</div><div class="desc">We demystify server infrastructure and complex AI systems. Our sentences are concise, direct and free of unnecessary jargon.</div></div>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Tone of Voice Matrix — how to speak across touchpoints</div>
+          <div class="tv-matrix-head"><span>Touchpoint</span><span>Tone Profile</span><span>Key Characteristics</span><span>Example Copy / Line</span></div>
+
+          <div class="tv-group">
+            <div class="tv-row">
+              <div class="tv-touchpoint">Social Media (X / LinkedIn / Threads)</div>
+              <div class="tv-tone">Insightful, crisp, conversational</div>
+              <div class="tv-chars">Thought-provoking, concise, focused on digital sovereignty.</div>
+              <div class="tv-example">"Your AI shouldn't belong to a public cloud. Dedicated remote server modules, tailored to your workflow, fully private. Secure your digital space."</div>
+            </div>
+            <details class="font-ref">
+              <summary>Extended Breakdown &amp; Guidance for Social Media</summary>
+              <div class="touchpoint-detail">
+                <div class="tp-label">Tone</div>
+                <div class="tp-tone-chips"><span class="trait-chip">Insightful</span><span class="trait-chip">Crisp</span><span class="trait-chip">Conversational</span></div>
+                <div class="tp-label">How It Sounds</div>
+                <div class="tp-sounds">Engaging and sharp without resorting to cheap internet slang or viral memes. It challenges mainstream tech norms (like public, data-harvesting AI) while inviting users into a smarter, private alternative.</div>
+                <div class="tp-label">Example</div>
+                <div class="tp-example">"Public AI models treat your prompts like public data. Infra gives you a dedicated server module with the intimacy of an at-home rig — zero hardware required."</div>
+              </div>
+            </details>
+          </div>
+
+          <div class="tv-group">
+            <div class="tv-row">
+              <div class="tv-touchpoint">Website &amp; Marketing (Landing Pages / Ads)</div>
+              <div class="tv-tone">Confident, direct, modern premium</div>
+              <div class="tv-chars">High-end, persuasive, clean, focused on speed and privacy.</div>
+              <div class="tv-example">"Experience private computing without the home server noise. Dedicated AI power, hosted on global servers, crafted with a personal touch."</div>
+            </div>
+            <details class="font-ref">
+              <summary>Extended Breakdown &amp; Guidance for Website &amp; Marketing Copy</summary>
+              <div class="touchpoint-detail">
+                <div class="tp-label">Tone</div>
+                <div class="tp-tone-chips"><span class="trait-chip">Confident</span><span class="trait-chip">Direct</span><span class="trait-chip">Modern Premium</span></div>
+                <div class="tp-label">How It Sounds</div>
+                <div class="tp-sounds">Elegant and punchy. It focuses on user benefits — privacy, power, ease and a high-touch personal experience — using strong verbs and uncluttered sentence structures.</div>
+                <div class="tp-label">Example</div>
+                <div class="tp-example">"Power without the clutter. Private AI modules engineered on high-performance global servers, delivered directly to your browser."</div>
+              </div>
+            </details>
+          </div>
+
+          <div class="tv-group">
+            <div class="tv-row">
+              <div class="tv-touchpoint">Technical Specs &amp; System Support</div>
+              <div class="tv-tone">Authoritative, precise, clear</div>
+              <div class="tv-chars">Exact, solution-focused, calm, zero ambiguity.</div>
+              <div class="tv-example">"Module node IR-402 is active. Memory allocation is locked at 64 GB with zero shared tenancy. System latency is currently 12 ms."</div>
+            </div>
+            <details class="font-ref">
+              <summary>Extended Breakdown &amp; Guidance for Technical Specs &amp; System Support</summary>
+              <div class="touchpoint-detail">
+                <div class="tp-label">Tone</div>
+                <div class="tp-tone-chips"><span class="trait-chip">Authoritative</span><span class="trait-chip">Precise</span><span class="trait-chip">Clear</span></div>
+                <div class="tp-label">How It Sounds</div>
+                <div class="tp-sounds">Calm, highly accurate and reassuring. When users look at documentation, metrics or support tickets, they need facts and swift solutions, not fluff.</div>
+                <div class="tp-label">Example</div>
+                <div class="tp-example">"To configure custom parameters for your private module, navigate to Workspace Settings &gt; Environment Variables. All changes take effect immediately across your isolated session."</div>
+              </div>
+            </details>
+          </div>
+
+          <div class="tv-group">
+            <div class="tv-row">
+              <div class="tv-touchpoint">User Onboarding &amp; Portal (UI Messages / Modals)</div>
+              <div class="tv-tone">Welcoming, reassuring, human</div>
+              <div class="tv-chars">Direct, helpful, reassuring, focused on immediate action.</div>
+              <div class="tv-example">"Welcome to your dedicated workspace. Your private AI environment is initialised and ready for your first prompt."</div>
+            </div>
+            <details class="font-ref">
+              <summary>Extended Breakdown &amp; Guidance for In-App User Onboarding &amp; System Messages</summary>
+              <div class="touchpoint-detail">
+                <div class="tp-label">Tone</div>
+                <div class="tp-tone-chips"><span class="trait-chip">Welcoming</span><span class="trait-chip">Reassuring</span><span class="trait-chip">Human</span></div>
+                <div class="tp-label">How It Sounds</div>
+                <div class="tp-sounds">Smooth, clear and encouraging. It guides the user through set-up steps as if a dedicated specialist were sitting beside them.</div>
+                <div class="tp-label">Example</div>
+                <div class="tp-example">"Your private server module has been provisioned. Let's set up your preferred interaction style."</div>
+              </div>
+            </details>
+          </div>
+
+          <div class="tv-group">
+            <div class="tv-row">
+              <div class="tv-touchpoint">Service Communications (Email / Notifications)</div>
+              <div class="tv-tone">Professional, transparent, empathetic</div>
+              <div class="tv-chars">Honest, timely, respectful, zero panic.</div>
+              <div class="tv-example">"We are conducting a scheduled 15-minute maintenance window on node regional clusters. Your private data remains untouched and isolated."</div>
+            </div>
+            <details class="font-ref">
+              <summary>Extended Breakdown &amp; Guidance for Direct Email &amp; Service Notifications</summary>
+              <div class="touchpoint-detail">
+                <div class="tp-label">Tone</div>
+                <div class="tp-tone-chips"><span class="trait-chip">Professional</span><span class="trait-chip">Transparent</span><span class="trait-chip">Respectful</span></div>
+                <div class="tp-label">How It Sounds</div>
+                <div class="tp-sounds">Straight to the point. It respects the recipient's inbox and time, delivering critical updates with clarity and care.</div>
+                <div class="tp-label">Example</div>
+                <div class="tp-example">"Your monthly infrastructure summary is ready. Your dedicated instance maintained 99.98% uptime with complete session privacy."</div>
+              </div>
+            </details>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Do's &amp; Don'ts of Copywriting</div>
+          <div class="word-columns">
+            <div class="word-col">
+              <div class="word-col-label">Preferred terms</div>
+              <ul class="word-list"><li>Private Server Module</li><li>Dedicated Environment</li><li>Personal Touch</li><li>Digital Infrastructure</li><li>Session Sovereignty</li><li>Human Interaction</li></ul>
+            </div>
+            <div class="word-col avoid">
+              <div class="word-col-label">Avoid</div>
+              <ul class="word-list"><li>Cloud Chatbot / AI Bot</li><li>Public Instance / Shared Tenancy</li><li>Automated Algorithm</li><li>Tech Stack / Web Tools</li><li>Data Logging / Analytics Tracking</li><li>Machine Intelligence</li></ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Context &amp; Usage Rule</div>
+          <div class="field-value">Always frame Infra as a bespoke, dedicated physical-feeling digital asset rather than a generic web utility. Use language that evokes ownership, privacy and architectural stability.</div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Taglines &amp; Slogans</div>
+          <div class="tagline-block">
+            <div class="field-label">Primary</div>
+            <div class="tagline-text">Private AI. Dedicated to You.</div>
+          </div>
+          <div class="tagline-block">
+            <div class="field-label">Secondary</div>
+            <div class="tagline-text">The intimacy of an at-home server, powered anywhere in the world.</div>
+          </div>
+          <div class="field-label" style="margin-top:16px; margin-bottom:8px;">Placement Rules — where it can and can't appear</div>
+          <div class="field-value">
+            <div style="margin-bottom:10px;"><strong>Approved Use:</strong> Primary taglines must appear on main website hero headers, login portal footers, printed presentation covers and official press announcements.</div>
+            <div style="margin-bottom:10px;"><strong>Secondary Use:</strong> Secondary taglines are restricted to marketing landing pages, targeted digital campaigns and user onboarding modals.</div>
+            <div><strong>Prohibited Use:</strong> Never attach taglines directly to the primary logo mark within minimal web app headers, favicon lockups, system tray icons or technical documentation sheets. Maintain a minimum isolation space of twice the logo height when placing taglines near brand marks.</div>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Editorial Mechanics</div>
+          <div class="tagline-block">
+            <div class="field-label" style="margin-bottom:6px">Spelling Convention</div>
+            <div class="field-value">UK English (humanise, initialise, centre, tailored, programme).</div>
+          </div>
+          <div class="tagline-block">
+            <div class="field-label" style="margin-bottom:6px">Punctuation Preferences</div>
+            <div class="field-value">Use the Oxford comma for three or more list items ("private, secure, and dedicated"). Use unspaced em dashes (—) for parenthetical breaks. Omit exclamation marks across all interface and technical copy to maintain a calm, authoritative tone.</div>
+          </div>
+          <div class="tagline-block">
+            <div class="field-label" style="margin-bottom:6px">Formatting Standards</div>
+            <div class="field-value">
+              <div style="margin-bottom:8px;"><strong>Headings &amp; Buttons:</strong> Use Sentence case ("Start your private session").</div>
+              <div style="margin-bottom:8px;"><strong>Section Titles &amp; Document Headers:</strong> Use Title Case ("Brand Strategy &amp; Core Identity").</div>
+              <div style="margin-bottom:8px;"><strong>Numbers:</strong> Spell out numbers one through nine in body prose; use digits for 10+ or technical metrics ("64 GB RAM", "12 ms latency").</div>
+              <div><strong>Technical Specs &amp; Values:</strong> Always render system parameters, paths and code snippets in Space Mono.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ LOGO ============ -->
+    <section class="module" id="logo">
+      <div class="module-head">
+        <div>
+          <div class="module-num">03</div>
+          <h2>Logo Suite</h2>
+        </div>
+        <span class="badge badge--core">Core</span>
+      </div>
+      <p class="module-dek">Every approved lockup, in the color and format it ships in, plus the rules for how it should — and shouldn't — be used. Swap each frame for the exported artwork at matching proportions.</p>
+
+      <div class="module-body">
+        <div class="field-value placeholder" style="max-width:none; margin-bottom:18px;">[interim wordmark-only lockups — the icon (fig with network nodes) is still in progress and will be added once final. Stacked, Icon/Mark, and both tagline lockups stay placeholder until then.]</div>
+        <div class="logo-grid">
+          <div class="frame"><span class="frame-label">Primary / Linear</span><img class="frame-logo-img" src="Logo Suite/infra-name-logo-black-2toned.svg" alt="Infra logo, two-tone, primary lockup"></div>
+          <div class="frame"><span class="frame-label">Stacked</span><span class="frame-glyph">Logo</span></div>
+          <div class="frame"><span class="frame-label">Icon / Mark</span><span class="frame-glyph">◆</span></div>
+          <div class="frame"><span class="frame-label">Linear + Tagline</span><span class="frame-glyph">Logo</span></div>
+          <div class="frame"><span class="frame-label">Stacked + Tagline</span><span class="frame-glyph">Logo</span></div>
+          <div class="frame"><span class="frame-label">Logotype Only</span><img class="frame-logo-img" src="Logo Suite/infra-name-logo-black.svg" alt="Infra logotype, black"></div>
+          <div class="frame" style="background:#1F142E"><span class="frame-label" style="color:#F1F0E9">Reversed (on dark)</span><img class="frame-logo-img" src="Logo Suite/infra-name-logo-white.svg" alt="Infra logo, white, reversed for dark backgrounds"></div>
+          <div class="frame"><span class="frame-label">Single Color / Black</span><img class="frame-logo-img" src="Logo Suite/infra-name-logo-black.svg" alt="Infra logo, single colour black"></div>
+        </div>
+
+        <div style="margin-top:28px">
+          <div class="swatch-set-label">Minimum clear space</div>
+          <div class="frame clearspace-frame"><span class="frame-glyph">Logo</span></div>
+        </div>
+
+        <div style="margin-top:28px">
+          <div class="swatch-set-label">Brandmark / Monogram / Icon — for app icons and social avatars</div>
+          <div class="field-value placeholder" style="max-width:none; margin-bottom:14px;">[temporary — standing in for the fig + network-node icon until it's finished]</div>
+          <div class="icon-row">
+            <div class="frame app-icon-frame"><img class="frame-logo-img" src="Logo Suite/infra-name-logo-black-2toned.svg" alt="Infra wordmark, temporary app icon placeholder"></div>
+            <div class="frame avatar-frame"><img class="frame-logo-img" src="Logo Suite/infra-name-logo-black-2toned.svg" alt="Infra wordmark, temporary avatar placeholder"></div>
+          </div>
+        </div>
+
+        <div style="margin-top:28px">
+          <div class="swatch-set-label">Color Variations — approved on light, dark, and full-color backgrounds</div>
+          <div class="bgvar-row">
+            <div class="frame bgvar-frame on-light"><span class="frame-label">On light</span><img class="frame-logo-img" src="Logo Suite/infra-name-logo-black-2toned.svg" alt="Infra logo on light background"></div>
+            <div class="frame bgvar-frame on-dark"><span class="frame-label">On dark</span><img class="frame-logo-img" src="Logo Suite/infra-name-logo-white-2toned.svg" alt="Infra logo on dark background"></div>
+            <div class="frame bgvar-frame on-busy"><span class="frame-label">On full-color / photo</span><img class="frame-logo-img" src="Logo Suite/infra-name-logo-white.svg" alt="Infra logo on busy or photographic background"></div>
+          </div>
+          <div class="field-value placeholder" style="max-width:none; margin-top:10px;">[On full-color/photo is my best guess for now — plain white reads over most imagery, but confirm once you've tested it against real photos]</div>
+        </div>
+
+        <div style="margin-top:28px">
+          <div class="swatch-set-label">Incorrect Logo Usage (Don'ts)</div>
+          <div class="dodont-grid">
+            <div class="dodont-card"><div class="dodont-frame stretch"><img class="glyph" src="Logo Suite/infra-name-logo-black.svg" alt="Infra logo, stretched incorrectly"></div><div class="dodont-caption"><b>Do not</b> stretch</div></div>
+            <div class="dodont-card"><div class="dodont-frame rotate"><img class="glyph" src="Logo Suite/infra-name-logo-black.svg" alt="Infra logo, rotated incorrectly"></div><div class="dodont-caption"><b>Do not</b> rotate</div></div>
+            <div class="dodont-card"><div class="dodont-frame recolor"><span class="glyph">Logo</span></div><div class="dodont-caption"><b>Do not</b> re-color</div></div>
+            <div class="dodont-card"><div class="dodont-frame shadow"><img class="glyph" src="Logo Suite/infra-name-logo-black.svg" alt="Infra logo, with drop shadow incorrectly applied"></div><div class="dodont-caption"><b>Do not</b> add drop shadows</div></div>
+            <div class="dodont-card"><div class="dodont-frame busy"><img class="glyph" src="Logo Suite/infra-name-logo-black.svg" alt="Infra logo, placed over a busy background incorrectly"></div><div class="dodont-caption"><b>Do not</b> place over busy images</div></div>
+            <div class="dodont-card"><div class="dodont-frame outline"><span class="glyph">Logo</span></div><div class="dodont-caption"><b>Do not</b> outline</div></div>
+            <div class="dodont-card"><div class="dodont-frame opacity"><img class="glyph" src="Logo Suite/infra-name-logo-black.svg" alt="Infra logo, with reduced opacity incorrectly applied"></div><div class="dodont-caption"><b>Do not</b> reduce opacity</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ COLOR ============ -->
+    <section class="module" id="color">
+      <div class="module-head">
+        <div>
+          <div class="module-num">04</div>
+          <h2>Color</h2>
+        </div>
+        <span class="badge badge--core">Core</span>
+      </div>
+      <p class="module-dek">The Infra Fig — five layers of one organic form, each carrying a dark anchor and a light anchor. Main Palette covers print, stationery, and general use; Light Mode and Dark Mode give web/app development the exact tokens to build with.</p>
+
+      <div class="module-body">
+        <div class="color-tabs" role="tablist" aria-label="Color view">
+          <button type="button" class="color-tab-btn is-active" data-color-tab="main" aria-selected="true">Main Palette</button>
+          <button type="button" class="color-tab-btn" data-color-tab="light" aria-selected="false">Light Mode</button>
+          <button type="button" class="color-tab-btn" data-color-tab="dark" aria-selected="false">Dark Mode</button>
+        </div>
+
+        <div class="color-panel" data-color-panel="main">
+        <div class="field-block">
+          <div class="family-head">
+            <span class="family-num">01</span>
+            <span class="family-title">The Skin — Infra Midnight Fig</span>
+            <span class="family-role">The Human Interface</span>
+          </div>
+          <p class="family-desc">The protective outer shell — empathy, accessibility, and quiet strength. A near-black plum that replaces harsh digital blacks. This is the primary brand colour: the logo mark, primary typography, headers, and heavy structural elements.</p>
+          <div class="swatch-row">
+            <div class="swatch">
+              <div class="swatch-color" style="background:#1F142E"></div>
+              <div class="swatch-info">
+                <div class="role">Dark Anchor — Deep Midnight Plum</div>
+                <div class="spec-row"><span class="spec-k">Hex</span><button class="copy spec-v" data-copy="#1F142E">#1F142E</button></div>
+                <div class="spec-row"><span class="spec-k">Rgb</span><button class="copy spec-v" data-copy="31, 20, 46">31, 20, 46</button></div>
+                <div class="spec-row"><span class="spec-k">Cmyk</span><button class="copy spec-v" data-copy="83, 89, 44, 56">83, 89, 44, 56</button></div>
+              </div>
+            </div>
+            <div class="swatch">
+              <div class="swatch-color" style="background:#ECE2EE"></div>
+              <div class="swatch-info">
+                <div class="role">Light Anchor — Mist Lavender</div>
+                <div class="spec-row"><span class="spec-k">Hex</span><button class="copy spec-v" data-copy="#ECE2EE">#ECE2EE</button></div>
+                <div class="spec-row"><span class="spec-k">Rgb</span><button class="copy spec-v" data-copy="236, 226, 238">236, 226, 238</button></div>
+                <div class="spec-row"><span class="spec-k">Cmyk</span><button class="copy spec-v" data-copy="1, 5, 0, 7">1, 5, 0, 7</button></div>
+              </div>
+            </div>
+          </div>
+          <div class="tone-row-label">In-between system tones</div>
+          <div class="tone-row">
+            <button type="button" class="copy tone-chip" data-copy="#2A1C36"><span class="sw" style="background:#2A1C36"></span><span class="lbl">#2A1C36</span></button>
+            <button type="button" class="copy tone-chip" data-copy="#483155"><span class="sw" style="background:#483155"></span><span class="lbl">#483155</span></button>
+            <button type="button" class="copy tone-chip" data-copy="#563B5A"><span class="sw" style="background:#563B5A"></span><span class="lbl">#563B5A</span></button>
+            <button type="button" class="copy tone-chip" data-copy="#8F7AA2"><span class="sw" style="background:#8F7AA2"></span><span class="lbl">#8F7AA2</span></button>
+            <button type="button" class="copy tone-chip" data-copy="#AF969C"><span class="sw" style="background:#AF969C"></span><span class="lbl">#AF969C</span></button>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="family-head">
+            <span class="family-num">02</span>
+            <span class="family-title">The Sub-Skin — Infrastructure Lime</span>
+            <span class="family-role">The Activation Pulse</span>
+          </div>
+          <p class="family-desc">The exact threshold where human touch triggers the machine — a sharp, tech-forward green used sparingly for razor-thin borders, hover rings, status dots, and glowing network connections. Never a base colour, always a spark.</p>
+          <div class="swatch-row">
+            <div class="swatch">
+              <div class="swatch-color" style="background:#566D2B"></div>
+              <div class="swatch-info">
+                <div class="role">Dark Anchor — Deep Moss</div>
+                <div class="spec-row"><span class="spec-k">Hex</span><button class="copy spec-v" data-copy="#566D2B">#566D2B</button></div>
+                <div class="spec-row"><span class="spec-k">Rgb</span><button class="copy spec-v" data-copy="86, 109, 43">86, 109, 43</button></div>
+                <div class="spec-row"><span class="spec-k">Cmyk</span><button class="copy spec-v" data-copy="21, 0, 61, 57">21, 0, 61, 57</button></div>
+              </div>
+            </div>
+            <div class="swatch">
+              <div class="swatch-color" style="background:#EEF4B8"></div>
+              <div class="swatch-info">
+                <div class="role">Light Anchor — Electric Citron</div>
+                <div class="spec-row"><span class="spec-k">Hex</span><button class="copy spec-v" data-copy="#EEF4B8">#EEF4B8</button></div>
+                <div class="spec-row"><span class="spec-k">Rgb</span><button class="copy spec-v" data-copy="238, 244, 184">238, 244, 184</button></div>
+                <div class="spec-row"><span class="spec-k">Cmyk</span><button class="copy spec-v" data-copy="2, 0, 25, 4">2, 0, 25, 4</button></div>
+              </div>
+            </div>
+          </div>
+          <div class="tone-row-label">In-between system tones</div>
+          <div class="tone-row">
+            <button type="button" class="copy tone-chip" data-copy="#97A24C"><span class="sw" style="background:#97A24C"></span><span class="lbl">#97A24C</span></button>
+            <button type="button" class="copy tone-chip" data-copy="#9AB369"><span class="sw" style="background:#9AB369"></span><span class="lbl">#9AB369</span></button>
+            <button type="button" class="copy tone-chip" data-copy="#AFBE40"><span class="sw" style="background:#AFBE40"></span><span class="lbl">#AFBE40</span></button>
+            <button type="button" class="copy tone-chip" data-copy="#D8EFB4"><span class="sw" style="background:#D8EFB4"></span><span class="lbl">#D8EFB4</span></button>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="family-head">
+            <span class="family-num">03</span>
+            <span class="family-title">The Inner Rind — Pith Alabaster</span>
+            <span class="family-role">The Provisioning Layer</span>
+          </div>
+          <p class="family-desc">The invisible bridge where human intent becomes digital execution. A warm, breathing neutral that avoids cold, clinical tech-greys — the primary background colour, giving the dark plum room to breathe.</p>
+          <div class="swatch-row">
+            <div class="swatch">
+              <div class="swatch-color" style="background:#B39B8C"></div>
+              <div class="swatch-info">
+                <div class="role">Dark Anchor — Muted Taupe</div>
+                <div class="spec-row"><span class="spec-k">Hex</span><button class="copy spec-v" data-copy="#B39B8C">#B39B8C</button></div>
+                <div class="spec-row"><span class="spec-k">Rgb</span><button class="copy spec-v" data-copy="179, 155, 140">179, 155, 140</button></div>
+                <div class="spec-row"><span class="spec-k">Cmyk</span><button class="copy spec-v" data-copy="0, 13, 22, 30">0, 13, 22, 30</button></div>
+              </div>
+            </div>
+            <div class="swatch">
+              <div class="swatch-color" style="background:#FDFBF7"></div>
+              <div class="swatch-info">
+                <div class="role">Light Anchor — Alabaster Cream</div>
+                <div class="spec-row"><span class="spec-k">Hex</span><button class="copy spec-v" data-copy="#FDFBF7">#FDFBF7</button></div>
+                <div class="spec-row"><span class="spec-k">Rgb</span><button class="copy spec-v" data-copy="253, 251, 247">253, 251, 247</button></div>
+                <div class="spec-row"><span class="spec-k">Cmyk</span><button class="copy spec-v" data-copy="1, 1, 3, 0">1, 1, 3, 0</button></div>
+              </div>
+            </div>
+          </div>
+          <div class="tone-row-label">In-between system tones</div>
+          <div class="tone-row">
+            <button type="button" class="copy tone-chip" data-copy="#CDC4B9"><span class="sw" style="background:#CDC4B9"></span><span class="lbl">#CDC4B9</span></button>
+            <button type="button" class="copy tone-chip" data-copy="#CEBEB7"><span class="sw" style="background:#CEBEB7"></span><span class="lbl">#CEBEB7</span></button>
+            <button type="button" class="copy tone-chip" data-copy="#E8DDCA"><span class="sw" style="background:#E8DDCA"></span><span class="lbl">#E8DDCA</span></button>
+            <button type="button" class="copy tone-chip" data-copy="#F1E9D9"><span class="sw" style="background:#F1E9D9"></span><span class="lbl">#F1E9D9</span></button>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="family-head">
+            <span class="family-num">04</span>
+            <span class="family-title">The Flesh — Core Crimson</span>
+            <span class="family-role">The AI Brain</span>
+          </div>
+          <p class="family-desc">The unthrottled neural core — the brand's beating heart. This is the primary accent: calls-to-action, active UI states, button highlights, and key data points. Energy and vitality, used deliberately.</p>
+          <div class="swatch-row">
+            <div class="swatch">
+              <div class="swatch-color" style="background:#5F0819"></div>
+              <div class="swatch-info">
+                <div class="role">Dark Anchor — Deep Burgundy Core</div>
+                <div class="spec-row"><span class="spec-k">Hex</span><button class="copy spec-v" data-copy="#5F0819">#5F0819</button></div>
+                <div class="spec-row"><span class="spec-k">Rgb</span><button class="copy spec-v" data-copy="95, 8, 25">95, 8, 25</button></div>
+                <div class="spec-row"><span class="spec-k">Cmyk</span><button class="copy spec-v" data-copy="0, 92, 74, 63">0, 92, 74, 63</button></div>
+              </div>
+            </div>
+            <div class="swatch">
+              <div class="swatch-color" style="background:#ED423F"></div>
+              <div class="swatch-info">
+                <div class="role">Light Anchor — Vibrant Coral Crimson</div>
+                <div class="spec-row"><span class="spec-k">Hex</span><button class="copy spec-v" data-copy="#ED423F">#ED423F</button></div>
+                <div class="spec-row"><span class="spec-k">Rgb</span><button class="copy spec-v" data-copy="237, 66, 63">237, 66, 63</button></div>
+                <div class="spec-row"><span class="spec-k">Cmyk</span><button class="copy spec-v" data-copy="0, 72, 73, 7">0, 72, 73, 7</button></div>
+              </div>
+            </div>
+          </div>
+          <div class="tone-row-label">In-between system tones</div>
+          <div class="tone-row">
+            <button type="button" class="copy tone-chip" data-copy="#8F3234"><span class="sw" style="background:#8F3234"></span><span class="lbl">#8F3234</span></button>
+            <button type="button" class="copy tone-chip" data-copy="#CD3D58"><span class="sw" style="background:#CD3D58"></span><span class="lbl">#CD3D58</span></button>
+            <button type="button" class="copy tone-chip" data-copy="#E0445E"><span class="sw" style="background:#E0445E"></span><span class="lbl">#E0445E</span></button>
+            <button type="button" class="copy tone-chip" data-copy="#DB839B"><span class="sw" style="background:#DB839B"></span><span class="lbl">#DB839B</span></button>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="family-head">
+            <span class="family-num">05</span>
+            <span class="family-title">The Seeds — Amber Seed</span>
+            <span class="family-role">The Network Nodes</span>
+          </div>
+          <p class="family-desc">Individual server nodes waiting to be provisioned — the secondary accent. Pairs with the plum and the crimson; used sparingly for fine details, secondary icons, and a touch of premium warmth.</p>
+          <div class="swatch-row">
+            <div class="swatch">
+              <div class="swatch-color" style="background:#B1823E"></div>
+              <div class="swatch-info">
+                <div class="role">Dark Anchor — Antique Bronze</div>
+                <div class="spec-row"><span class="spec-k">Hex</span><button class="copy spec-v" data-copy="#B1823E">#B1823E</button></div>
+                <div class="spec-row"><span class="spec-k">Rgb</span><button class="copy spec-v" data-copy="177, 130, 62">177, 130, 62</button></div>
+                <div class="spec-row"><span class="spec-k">Cmyk</span><button class="copy spec-v" data-copy="0, 27, 65, 31">0, 27, 65, 31</button></div>
+              </div>
+            </div>
+            <div class="swatch">
+              <div class="swatch-color" style="background:#F0A830"></div>
+              <div class="swatch-info">
+                <div class="role">Light Anchor — Amber Node</div>
+                <div class="spec-row"><span class="spec-k">Hex</span><button class="copy spec-v" data-copy="#F0A830">#F0A830</button></div>
+                <div class="spec-row"><span class="spec-k">Rgb</span><button class="copy spec-v" data-copy="240, 168, 48">240, 168, 48</button></div>
+                <div class="spec-row"><span class="spec-k">Cmyk</span><button class="copy spec-v" data-copy="5, 37, 91, 0">5, 37, 91, 0</button></div>
+              </div>
+            </div>
+          </div>
+          <div class="tone-row-label">In-between system tones</div>
+          <div class="tone-row">
+            <button type="button" class="copy tone-chip" data-copy="#C7A95D"><span class="sw" style="background:#C7A95D"></span><span class="lbl">#C7A95D</span></button>
+            <button type="button" class="copy tone-chip" data-copy="#E9B67E"><span class="sw" style="background:#E9B67E"></span><span class="lbl">#E9B67E</span></button>
+            <button type="button" class="copy tone-chip" data-copy="#F0B786"><span class="sw" style="background:#F0B786"></span><span class="lbl">#F0B786</span></button>
+          </div>
+        </div>
+
+        <div class="field-value placeholder" style="max-width:none;">[CMYK values marked in the source deck are used as given (Skin dark anchor, Inner Rind light anchor, Seeds light anchor); the rest are computed sRGB→CMYK conversions — proof against your actual print vendor's profile before production]</div>
+
+        <div class="field-block">
+          <div class="field-label">Color Ratio / Usage Hierarchy — recommended distribution</div>
+          <div class="ratio-bar">
+            <div style="width:45%; background:#1F142E"></div>
+            <div style="width:35%; background:#FDFBF7"></div>
+            <div style="width:12%; background:#ED423F"></div>
+            <div style="width:4%; background:#566D2B"></div>
+            <div style="width:4%; background:#F0A830"></div>
+          </div>
+          <div class="ratio-legend">
+            <div class="ratio-item"><span class="dot" style="background:#1F142E"></span>Infra Midnight Fig — 45%</div>
+            <div class="ratio-item"><span class="dot" style="background:#FDFBF7"></span>Alabaster Cream — 35%</div>
+            <div class="ratio-item"><span class="dot" style="background:#ED423F"></span>Coral Crimson — 12%</div>
+            <div class="ratio-item"><span class="dot" style="background:#566D2B"></span>Infrastructure Lime — 4%</div>
+            <div class="ratio-item"><span class="dot" style="background:#F0A830"></span>Amber Seed — 4%</div>
+          </div>
+          <div class="field-value placeholder" style="margin-top:10px">[grounded in the brand's own usage notes — plum carries the logo and structure, cream gives it room to breathe, crimson is reserved for CTAs, lime and amber stay "ever so sparingly" micro-accents]</div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Accessibility &amp; Contrast Guidelines — WCAG-compliant combinations</div>
+          <div class="table-wrap">
+            <table class="tone-matrix">
+              <thead><tr><th>Combination</th><th>Ratio</th><th>WCAG</th></tr></thead>
+              <tbody>
+                <tr><td class="touchpoint">Midnight Plum on Alabaster Cream</td><td class="mono">17.0 : 1</td><td><span class="wcag-badge pass">AAA · all text</span></td></tr>
+                <tr><td class="touchpoint">Alabaster Cream on Midnight Plum</td><td class="mono">17.0 : 1</td><td><span class="wcag-badge pass">AAA · all text</span></td></tr>
+                <tr><td class="touchpoint">Coral Crimson on Alabaster Cream</td><td class="mono">3.7 : 1</td><td><span class="wcag-badge caution">AA · large text / UI only</span></td></tr>
+                <tr><td class="touchpoint">Coral Crimson on Midnight Plum</td><td class="mono">4.6 : 1</td><td><span class="wcag-badge pass">AA · normal text</span></td></tr>
+                <tr><td class="touchpoint">Amber Node on Midnight Plum</td><td class="mono">8.6 : 1</td><td><span class="wcag-badge pass">AAA · all text</span></td></tr>
+                <tr><td class="touchpoint">Amber Node on Alabaster Cream</td><td class="mono">2.0 : 1</td><td><span class="wcag-badge fail">Fail · decorative only</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="field-value placeholder" style="margin-top:10px">[the light anchors read beautifully on the dark plum — that's the brand's natural dark-mode pairing. On the cream background, keep Coral Crimson to buttons/large UI and never put Amber Node text on cream]</div>
+        </div>
+        </div>
+
+        <div class="color-panel" data-color-panel="light" hidden>
+          <div class="field-value placeholder" style="max-width:none; margin-bottom:16px;">[web &amp; app tokens for light-mode UI — background, surface, text, and accent, each with the contrast ratio already checked against its background]</div>
+          <div class="mode-demo" style="background:#FDFBF7; color:#1F142E; --demo-border:#E8DDCA;">
+            <div class="mode-demo-label">Light Mode</div>
+            <div class="token-list">
+              <div class="token-row"><div class="token-swatch" style="background:#FDFBF7"></div><div class="token-role">Background</div><div class="token-note">Alabaster Cream</div><button type="button" class="copy token-hex" data-copy="#FDFBF7">#FDFBF7</button></div>
+              <div class="token-row"><div class="token-swatch" style="background:#ECE2EE"></div><div class="token-role">Surface / Container</div><div class="token-note">Mist Lavender</div><button type="button" class="copy token-hex" data-copy="#ECE2EE">#ECE2EE</button></div>
+              <div class="token-row"><div class="token-swatch" style="background:#B39B8C"></div><div class="token-role">Border / Divider</div><div class="token-note">Muted Taupe — structural lines, not text</div><button type="button" class="copy token-hex" data-copy="#B39B8C">#B39B8C</button></div>
+              <div class="token-row"><div class="token-swatch" style="background:#1F142E"></div><div class="token-role">Text Primary</div><div class="token-note">Deep Midnight Plum</div><span class="token-ratio">17.0:1 AAA</span><button type="button" class="copy token-hex" data-copy="#1F142E">#1F142E</button></div>
+              <div class="token-row"><div class="token-swatch" style="background:#563B5A"></div><div class="token-role">Text Secondary</div><div class="token-note">Dusk Violet (Skin tone)</div><span class="token-ratio">9.4:1 AAA</span><button type="button" class="copy token-hex" data-copy="#563B5A">#563B5A</button></div>
+              <div class="token-row"><div class="token-swatch" style="background:#ED423F"></div><div class="token-role">Accent / CTA</div><div class="token-note">Coral Crimson — buttons &amp; links, pair with Plum label text</div><span class="token-ratio">4.6:1 AA*</span><button type="button" class="copy token-hex" data-copy="#ED423F">#ED423F</button></div>
+              <div class="token-row"><div class="token-swatch" style="background:#F0A830"></div><div class="token-role">Accent Secondary</div><div class="token-note">Amber Node — badges, icons; not for text on cream</div><span class="token-ratio">2.0:1 Fail*</span><button type="button" class="copy token-hex" data-copy="#F0A830">#F0A830</button></div>
+              <div class="token-row"><div class="token-swatch" style="background:#566D2B"></div><div class="token-role">Micro-accent</div><div class="token-note">Deep Moss — hover states, status dots</div><span class="token-ratio">5.6:1 AA</span><button type="button" class="copy token-hex" data-copy="#566D2B">#566D2B</button></div>
+            </div>
+          </div>
+          <div class="field-value placeholder" style="margin-top:10px">[* ratios marked are the colour used as a text/icon fill on the Background above — Coral Crimson as a button fill is fine either way, just check the label text separately]</div>
+        </div>
+
+        <div class="color-panel" data-color-panel="dark" hidden>
+          <div class="field-value placeholder" style="max-width:none; margin-bottom:16px;">[web &amp; app tokens for dark-mode UI — the brand's natural home, since the core palette anchors around the deep plum]</div>
+          <div class="mode-demo" style="background:#17181A; color:#ECE2EE; --demo-border:#483155;">
+            <div class="mode-demo-label">Dark Mode</div>
+            <div class="token-list">
+              <div class="token-row"><div class="token-swatch" style="background:#17181A; border-color:rgba(255,255,255,0.2);"></div><div class="token-role">Primary Background</div><div class="token-note">Spec Book near-black — outermost page canvas</div><button type="button" class="copy token-hex" data-copy="#17181A">#17181A</button></div>
+              <div class="token-row"><div class="token-swatch" style="background:#1F142E; border-color:rgba(255,255,255,0.2);"></div><div class="token-role">Secondary Background</div><div class="token-note">Deep Midnight Plum</div><button type="button" class="copy token-hex" data-copy="#1F142E">#1F142E</button></div>
+              <div class="token-row"><div class="token-swatch" style="background:#2A1C36; border-color:rgba(255,255,255,0.2);"></div><div class="token-role">Surface / Container</div><div class="token-note">Skin tone — elevated cards</div><button type="button" class="copy token-hex" data-copy="#2A1C36">#2A1C36</button></div>
+              <div class="token-row"><div class="token-swatch" style="background:#483155; border-color:rgba(255,255,255,0.2);"></div><div class="token-role">Border / Divider</div><div class="token-note">Skin tone — structural lines</div><button type="button" class="copy token-hex" data-copy="#483155">#483155</button></div>
+              <div class="token-row"><div class="token-swatch" style="background:#ECE2EE"></div><div class="token-role">Text Primary</div><div class="token-note">Mist Lavender</div><span class="token-ratio">13.9:1 AAA</span><button type="button" class="copy token-hex" data-copy="#ECE2EE">#ECE2EE</button></div>
+              <div class="token-row"><div class="token-swatch" style="background:#AF969C"></div><div class="token-role">Text Secondary</div><div class="token-note">Skin tone</div><span class="token-ratio">6.4:1 AA</span><button type="button" class="copy token-hex" data-copy="#AF969C">#AF969C</button></div>
+              <div class="token-row"><div class="token-swatch" style="background:#ED423F"></div><div class="token-role">Accent / CTA</div><div class="token-note">Coral Crimson — buttons, links, active states</div><span class="token-ratio">4.6:1 AA</span><button type="button" class="copy token-hex" data-copy="#ED423F">#ED423F</button></div>
+              <div class="token-row"><div class="token-swatch" style="background:#F0A830"></div><div class="token-role">Accent Secondary</div><div class="token-note">Amber Node — safe as text or icon here</div><span class="token-ratio">8.6:1 AAA</span><button type="button" class="copy token-hex" data-copy="#F0A830">#F0A830</button></div>
+              <div class="token-row"><div class="token-swatch" style="background:#EEF4B8"></div><div class="token-role">Micro-accent</div><div class="token-note">Electric Citron — hover rings, status dots, glowing connections</div><span class="token-ratio">15.3:1 AAA</span><button type="button" class="copy token-hex" data-copy="#EEF4B8">#EEF4B8</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TYPOGRAPHY ============ -->
+    <section class="module" id="type">
+      <div class="module-head">
+        <div>
+          <div class="module-num">05</div>
+          <h2>Typography</h2>
+        </div>
+        <span class="badge badge--core">Core</span>
+      </div>
+      <p class="module-dek">Barlow, Barlow Condensed, and Barlow Semi Condensed for display, subtitle and body — plus IBM Plex Mono for code, data and callouts.</p>
+
+      <div class="module-body">
+        <div class="field-block">
+          <div class="field-label">Font Files — Barlow, Barlow Condensed &amp; Barlow Semi Condensed</div>
+          <div class="table-wrap">
+            <table class="tone-matrix">
+              <thead><tr><th>Family</th><th>Google Fonts</th><th>Download</th></tr></thead>
+              <tbody>
+                <tr><td class="touchpoint">Barlow</td><td><a href="https://fonts.google.com/specimen/Barlow?preview.script=Latn" target="_blank" rel="noopener">View on Google Fonts ↗</a></td><td><a href="Typography/Barlow.zip" download>Download .zip</a></td></tr>
+                <tr><td class="touchpoint">Barlow Condensed</td><td><a href="https://fonts.google.com/specimen/Barlow+Condensed?preview.script=Latn" target="_blank" rel="noopener">View on Google Fonts ↗</a></td><td><a href="Typography/Barlow-Condensed.zip" download>Download .zip</a></td></tr>
+                <tr><td class="touchpoint">Barlow Semi Condensed</td><td><a href="https://fonts.google.com/specimen/Barlow+Semi+Condensed?preview.script=Latn" target="_blank" rel="noopener">View on Google Fonts ↗</a></td><td><a href="Typography/Barlow-Semi-Condensed.zip" download>Download .zip</a></td></tr>
+                <tr><td class="touchpoint">Ubuntu</td><td><a href="https://fonts.google.com/specimen/Ubuntu?preview.script=Latn" target="_blank" rel="noopener">View on Google Fonts ↗</a></td><td><a href="Typography/Ubuntu.zip" download>Download .zip</a></td></tr>
+                <tr><td class="touchpoint">IBM Plex Mono</td><td><a href="https://fonts.google.com/specimen/IBM+Plex+Mono?preview.script=Latn" target="_blank" rel="noopener">View on Google Fonts ↗</a></td><td><a href="Typography/IBM-Plex-Mono.zip" download>Download .zip</a></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="field-value placeholder" style="margin-top:10px">Each .zip bundles the full static weight range (Thin–Black) plus the SIL Open Font License. Source files also sit in Typography/[Family], next to this book.</div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Embed Code — link every family in your &lt;head&gt;</div>
+          <div class="code-panel">
+            <pre><code>&lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt;
+&lt;link rel="preconnect" href="https://fonts.gstatic.com" crossorigin&gt;
+&lt;link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;family=Barlow+Semi+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&amp;family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&amp;display=swap" rel="stylesheet"&gt;</code></pre>
+            <button type="button" class="copy" data-copy='https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Barlow+Semi+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap'>Copy</button>
+          </div>
+          <div class="code-caption">One request covers all five families across every weight and italic. Paste this into the &lt;head&gt; before any stylesheet that references the fonts.</div>
+          <details class="font-ref">
+            <summary>Barlow — CSS classes</summary>
+            <div class="code-panel scroll">
+              <pre><code>.barlow-thin {
+  font-family: &quot;Barlow&quot;, sans-serif;
+  font-weight: 100;
+  font-style: normal;
+}
+
+.barlow-extralight {
+  font-family: &quot;Barlow&quot;, sans-serif;
+  font-weight: 200;
+  font-style: normal;
+}
+
+.barlow-light {
+  font-family: &quot;Barlow&quot;, sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.barlow-regular {
+  font-family: &quot;Barlow&quot;, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.barlow-medium {
+  font-family: &quot;Barlow&quot;, sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.barlow-semibold {
+  font-family: &quot;Barlow&quot;, sans-serif;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.barlow-bold {
+  font-family: &quot;Barlow&quot;, sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.barlow-extrabold {
+  font-family: &quot;Barlow&quot;, sans-serif;
+  font-weight: 800;
+  font-style: normal;
+}
+
+.barlow-black {
+  font-family: &quot;Barlow&quot;, sans-serif;
+  font-weight: 900;
+  font-style: normal;
+}
+
+.barlow-thin-italic {
+  font-family: &quot;Barlow&quot;, sans-serif;
+  font-weight: 100;
+  font-style: italic;
+}
+
+.barlow-extralight-italic {
+  font-family: &quot;Barlow&quot;, sans-serif;
+  font-weight: 200;
+  font-style: italic;
+}
+
+.barlow-light-italic {
+  font-family: &quot;Barlow&quot;, sans-serif;
+  font-weight: 300;
+  font-style: italic;
+}
+
+.barlow-regular-italic {
+  font-family: &quot;Barlow&quot;, sans-serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.barlow-medium-italic {
+  font-family: &quot;Barlow&quot;, sans-serif;
+  font-weight: 500;
+  font-style: italic;
+}
+
+.barlow-semibold-italic {
+  font-family: &quot;Barlow&quot;, sans-serif;
+  font-weight: 600;
+  font-style: italic;
+}
+
+.barlow-bold-italic {
+  font-family: &quot;Barlow&quot;, sans-serif;
+  font-weight: 700;
+  font-style: italic;
+}
+
+.barlow-extrabold-italic {
+  font-family: &quot;Barlow&quot;, sans-serif;
+  font-weight: 800;
+  font-style: italic;
+}
+
+.barlow-black-italic {
+  font-family: &quot;Barlow&quot;, sans-serif;
+  font-weight: 900;
+  font-style: italic;
+}</code></pre>
+              <button type="button" class="copy" data-copy='.barlow-thin {
+  font-family: "Barlow", sans-serif;
+  font-weight: 100;
+  font-style: normal;
+}
+
+.barlow-extralight {
+  font-family: "Barlow", sans-serif;
+  font-weight: 200;
+  font-style: normal;
+}
+
+.barlow-light {
+  font-family: "Barlow", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.barlow-regular {
+  font-family: "Barlow", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.barlow-medium {
+  font-family: "Barlow", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.barlow-semibold {
+  font-family: "Barlow", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.barlow-bold {
+  font-family: "Barlow", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.barlow-extrabold {
+  font-family: "Barlow", sans-serif;
+  font-weight: 800;
+  font-style: normal;
+}
+
+.barlow-black {
+  font-family: "Barlow", sans-serif;
+  font-weight: 900;
+  font-style: normal;
+}
+
+.barlow-thin-italic {
+  font-family: "Barlow", sans-serif;
+  font-weight: 100;
+  font-style: italic;
+}
+
+.barlow-extralight-italic {
+  font-family: "Barlow", sans-serif;
+  font-weight: 200;
+  font-style: italic;
+}
+
+.barlow-light-italic {
+  font-family: "Barlow", sans-serif;
+  font-weight: 300;
+  font-style: italic;
+}
+
+.barlow-regular-italic {
+  font-family: "Barlow", sans-serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.barlow-medium-italic {
+  font-family: "Barlow", sans-serif;
+  font-weight: 500;
+  font-style: italic;
+}
+
+.barlow-semibold-italic {
+  font-family: "Barlow", sans-serif;
+  font-weight: 600;
+  font-style: italic;
+}
+
+.barlow-bold-italic {
+  font-family: "Barlow", sans-serif;
+  font-weight: 700;
+  font-style: italic;
+}
+
+.barlow-extrabold-italic {
+  font-family: "Barlow", sans-serif;
+  font-weight: 800;
+  font-style: italic;
+}
+
+.barlow-black-italic {
+  font-family: "Barlow", sans-serif;
+  font-weight: 900;
+  font-style: italic;
+}'>Copy</button>
+            </div>
+          </details>
+          <details class="font-ref">
+            <summary>Barlow Condensed — CSS classes</summary>
+            <div class="code-panel scroll">
+              <pre><code>.barlow-condensed-thin {
+  font-family: &quot;Barlow Condensed&quot;, sans-serif;
+  font-weight: 100;
+  font-style: normal;
+}
+
+.barlow-condensed-extralight {
+  font-family: &quot;Barlow Condensed&quot;, sans-serif;
+  font-weight: 200;
+  font-style: normal;
+}
+
+.barlow-condensed-light {
+  font-family: &quot;Barlow Condensed&quot;, sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.barlow-condensed-regular {
+  font-family: &quot;Barlow Condensed&quot;, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.barlow-condensed-medium {
+  font-family: &quot;Barlow Condensed&quot;, sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.barlow-condensed-semibold {
+  font-family: &quot;Barlow Condensed&quot;, sans-serif;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.barlow-condensed-bold {
+  font-family: &quot;Barlow Condensed&quot;, sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.barlow-condensed-extrabold {
+  font-family: &quot;Barlow Condensed&quot;, sans-serif;
+  font-weight: 800;
+  font-style: normal;
+}
+
+.barlow-condensed-black {
+  font-family: &quot;Barlow Condensed&quot;, sans-serif;
+  font-weight: 900;
+  font-style: normal;
+}
+
+.barlow-condensed-thin-italic {
+  font-family: &quot;Barlow Condensed&quot;, sans-serif;
+  font-weight: 100;
+  font-style: italic;
+}
+
+.barlow-condensed-extralight-italic {
+  font-family: &quot;Barlow Condensed&quot;, sans-serif;
+  font-weight: 200;
+  font-style: italic;
+}
+
+.barlow-condensed-light-italic {
+  font-family: &quot;Barlow Condensed&quot;, sans-serif;
+  font-weight: 300;
+  font-style: italic;
+}
+
+.barlow-condensed-regular-italic {
+  font-family: &quot;Barlow Condensed&quot;, sans-serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.barlow-condensed-medium-italic {
+  font-family: &quot;Barlow Condensed&quot;, sans-serif;
+  font-weight: 500;
+  font-style: italic;
+}
+
+.barlow-condensed-semibold-italic {
+  font-family: &quot;Barlow Condensed&quot;, sans-serif;
+  font-weight: 600;
+  font-style: italic;
+}
+
+.barlow-condensed-bold-italic {
+  font-family: &quot;Barlow Condensed&quot;, sans-serif;
+  font-weight: 700;
+  font-style: italic;
+}
+
+.barlow-condensed-extrabold-italic {
+  font-family: &quot;Barlow Condensed&quot;, sans-serif;
+  font-weight: 800;
+  font-style: italic;
+}
+
+.barlow-condensed-black-italic {
+  font-family: &quot;Barlow Condensed&quot;, sans-serif;
+  font-weight: 900;
+  font-style: italic;
+}</code></pre>
+              <button type="button" class="copy" data-copy='.barlow-condensed-thin {
+  font-family: "Barlow Condensed", sans-serif;
+  font-weight: 100;
+  font-style: normal;
+}
+
+.barlow-condensed-extralight {
+  font-family: "Barlow Condensed", sans-serif;
+  font-weight: 200;
+  font-style: normal;
+}
+
+.barlow-condensed-light {
+  font-family: "Barlow Condensed", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.barlow-condensed-regular {
+  font-family: "Barlow Condensed", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.barlow-condensed-medium {
+  font-family: "Barlow Condensed", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.barlow-condensed-semibold {
+  font-family: "Barlow Condensed", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.barlow-condensed-bold {
+  font-family: "Barlow Condensed", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.barlow-condensed-extrabold {
+  font-family: "Barlow Condensed", sans-serif;
+  font-weight: 800;
+  font-style: normal;
+}
+
+.barlow-condensed-black {
+  font-family: "Barlow Condensed", sans-serif;
+  font-weight: 900;
+  font-style: normal;
+}
+
+.barlow-condensed-thin-italic {
+  font-family: "Barlow Condensed", sans-serif;
+  font-weight: 100;
+  font-style: italic;
+}
+
+.barlow-condensed-extralight-italic {
+  font-family: "Barlow Condensed", sans-serif;
+  font-weight: 200;
+  font-style: italic;
+}
+
+.barlow-condensed-light-italic {
+  font-family: "Barlow Condensed", sans-serif;
+  font-weight: 300;
+  font-style: italic;
+}
+
+.barlow-condensed-regular-italic {
+  font-family: "Barlow Condensed", sans-serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.barlow-condensed-medium-italic {
+  font-family: "Barlow Condensed", sans-serif;
+  font-weight: 500;
+  font-style: italic;
+}
+
+.barlow-condensed-semibold-italic {
+  font-family: "Barlow Condensed", sans-serif;
+  font-weight: 600;
+  font-style: italic;
+}
+
+.barlow-condensed-bold-italic {
+  font-family: "Barlow Condensed", sans-serif;
+  font-weight: 700;
+  font-style: italic;
+}
+
+.barlow-condensed-extrabold-italic {
+  font-family: "Barlow Condensed", sans-serif;
+  font-weight: 800;
+  font-style: italic;
+}
+
+.barlow-condensed-black-italic {
+  font-family: "Barlow Condensed", sans-serif;
+  font-weight: 900;
+  font-style: italic;
+}'>Copy</button>
+            </div>
+          </details>
+          <details class="font-ref">
+            <summary>Barlow Semi Condensed — CSS classes</summary>
+            <div class="code-panel scroll">
+              <pre><code>.barlow-semi-condensed-thin {
+  font-family: &quot;Barlow Semi Condensed&quot;, sans-serif;
+  font-weight: 100;
+  font-style: normal;
+}
+
+.barlow-semi-condensed-extralight {
+  font-family: &quot;Barlow Semi Condensed&quot;, sans-serif;
+  font-weight: 200;
+  font-style: normal;
+}
+
+.barlow-semi-condensed-light {
+  font-family: &quot;Barlow Semi Condensed&quot;, sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.barlow-semi-condensed-regular {
+  font-family: &quot;Barlow Semi Condensed&quot;, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.barlow-semi-condensed-medium {
+  font-family: &quot;Barlow Semi Condensed&quot;, sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.barlow-semi-condensed-semibold {
+  font-family: &quot;Barlow Semi Condensed&quot;, sans-serif;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.barlow-semi-condensed-bold {
+  font-family: &quot;Barlow Semi Condensed&quot;, sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.barlow-semi-condensed-extrabold {
+  font-family: &quot;Barlow Semi Condensed&quot;, sans-serif;
+  font-weight: 800;
+  font-style: normal;
+}
+
+.barlow-semi-condensed-black {
+  font-family: &quot;Barlow Semi Condensed&quot;, sans-serif;
+  font-weight: 900;
+  font-style: normal;
+}
+
+.barlow-semi-condensed-thin-italic {
+  font-family: &quot;Barlow Semi Condensed&quot;, sans-serif;
+  font-weight: 100;
+  font-style: italic;
+}
+
+.barlow-semi-condensed-extralight-italic {
+  font-family: &quot;Barlow Semi Condensed&quot;, sans-serif;
+  font-weight: 200;
+  font-style: italic;
+}
+
+.barlow-semi-condensed-light-italic {
+  font-family: &quot;Barlow Semi Condensed&quot;, sans-serif;
+  font-weight: 300;
+  font-style: italic;
+}
+
+.barlow-semi-condensed-regular-italic {
+  font-family: &quot;Barlow Semi Condensed&quot;, sans-serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.barlow-semi-condensed-medium-italic {
+  font-family: &quot;Barlow Semi Condensed&quot;, sans-serif;
+  font-weight: 500;
+  font-style: italic;
+}
+
+.barlow-semi-condensed-semibold-italic {
+  font-family: &quot;Barlow Semi Condensed&quot;, sans-serif;
+  font-weight: 600;
+  font-style: italic;
+}
+
+.barlow-semi-condensed-bold-italic {
+  font-family: &quot;Barlow Semi Condensed&quot;, sans-serif;
+  font-weight: 700;
+  font-style: italic;
+}
+
+.barlow-semi-condensed-extrabold-italic {
+  font-family: &quot;Barlow Semi Condensed&quot;, sans-serif;
+  font-weight: 800;
+  font-style: italic;
+}
+
+.barlow-semi-condensed-black-italic {
+  font-family: &quot;Barlow Semi Condensed&quot;, sans-serif;
+  font-weight: 900;
+  font-style: italic;
+}</code></pre>
+              <button type="button" class="copy" data-copy='.barlow-semi-condensed-thin {
+  font-family: "Barlow Semi Condensed", sans-serif;
+  font-weight: 100;
+  font-style: normal;
+}
+
+.barlow-semi-condensed-extralight {
+  font-family: "Barlow Semi Condensed", sans-serif;
+  font-weight: 200;
+  font-style: normal;
+}
+
+.barlow-semi-condensed-light {
+  font-family: "Barlow Semi Condensed", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.barlow-semi-condensed-regular {
+  font-family: "Barlow Semi Condensed", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.barlow-semi-condensed-medium {
+  font-family: "Barlow Semi Condensed", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.barlow-semi-condensed-semibold {
+  font-family: "Barlow Semi Condensed", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.barlow-semi-condensed-bold {
+  font-family: "Barlow Semi Condensed", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.barlow-semi-condensed-extrabold {
+  font-family: "Barlow Semi Condensed", sans-serif;
+  font-weight: 800;
+  font-style: normal;
+}
+
+.barlow-semi-condensed-black {
+  font-family: "Barlow Semi Condensed", sans-serif;
+  font-weight: 900;
+  font-style: normal;
+}
+
+.barlow-semi-condensed-thin-italic {
+  font-family: "Barlow Semi Condensed", sans-serif;
+  font-weight: 100;
+  font-style: italic;
+}
+
+.barlow-semi-condensed-extralight-italic {
+  font-family: "Barlow Semi Condensed", sans-serif;
+  font-weight: 200;
+  font-style: italic;
+}
+
+.barlow-semi-condensed-light-italic {
+  font-family: "Barlow Semi Condensed", sans-serif;
+  font-weight: 300;
+  font-style: italic;
+}
+
+.barlow-semi-condensed-regular-italic {
+  font-family: "Barlow Semi Condensed", sans-serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.barlow-semi-condensed-medium-italic {
+  font-family: "Barlow Semi Condensed", sans-serif;
+  font-weight: 500;
+  font-style: italic;
+}
+
+.barlow-semi-condensed-semibold-italic {
+  font-family: "Barlow Semi Condensed", sans-serif;
+  font-weight: 600;
+  font-style: italic;
+}
+
+.barlow-semi-condensed-bold-italic {
+  font-family: "Barlow Semi Condensed", sans-serif;
+  font-weight: 700;
+  font-style: italic;
+}
+
+.barlow-semi-condensed-extrabold-italic {
+  font-family: "Barlow Semi Condensed", sans-serif;
+  font-weight: 800;
+  font-style: italic;
+}
+
+.barlow-semi-condensed-black-italic {
+  font-family: "Barlow Semi Condensed", sans-serif;
+  font-weight: 900;
+  font-style: italic;
+}'>Copy</button>
+            </div>
+          </details>
+          <details class="font-ref">
+            <summary>Ubuntu — CSS classes</summary>
+            <div class="code-panel scroll">
+              <pre><code>.ubuntu-light {
+  font-family: &quot;Ubuntu&quot;, sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.ubuntu-regular {
+  font-family: &quot;Ubuntu&quot;, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.ubuntu-medium {
+  font-family: &quot;Ubuntu&quot;, sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.ubuntu-bold {
+  font-family: &quot;Ubuntu&quot;, sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.ubuntu-light-italic {
+  font-family: &quot;Ubuntu&quot;, sans-serif;
+  font-weight: 300;
+  font-style: italic;
+}
+
+.ubuntu-regular-italic {
+  font-family: &quot;Ubuntu&quot;, sans-serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.ubuntu-medium-italic {
+  font-family: &quot;Ubuntu&quot;, sans-serif;
+  font-weight: 500;
+  font-style: italic;
+}
+
+.ubuntu-bold-italic {
+  font-family: &quot;Ubuntu&quot;, sans-serif;
+  font-weight: 700;
+  font-style: italic;
+}</code></pre>
+              <button type="button" class="copy" data-copy='.ubuntu-light {
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.ubuntu-regular {
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.ubuntu-medium {
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.ubuntu-bold {
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.ubuntu-light-italic {
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 300;
+  font-style: italic;
+}
+
+.ubuntu-regular-italic {
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.ubuntu-medium-italic {
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 500;
+  font-style: italic;
+}
+
+.ubuntu-bold-italic {
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 700;
+  font-style: italic;
+}'>Copy</button>
+            </div>
+          </details>
+          <details class="font-ref">
+            <summary>IBM Plex Mono — CSS classes</summary>
+            <div class="code-panel scroll">
+              <pre><code>.ibm-plex-mono-thin {
+  font-family: &quot;IBM Plex Mono&quot;, monospace;
+  font-weight: 100;
+  font-style: normal;
+}
+
+.ibm-plex-mono-extralight {
+  font-family: &quot;IBM Plex Mono&quot;, monospace;
+  font-weight: 200;
+  font-style: normal;
+}
+
+.ibm-plex-mono-light {
+  font-family: &quot;IBM Plex Mono&quot;, monospace;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.ibm-plex-mono-regular {
+  font-family: &quot;IBM Plex Mono&quot;, monospace;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.ibm-plex-mono-medium {
+  font-family: &quot;IBM Plex Mono&quot;, monospace;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.ibm-plex-mono-semibold {
+  font-family: &quot;IBM Plex Mono&quot;, monospace;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.ibm-plex-mono-bold {
+  font-family: &quot;IBM Plex Mono&quot;, monospace;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.ibm-plex-mono-thin-italic {
+  font-family: &quot;IBM Plex Mono&quot;, monospace;
+  font-weight: 100;
+  font-style: italic;
+}
+
+.ibm-plex-mono-extralight-italic {
+  font-family: &quot;IBM Plex Mono&quot;, monospace;
+  font-weight: 200;
+  font-style: italic;
+}
+
+.ibm-plex-mono-light-italic {
+  font-family: &quot;IBM Plex Mono&quot;, monospace;
+  font-weight: 300;
+  font-style: italic;
+}
+
+.ibm-plex-mono-regular-italic {
+  font-family: &quot;IBM Plex Mono&quot;, monospace;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.ibm-plex-mono-medium-italic {
+  font-family: &quot;IBM Plex Mono&quot;, monospace;
+  font-weight: 500;
+  font-style: italic;
+}
+
+.ibm-plex-mono-semibold-italic {
+  font-family: &quot;IBM Plex Mono&quot;, monospace;
+  font-weight: 600;
+  font-style: italic;
+}
+
+.ibm-plex-mono-bold-italic {
+  font-family: &quot;IBM Plex Mono&quot;, monospace;
+  font-weight: 700;
+  font-style: italic;
+}</code></pre>
+              <button type="button" class="copy" data-copy='.ibm-plex-mono-thin {
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 100;
+  font-style: normal;
+}
+
+.ibm-plex-mono-extralight {
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 200;
+  font-style: normal;
+}
+
+.ibm-plex-mono-light {
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.ibm-plex-mono-regular {
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.ibm-plex-mono-medium {
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.ibm-plex-mono-semibold {
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.ibm-plex-mono-bold {
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.ibm-plex-mono-thin-italic {
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 100;
+  font-style: italic;
+}
+
+.ibm-plex-mono-extralight-italic {
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 200;
+  font-style: italic;
+}
+
+.ibm-plex-mono-light-italic {
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 300;
+  font-style: italic;
+}
+
+.ibm-plex-mono-regular-italic {
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.ibm-plex-mono-medium-italic {
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 500;
+  font-style: italic;
+}
+
+.ibm-plex-mono-semibold-italic {
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 600;
+  font-style: italic;
+}
+
+.ibm-plex-mono-bold-italic {
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 700;
+  font-style: italic;
+}'>Copy</button>
+            </div>
+          </details>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Primary Display / Heading Font</div>
+          <div class="type-role">
+            <div class="type-role-meta"><span class="type-role-name">Headlines, section titles</span><span class="type-role-spec">Barlow Condensed</span></div>
+            <div class="type-sample-display" style="font-family:'Barlow Condensed', sans-serif; font-weight:800;">Aa Bb Cc 123</div>
+            <div class="type-specs">
+              <div class="spec-row"><span class="spec-k">Weight</span><span class="spec-v static">700–900 (Bold–Black)</span></div>
+              <div class="spec-row"><span class="spec-k">Tracking</span><span class="spec-v static">[-0.01em]</span></div>
+              <div class="spec-row"><span class="spec-k">Leading</span><span class="spec-v static">[1.0–1.1]</span></div>
+              <div class="spec-row"><span class="spec-k">Casing</span><span class="spec-v static">[All Caps / Title Case — pick one]</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Body &amp; Subtitle Fonts — mapped to hierarchy levels</div>
+          <div class="type-role">
+            <div class="type-role-meta"><span class="type-role-name">Subtitle — lead paragraphs, standfirsts</span><span class="type-role-spec">Barlow Semi Condensed</span></div>
+            <div class="type-sample-body" style="font-size:1.3rem; font-family:'Barlow Semi Condensed', sans-serif; font-weight:500;">The quick brown fox jumps over the lazy dog.</div>
+            <div class="type-specs">
+              <div class="spec-row"><span class="spec-k">Weight</span><span class="spec-v static">500–600 (Medium–SemiBold)</span></div>
+              <div class="spec-row"><span class="spec-k">Leading</span><span class="spec-v static">[1.4–1.5]</span></div>
+            </div>
+          </div>
+          <div class="type-role">
+            <div class="type-role-meta"><span class="type-role-name">Body — paragraphs, UI copy</span><span class="type-role-spec">Barlow</span></div>
+            <div class="type-sample-body" style="font-family:'Barlow', sans-serif; font-weight:400;">The quick brown fox jumps over the lazy dog. Set body copy at a size and measure that stays comfortable across print and screen.</div>
+            <div class="type-specs">
+              <div class="spec-row"><span class="spec-k">Weight</span><span class="spec-v static">400–500 (Regular–Medium)</span></div>
+              <div class="spec-row"><span class="spec-k">Leading</span><span class="spec-v static">[1.5–1.6]</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Monospace / Technical Fonts</div>
+          <div class="type-role">
+            <div class="type-role-meta"><span class="type-role-name">Code, data, callouts</span><span class="type-role-spec">No monospace cut in Barlow — using IBM Plex Mono</span></div>
+            <div class="type-sample-mono">CAPTIONS · HEX CODES · 0123456789</div>
+            <div class="type-specs">
+              <div class="spec-row"><span class="spec-k">Weight</span><span class="spec-v static">[400–500]</span></div>
+              <div class="spec-row"><span class="spec-k">Leading</span><span class="spec-v static">[1.5]</span></div>
+            </div>
+            <div class="type-chips">
+              <span class="trait-chip">Code snippets</span>
+              <span class="trait-chip">Data tables</span>
+              <span class="trait-chip">Callout panels</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">System Fallback Fonts — web-safe alternatives if custom fonts fail to load</div>
+          <div class="table-wrap">
+            <table class="tone-matrix">
+              <thead><tr><th>Role</th><th>Fallback stack</th></tr></thead>
+              <tbody>
+                <tr><td class="touchpoint">Display / Heading</td><td class="mono">Arial Narrow, Arial, sans-serif</td></tr>
+                <tr><td class="touchpoint">Body / Subtitle</td><td class="mono">Helvetica, Arial, sans-serif</td></tr>
+                <tr><td class="touchpoint">Monospace / Technical</td><td class="mono">[e.g. Courier New, monospace]</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Type Hierarchy Scale — H1 down to fine print</div>
+          <div class="table-wrap">
+            <table class="tone-matrix">
+              <thead><tr><th>Level</th><th>Size</th><th>Leading</th><th>Tracking</th></tr></thead>
+              <tbody>
+                <tr><td class="touchpoint">H1</td><td class="mono">56px / 3.5rem</td><td class="mono">1.05</td><td class="mono">-0.01em</td></tr>
+                <tr><td class="touchpoint">H2</td><td class="mono">40px / 2.5rem</td><td class="mono">1.1</td><td class="mono">-0.005em</td></tr>
+                <tr><td class="touchpoint">H3</td><td class="mono">28px / 1.75rem</td><td class="mono">1.2</td><td class="mono">0em</td></tr>
+                <tr><td class="touchpoint">H4</td><td class="mono">22px / 1.375rem</td><td class="mono">1.25</td><td class="mono">0em</td></tr>
+                <tr><td class="touchpoint">Subtitle</td><td class="mono">20px / 1.25rem</td><td class="mono">1.4</td><td class="mono">0em</td></tr>
+                <tr><td class="touchpoint">Body</td><td class="mono">16px / 1rem</td><td class="mono">1.6</td><td class="mono">0em</td></tr>
+                <tr><td class="touchpoint">Caption / fine print</td><td class="mono">12px / 0.75rem</td><td class="mono">1.4</td><td class="mono">0.02em</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ IMAGERY, PHOTOGRAPHY & VIDEO ============ -->
+    <section class="module" id="imagery">
+      <div class="module-head">
+        <div>
+          <div class="module-num">06</div>
+          <h2>Imagery, Photography &amp; Video</h2>
+        </div>
+        <span class="badge badge--optional">Optional</span>
+      </div>
+      <p class="module-dek">How the brand looks in real photography and motion — style, subject matter, treatment, and the standards for anything filmed or animated.</p>
+
+      <div class="module-body">
+        <div class="field-block">
+          <div class="field-label">Photography Style &amp; Mood</div>
+          <div class="editorial-list">
+            <div class="editorial-row"><span class="k">Lighting direction</span><span class="v">[natural, backlit, studio-flat, etc.]</span></div>
+            <div class="editorial-row"><span class="k">Color grading</span><span class="v">[warm, cool, desaturated, high-contrast]</span></div>
+            <div class="editorial-row"><span class="k">Tone</span><span class="v">[aspirational, documentary, editorial]</span></div>
+            <div class="editorial-row"><span class="k">Subject focus</span><span class="v">[shallow depth of field, wide environmental, etc.]</span></div>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Subject Matter Guidelines</div>
+          <div class="editorial-list">
+            <div class="editorial-row"><span class="k">Candid human imagery</span><span class="v">[posed vs. candid, diversity, expressions to use / avoid]</span></div>
+            <div class="editorial-row"><span class="k">Product staging</span><span class="v">[in-context vs. isolated, surfaces, props]</span></div>
+            <div class="editorial-row"><span class="k">Background environments</span><span class="v">[approved settings, clutter level]</span></div>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Image Treatment &amp; Filters — approved overlays, duotones, and grading profiles</div>
+          <div class="imagery-row">
+            <div class="frame imagery-frame duotone-a"><span class="frame-label">Duotone A</span><span class="frame-glyph">Photo</span></div>
+            <div class="frame imagery-frame duotone-b"><span class="frame-label">Duotone B</span><span class="frame-glyph">Photo</span></div>
+            <div class="frame imagery-frame overlay"><span class="frame-label">Color overlay</span><span class="frame-glyph">Photo</span></div>
+            <div class="frame imagery-frame"><span class="frame-label">Untreated (reference)</span><span class="frame-glyph">Photo</span></div>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Video Production Standards</div>
+          <div class="frame video-frame">
+            <span class="frame-label">Video — 16:9</span>
+            <span class="frame-glyph">Video</span>
+            <span class="lower-third">Lower third — Name / Title</span>
+          </div>
+          <div class="editorial-list" style="margin-top:16px">
+            <div class="editorial-row"><span class="k">Motion graphics</span><span class="v">[approved easing, speed, brand motifs]</span></div>
+            <div class="editorial-row"><span class="k">Lower-third overlays</span><span class="v">[position, duration, typography]</span></div>
+            <div class="editorial-row"><span class="k">Intro / outro bumpers</span><span class="v">[length, logo animation, sound cue]</span></div>
+            <div class="editorial-row"><span class="k">Title card style</span><span class="v">[layout, background, hold duration]</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ GRAPHICAL ASSETS & UI ============ -->
+    <section class="module" id="graphics">
+      <div class="module-head">
+        <div>
+          <div class="module-num">07</div>
+          <h2>Graphical Assets &amp; UI Elements</h2>
+        </div>
+        <span class="badge badge--optional">Optional</span>
+      </div>
+      <p class="module-dek">The visual vocabulary beyond the logo itself — icons, illustration, interface components, and the surface treatments that tie them together.</p>
+
+      <div class="module-body">
+        <div class="field-block">
+          <div class="field-label">Iconography Library — style and stroke weight standards</div>
+          <div class="icon-style-row">
+            <div class="icon-style-card"><div class="icon-shape line"></div><div class="label">Line art</div></div>
+            <div class="icon-style-card"><div class="icon-shape solid"></div><div class="label">Solid glyph</div></div>
+            <div class="icon-style-card"><div class="icon-shape dual"></div><div class="label">Dual-tone</div></div>
+          </div>
+          <div class="type-specs" style="margin-top:18px">
+            <div class="spec-row"><span class="spec-k">Stroke weight</span><span class="spec-v static">[1.5–2px]</span></div>
+            <div class="spec-row"><span class="spec-k">Corner style</span><span class="spec-v static">[rounded / sharp]</span></div>
+            <div class="spec-row"><span class="spec-k">Keyline grid</span><span class="spec-v static">[24px]</span></div>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Illustrations &amp; 3D Assets</div>
+          <div class="editorial-list">
+            <div class="editorial-row"><span class="k">Illustration style</span><span class="v">[flat, isometric, hand-drawn]</span></div>
+            <div class="editorial-row"><span class="k">Character models</span><span class="v">[proportions, diversity, approved poses]</span></div>
+            <div class="editorial-row"><span class="k">Rendering guidelines</span><span class="v">[lighting, materials, render engine]</span></div>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">UI Components &amp; Design System — web and app rules</div>
+          <div class="ui-kit-grid">
+            <div class="ui-kit-card">
+              <div class="ui-kit-label">Buttons</div>
+              <button type="button" class="demo-btn primary">Primary</button>
+              <button type="button" class="demo-btn secondary">Secondary</button>
+              <button type="button" class="demo-btn accent">Accent</button>
+            </div>
+            <div class="ui-kit-card">
+              <div class="ui-kit-label">Form field</div>
+              <input class="demo-input" type="text" placeholder="[placeholder text]" disabled>
+            </div>
+            <div class="ui-kit-card">
+              <div class="ui-kit-label">Badges</div>
+              <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                <span class="badge badge--core">Active</span>
+                <span class="badge badge--optional">Pending</span>
+                <span class="wcag-badge pass">Success</span>
+                <span class="wcag-badge caution">Warning</span>
+              </div>
+            </div>
+            <div class="ui-kit-card">
+              <div class="ui-kit-label">Divider</div>
+              <hr class="demo-divider">
+            </div>
+            <div class="ui-kit-card">
+              <div class="ui-kit-label">Card container</div>
+              <div class="demo-card">Card content sits here, on [border-radius] with [shadow depth].</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Patterns, Textures &amp; Gradients — backgrounds and vector accent overlays</div>
+          <div class="pattern-row">
+            <div class="frame pattern-frame stripes"><span class="frame-label">Stripe</span></div>
+            <div class="frame pattern-frame dots"><span class="frame-label">Dot grid</span></div>
+            <div class="frame pattern-frame wash"><span class="frame-label">Gradient wash</span></div>
+            <div class="frame pattern-frame geo"><span class="frame-label">Geometric accent</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PRINT & PHYSICAL APPLICATIONS ============ -->
+    <section class="module" id="print-physical">
+      <div class="module-head">
+        <div>
+          <div class="module-num">08</div>
+          <h2>Print &amp; Physical Applications</h2>
+        </div>
+        <span class="badge badge--optional">Optional</span>
+      </div>
+      <p class="module-dek">Everything the brand touches off-screen — stationery, marketing materials, packaged goods, and the spaces it occupies in the physical world.</p>
+
+      <div class="module-body">
+        <div class="field-block">
+          <div class="field-label">Corporate Stationery — business card layouts, letterhead templates, and envelope configurations</div>
+          <div class="print-row">
+            <div class="frame letterhead-frame"><span class="frame-glyph">A4</span><span class="frame-dim">210×297mm</span></div>
+            <div class="frame bizcard-frame"><span class="frame-label">Front</span><span class="frame-glyph">Card</span></div>
+            <div class="frame bizcard-frame"><span class="frame-label">Back</span><span class="frame-glyph">Card</span></div>
+            <div class="frame envelope-frame"><span class="frame-glyph">DL</span><span class="frame-dim">220×110mm</span></div>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Marketing Collateral — layout grid frameworks for brochures, flyers, datasheets, and presentation folders</div>
+          <div class="print-row">
+            <div class="frame brochure-frame"><span class="frame-label">Tri-fold brochure</span><span class="frame-dim">297×210mm</span></div>
+            <div class="frame flyer-frame"><span class="frame-label">Flyer</span><span class="frame-dim">A5</span></div>
+            <div class="frame datasheet-frame"><span class="frame-label">Datasheet</span><span class="frame-dim">Letter</span></div>
+            <div class="frame folder-frame"><span class="frame-label">Presentation folder</span><span class="frame-dim">9×12in</span></div>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Packaging &amp; Merchandise — product packaging, labels, apparel, and promotional swag</div>
+          <div class="print-row" style="margin-bottom:14px">
+            <div class="frame package-frame"><span class="frame-label">Packaging</span><span class="frame-glyph">Box</span></div>
+            <div class="frame label-frame"><span class="frame-label">Product label</span></div>
+          </div>
+          <div class="merch-row">
+            <div class="frame merch-frame tee"><span class="frame-label">T-shirt</span><span class="frame-glyph">◇</span></div>
+            <div class="frame merch-frame cap"><span class="frame-label">Cap</span><span class="frame-glyph">◇</span></div>
+            <div class="frame merch-frame tote"><span class="frame-label">Tote bag</span><span class="frame-glyph">◇</span></div>
+            <div class="frame merch-frame mug"><span class="frame-label">Mug</span><span class="frame-glyph">◇</span></div>
+            <div class="frame merch-frame bottle"><span class="frame-label">Water bottle</span><span class="frame-glyph">◇</span></div>
+            <div class="frame merch-frame banner"><span class="frame-label">Banner</span><span class="frame-glyph">◇</span></div>
+            <div class="frame merch-frame pen"><span class="frame-label">Pen</span><span class="frame-glyph">◇</span></div>
+          </div>
+          <div class="type-chips">
+            <span class="trait-chip">Embroidery</span>
+            <span class="trait-chip">Screen printing</span>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Signage &amp; Spatial Design — exterior building signage, indoor office branding, trade show booths, and vehicle wraps</div>
+          <div class="print-row">
+            <div class="frame exterior-sign-frame"><span class="frame-label">Exterior signage</span><span class="frame-glyph">Sign</span></div>
+            <div class="frame office-brand-frame"><span class="frame-label">Indoor / office branding</span><span class="frame-glyph">Wall</span></div>
+            <div class="frame booth-frame"><span class="frame-label">Trade show — roll-up</span></div>
+            <div class="frame vehicle-frame"><span class="frame-label">Vehicle wrap</span><span class="frame-glyph">Wrap</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ DIGITAL & TEMPLATE ASSETS ============ -->
+    <section class="module" id="digital-template">
+      <div class="module-head">
+        <div>
+          <div class="module-num">09</div>
+          <h2>Digital &amp; Template Assets</h2>
+        </div>
+        <span class="badge badge--optional">Optional</span>
+      </div>
+      <p class="module-dek">Every recurring digital surface the brand fills in — product screens, the site, paid placements, social, and the everyday documents staff send out.</p>
+
+      <div class="module-body">
+        <div class="field-block">
+          <div class="field-label">App Templates — screen frames across device sizes</div>
+          <div class="device-row">
+            <div class="frame device-frame phone"><span class="frame-label">Phone</span><span class="frame-glyph">◇</span></div>
+            <div class="frame device-frame tablet"><span class="frame-label">Tablet</span><span class="frame-glyph">◇</span></div>
+            <div class="frame device-frame desktop"><span class="frame-label">Desktop</span><span class="frame-glyph">◇</span></div>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Web Templates — site frames in light and dark mode</div>
+          <div class="theme-pair">
+            <div class="browser-shell">
+              <div class="browser-chrome"><span></span><span></span><span></span></div>
+              <div class="frame"><span class="frame-label">Light mode</span><span class="frame-glyph">Site</span></div>
+            </div>
+            <div class="browser-shell dark-demo">
+              <div class="browser-chrome"><span></span><span></span><span></span></div>
+              <div class="frame"><span class="frame-label">Dark mode</span><span class="frame-glyph">Site</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Online Ads — standard IAB banner sizes</div>
+          <div class="ad-row">
+            <div class="frame ad-frame leaderboard"><span class="frame-glyph">Leaderboard</span><span class="frame-dim">728×90</span></div>
+            <div class="frame ad-frame mpu"><span class="frame-glyph">MPU</span><span class="frame-dim">300×250</span></div>
+            <div class="frame ad-frame square"><span class="frame-glyph">Square</span><span class="frame-dim">250×250</span></div>
+            <div class="frame ad-frame skyscraper"><span class="frame-glyph" style="writing-mode:vertical-rl">Skyscraper</span><span class="frame-dim">160×600</span></div>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Social Media Kit — grid layouts, profile templates, banner dimensions, and story overlays</div>
+          <div class="print-row">
+            <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+              <div class="frame avatar-frame"><span class="frame-glyph">◆</span></div>
+              <span style="font-size:0.76rem; color:var(--ink-dim);">Profile picture</span>
+            </div>
+            <div class="frame label-frame"><span class="frame-label">Cover / banner</span></div>
+            <div class="frame package-frame"><span class="frame-label">Post grid</span><span class="frame-glyph">1:1</span></div>
+            <div class="frame story-frame"><span class="frame-label">Story</span><div class="story-safezone"></div></div>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Email Marketing &amp; Signatures — HTML newsletter structure and staff signatures</div>
+          <div class="print-row">
+            <div class="frame newsletter-frame">
+              <span class="frame-label">Newsletter</span>
+              <div class="wireframe-block header"></div>
+              <div class="wireframe-block hero"></div>
+              <div class="wireframe-block copy"></div>
+              <div class="wireframe-block copy"></div>
+              <div class="wireframe-block cta"></div>
+              <div class="wireframe-block footer"></div>
+            </div>
+            <div class="frame signature-frame">
+              <span class="frame-label">Signature</span>
+              <div class="mark"></div>
+              <div class="lines"><span style="width:70%"></span><span style="width:50%"></span><span style="width:60%"></span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Presentation Decks — master slide standards for PowerPoint, Keynote, or Google Slides</div>
+          <div class="print-row">
+            <div class="frame slide-frame title"><span class="frame-label">Title slide</span><span class="frame-glyph">16:9</span></div>
+            <div class="frame slide-frame content">
+              <span class="frame-label">Content slide</span>
+              <div class="wireframe-block head"></div>
+              <div class="wireframe-block line" style="width:82%"></div>
+              <div class="wireframe-block line" style="width:70%"></div>
+              <div class="wireframe-block line" style="width:75%"></div>
+            </div>
+            <div class="frame slide-frame divider"><span class="frame-label">Section divider</span><span class="frame-glyph">16:9</span></div>
+          </div>
+          <div class="type-specs" style="margin-top:14px">
+            <div class="spec-row"><span class="spec-k">Aspect ratio</span><span class="spec-v static">[16:9 widescreen]</span></div>
+            <div class="spec-row"><span class="spec-k">Safe margin</span><span class="spec-v static">[5% edge padding]</span></div>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label">Document Templates — invoice layouts, proposal frameworks, and technical report sheets</div>
+          <div class="print-row">
+            <div class="frame letterhead-frame"><span class="frame-label">Invoice</span><span class="frame-glyph">Doc</span></div>
+            <div class="frame letterhead-frame"><span class="frame-label">Proposal</span><span class="frame-glyph">Doc</span></div>
+            <div class="frame letterhead-frame"><span class="frame-label">Technical report</span><span class="frame-glyph">Doc</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      Master template — duplicate per client, keep core modules 03–05, scope 01–02 and 06–09 as needed. <span class="mono">Rev. 01</span>
+    </footer>
+  </main>
+</div>
+
+<script>
+(function () {
+  try {
+    document.querySelectorAll('button.copy').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var val = btn.getAttribute('data-copy');
+        var label = btn.querySelector('.lbl');
+        var target = label || btn;
+        navigator.clipboard.writeText(val).then(function () {
+          var original = target.textContent;
+          target.textContent = 'Copied';
+          setTimeout(function () { target.textContent = original; }, 1200);
+        }).catch(function () {});
+      });
+    });
+  } catch (e) {}
+
+  try {
+    var navToggle = document.querySelector('.nav-toggle');
+    var navClose = document.querySelector('.nav-close');
+    var navEl = document.querySelector('.nav');
+    var navBackdrop = document.querySelector('.nav-backdrop');
+
+    function openNav() {
+      navEl.classList.add('is-open');
+      navBackdrop.classList.add('is-open');
+      navToggle.setAttribute('aria-expanded', 'true');
+      document.documentElement.classList.add('nav-locked');
+    }
+    function closeNav() {
+      navEl.classList.remove('is-open');
+      navBackdrop.classList.remove('is-open');
+      navToggle.setAttribute('aria-expanded', 'false');
+      document.documentElement.classList.remove('nav-locked');
+    }
+
+    if (navToggle && navEl && navBackdrop) {
+      navToggle.addEventListener('click', openNav);
+      navClose.addEventListener('click', closeNav);
+      navBackdrop.addEventListener('click', closeNav);
+      navEl.querySelectorAll('.nav-link').forEach(function (link) {
+        link.addEventListener('click', closeNav);
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeNav();
+      });
+      window.addEventListener('resize', function () {
+        if (window.innerWidth > 880) closeNav();
+      });
+    }
+  } catch (e) {}
+
+  try {
+    document.querySelectorAll('.color-tabs').forEach(function (tabs) {
+      var wrap = tabs.parentElement;
+      var panels = wrap.querySelectorAll('.color-panel');
+      tabs.querySelectorAll('.color-tab-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var target = btn.getAttribute('data-color-tab');
+          tabs.querySelectorAll('.color-tab-btn').forEach(function (b) {
+            var active = b === btn;
+            b.classList.toggle('is-active', active);
+            b.setAttribute('aria-selected', active ? 'true' : 'false');
+          });
+          panels.forEach(function (p) {
+            p.hidden = p.getAttribute('data-color-panel') !== target;
+          });
+        });
+      });
+    });
+  } catch (e) {}
+
+  try {
+    document.querySelectorAll('.mode-toggle').forEach(function (group) {
+      var block = group.closest('.field-block');
+      var preview = block ? block.querySelector('.color-preview') : null;
+      if (!preview) return;
+      group.querySelectorAll('.mode-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          preview.setAttribute('data-mode', btn.getAttribute('data-mode-btn'));
+          group.querySelectorAll('.mode-btn').forEach(function (b) {
+            b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+          });
+        });
+      });
+    });
+  } catch (e) {}
+
+  try {
+    var links = Array.prototype.slice.call(document.querySelectorAll('[data-nav]'));
+    var sections = links.map(function (l) { return document.querySelector(l.getAttribute('href')); });
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var idx = sections.indexOf(entry.target);
+        if (idx === -1) return;
+        if (entry.isIntersecting) {
+          links.forEach(function (l) { l.classList.remove('is-active'); });
+          links[idx].classList.add('is-active');
+        }
+      });
+    }, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
+    sections.forEach(function (s) { if (s) observer.observe(s); });
+  } catch (e) {}
+})();
+</script>

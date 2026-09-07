@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Basecamp — Fervent Digital Marketing</title>
+<meta name="robots" content="noindex, nofollow" />
+<link rel="canonical" href="https://www.ferventdigital.co.za/basecamp.html" />
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+<link rel="apple-touch-icon" href="assets/favicon.svg" />
+<link rel="stylesheet" href="styles.css" />
+<style>
+  .basecamp-main { padding: 64px 0 96px; }
+  .basecamp-eyebrow { color: var(--ink-mute); font-size: 0.9rem; letter-spacing: 0.04em; text-transform: uppercase; }
+  .basecamp-title { font-size: clamp(2rem, 4vw, 2.75rem); margin: 8px 0 12px; color: var(--ink); }
+  .basecamp-lead { color: var(--ink-soft); max-width: 60ch; margin-bottom: 40px; }
+  .client-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+  .client-card {
+    display: block; padding: 24px; border: 1px solid var(--line); border-radius: 12px;
+    background: var(--bg-soft); text-decoration: none; transition: border-color 0.15s ease, transform 0.15s ease;
+  }
+  .client-card:hover { border-color: var(--cyan); transform: translateY(-2px); }
+  .client-card.is-pending { opacity: 0.6; pointer-events: none; }
+  .client-name { font-size: 1.15rem; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+  .client-meta { font-size: 0.85rem; color: var(--ink-mute); margin-bottom: 12px; }
+  .client-status {
+    display: inline-block; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.03em;
+    text-transform: uppercase; padding: 3px 10px; border-radius: 999px;
+  }
+  .client-status.status-live { background: var(--cyan-soft); color: var(--navy); }
+  .client-status.status-pending { background: var(--line); color: var(--ink-mute); }
+  .client-search {
+    width: 100%; max-width: 360px; padding: 10px 14px; margin-bottom: 28px;
+    border: 1px solid var(--line-strong); border-radius: 8px; font-size: 0.95rem;
+    color: var(--ink); background: var(--bg);
+  }
+  .client-search:focus { outline: none; border-color: var(--cyan); }
+  .client-card.is-hidden { display: none; }
+  .client-empty { color: var(--ink-mute); display: none; }
+  .client-empty.is-visible { display: block; }
+</style>
+</head>
+<body class="legal">
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<header class="nav" role="banner">
+  <div class="wrap nav-inner">
+    <a href="index.html" class="brand" aria-label="Fervent Digital Marketing — home">
+      <img class="brand-logo" src="assets/logo.svg" alt="Fervent Digital Marketing logo" width="200" height="63" />
+    </a>
+  </div>
+</header>
+
+<main id="main-content" class="basecamp-main">
+  <div class="wrap">
+    <p class="basecamp-eyebrow">Basecamp</p>
+    <h1 class="basecamp-title">Client brand books</h1>
+    <p class="basecamp-lead">
+      Private hub for active client brand spec books. Each client has their own unlisted page —
+      share the direct link with them; nothing here is indexed or linked from the public site.
+    </p>
+
+    <input
+      type="search"
+      class="client-search"
+      id="client-search"
+      placeholder="Search clients…"
+      aria-label="Search clients"
+    />
+
+    <div class="client-grid" id="client-grid">
+      <a href="infra.html" class="client-card is-pending" data-name="infra nelson founder">
+        <span class="client-name">Infra</span>
+        <span class="client-meta">Nelson · Founder</span>
+        <br />
+        <span class="client-status status-pending">In progress</span>
+      </a>
+    </div>
+    <p class="client-empty" id="client-empty">No clients match that search.</p>
+  </div>
+</main>
+
+<script>
+  (function () {
+    var input = document.getElementById('client-search');
+    var cards = Array.prototype.slice.call(document.querySelectorAll('.client-card'));
+    var empty = document.getElementById('client-empty');
+
+    input.addEventListener('input', function () {
+      var q = input.value.trim().toLowerCase();
+      var visibleCount = 0;
+
+      cards.forEach(function (card) {
+        var match = card.dataset.name.indexOf(q) !== -1;
+        card.classList.toggle('is-hidden', !match);
+        if (match) visibleCount++;
+      });
+
+      empty.classList.toggle('is-visible', visibleCount === 0);
+    });
+  })();
+</script>
+
+</body>
+</html>

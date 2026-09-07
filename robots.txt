@@ -3,7 +3,8 @@
 
 User-agent: *
 Allow: /
-Disallow:
+Disallow: /basecamp.html
+Disallow: /infra.html
 
 # Sitemap location
 Sitemap: https://www.ferventdigital.co.za/sitemap.xml
