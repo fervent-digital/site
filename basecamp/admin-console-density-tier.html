@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Infra — Admin Console Density Tier</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@700;800;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #17181A;           /* Deep Space */
+    --surface: #2A1C36;      /* Event Horizon — elevated panels */
+    --surface-2: #483155;    /* Surface/Container — inputs, chips */
+    --line: #563B5A;         /* Border / Divider */
+    --ink: #ECE2EE;          /* Text Primary — Mist Lavender */
+    --ink-dim: #AF969C;      /* Text Secondary */
+    --accent: #ED423F;       /* Coral Crimson — actions */
+    --accent-2: #F0A830;     /* Amber Node — decoration only, never text */
+    --micro: #EEF4B8;        /* Electric Citron — status / hover */
+    --danger: #ED423F;
+    --radius: 6px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Barlow', system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  .mono { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-variant-numeric: tabular-nums; }
+  .shell { max-width: 1180px; margin: 0 auto; padding: 48px 32px 80px; }
+
+  header.page-head { margin-bottom: 40px; }
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+    margin-bottom: 10px;
+  }
+  h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    font-size: clamp(2rem, 5vw, 3rem);
+    margin: 0 0 12px;
+  }
+  .page-dek { color: var(--ink-dim); max-width: 62ch; font-size: 0.98rem; margin: 0; }
+  .badge-row { display: flex; gap: 8px; margin-top: 18px; flex-wrap: wrap; }
+  .pill {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    color: var(--ink-dim);
+  }
+  .pill.on { background: var(--surface-2); color: var(--ink); border-color: var(--surface-2); }
+
+  section.block { margin-bottom: 48px; }
+  .block-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 18px; }
+  h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 1.4rem;
+    margin: 0;
+  }
+  .block-dek { color: var(--ink-dim); font-size: 0.88rem; margin: 6px 0 0; max-width: 68ch; }
+  .demo-surface {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 28px;
+  }
+  /* ---------- .table ---------- */
+  .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); }
+  .table { width: 100%; border-collapse: collapse; font-size: 0.84rem; min-width: 560px; }
+  .table__head th {
+    text-align: left;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+    font-weight: 500;
+    padding: 12px 16px;
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--line);
+  }
+  .table__row td { padding: 12px 16px; border-bottom: 1px solid var(--line); color: var(--ink); }
+  .table__row:last-child td { border-bottom: none; }
+  .table__cell--num { font-family: 'IBM Plex Mono', monospace; text-align: right; }
+  .status-dot { display: inline-flex; align-items: center; gap: 7px; }
+  .status-dot::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--micro); flex-shrink: 0; }
+  .status-dot.warn::before { background: var(--accent-2); }
+  .status-dot.down::before { background: var(--danger); }
+
+  /* ---------- .empty ---------- */
+  .empty { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 48px 24px; color: var(--ink-dim); }
+  .empty__icon { color: var(--ink-dim); margin-bottom: 14px; opacity: 0.7; }
+  .empty__title { font-weight: 600; color: var(--ink); margin-bottom: 6px; font-size: 0.95rem; }
+  .empty__body { font-size: 0.84rem; max-width: 40ch; }
+
+  /* ---------- icons ---------- */
+  .icon-row { display: flex; flex-wrap: wrap; gap: 22px; }
+  .icon-sample { display: flex; flex-direction: column; align-items: center; gap: 8px; font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; color: var(--ink-dim); }
+  .icon-sample svg { color: var(--ink); }
+  .icon-sample.accent2 svg { color: var(--accent-2); }
+
+  /* ---------- spec reference ---------- */
+  .spec-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+  .spec-table td { padding: 10px 0; border-top: 1px solid var(--line); vertical-align: top; }
+  .spec-table tr:first-child td { border-top: none; }
+  .spec-table td:first-child { font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem; color: var(--ink); width: 42%; padding-right: 16px; }
+  .spec-table td:last-child { color: var(--ink-dim); }
+
+  .note-list { display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
+  .note-row { display: flex; justify-content: space-between; gap: 16px; font-size: 0.84rem; padding: 10px 0; border-top: 1px solid var(--line); }
+  .note-row:first-child { border-top: none; }
+  .note-row .k { color: var(--ink); }
+  .note-row .v { color: var(--ink-dim); text-align: right; }
+
+  footer { margin-top: 60px; padding-top: 24px; border-top: 1px solid var(--line); color: var(--ink-dim); font-size: 0.78rem; }
+  footer a { color: var(--accent); }
+  button.copy.block-copy-btn { all: unset; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; letter-spacing: 0.04em; text-transform: uppercase; padding: 6px 12px; border-radius: 4px; border: 1px solid var(--line); color: var(--ink-dim); flex-shrink: 0; transition: border-color .15s ease, color .15s ease; }
+  button.copy.block-copy-btn:hover, button.copy.block-copy-btn:focus-visible { border-color: var(--accent); color: var(--accent); outline: none; }
+
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <header class="page-head">
+    <div class="eyebrow">Infra — Brand Specification Book · Module 07 Extension</div>
+    <h1>Admin Console Density Tier</h1>
+    <p class="page-dek">A dense, token-only component layer for the operator console — the internal tool the team uses to run and monitor server modules. Admin paths only: the storefront keeps its own frozen component API untouched. Every value below is a brand token; component CSS never names a raw hex.</p>
+    <div class="badge-row">
+      <span class="pill on">Admin paths only</span>
+      <span class="pill">Storefront API frozen</span>
+      <span class="pill">Rev. 02 · 2026-09-15</span>
+    </div>
+    <p class="page-dek" style="margin-top:18px;">Panel and Fields &amp; Select have graduated into Infra.html's copy-ready UI Components library and are removed from this page. Table and Empty State below now have their own "Copy code" buttons too — Icons and the token reference stay reference-only, since they document a system rather than one paste-able block.</p>
+  </header>
+
+  <section class="block">
+    <div class="block-head">
+      <div>
+        <h2>Table</h2>
+        <p class="block-dek">.table / .table__head / .table__row / .table__cell — .table__cell--num renders monospace and right-aligned, so figures line up down the column.</p>
+      </div>
+      <button type="button" class="copy block-copy-btn" data-copy="&lt;style&gt;
+.infra-table-wrap { overflow-x: auto; border: 1px solid #563B5A; border-radius: 6px; -webkit-overflow-scrolling: touch; }
+.infra-table { width: 100%; border-collapse: collapse; font-size: 0.84rem; min-width: 560px; font-family: 'IBM Plex Mono', ui-monospace, monospace; }
+.infra-table thead th { text-align: left; font-size: 0.66rem; letter-spacing: 0.08em; text-transform: uppercase; color: #AF969C; font-weight: 500; padding: 12px 16px; background: #483155; border-bottom: 1px solid #563B5A; }
+.infra-table td { padding: 12px 16px; border-bottom: 1px solid #563B5A; color: #ECE2EE; }
+.infra-table tr:last-child td { border-bottom: none; }
+.infra-table .num { text-align: right; }
+.infra-status-dot { display: inline-flex; align-items: center; gap: 7px; }
+.infra-status-dot::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: #EEF4B8; flex-shrink: 0; }
+.infra-status-dot.warn::before { background: #F0A830; }
+.infra-status-dot.down::before { background: #ED423F; }
+&lt;/style&gt;
+&lt;div class=&quot;infra-table-wrap&quot;&gt;
+  &lt;table class=&quot;infra-table&quot;&gt;
+    &lt;thead&gt;&lt;tr&gt;&lt;th&gt;Module&lt;/th&gt;&lt;th&gt;Status&lt;/th&gt;&lt;th&gt;Region&lt;/th&gt;&lt;th style=&quot;text-align:right;&quot;&gt;Uptime&lt;/th&gt;&lt;th style=&quot;text-align:right;&quot;&gt;Latency&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;tr&gt;&lt;td&gt;IR-402&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;infra-status-dot&quot;&gt;Active&lt;/span&gt;&lt;/td&gt;&lt;td&gt;eu-west&lt;/td&gt;&lt;td class=&quot;num&quot;&gt;99.98%&lt;/td&gt;&lt;td class=&quot;num&quot;&gt;12 ms&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;IR-198&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;infra-status-dot warn&quot;&gt;Degraded&lt;/span&gt;&lt;/td&gt;&lt;td&gt;us-east&lt;/td&gt;&lt;td class=&quot;num&quot;&gt;98.41%&lt;/td&gt;&lt;td class=&quot;num&quot;&gt;64 ms&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;IR-071&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;infra-status-dot down&quot;&gt;Offline&lt;/span&gt;&lt;/td&gt;&lt;td&gt;ap-south&lt;/td&gt;&lt;td class=&quot;num&quot;&gt;0.00%&lt;/td&gt;&lt;td class=&quot;num&quot;&gt;—&lt;/td&gt;&lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+&lt;/div&gt;"><span class="lbl">Copy code</span></button>
+    </div>
+    <div class="table-wrap">
+      <table class="table">
+        <thead class="table__head">
+          <tr><th>Module</th><th>Status</th><th>Region</th><th style="text-align:right;">Uptime</th><th style="text-align:right;">Latency</th></tr>
+        </thead>
+        <tbody>
+          <tr class="table__row">
+            <td class="mono">IR-402</td>
+            <td><span class="status-dot">Active</span></td>
+            <td>eu-west</td>
+            <td class="table__cell--num">99.98%</td>
+            <td class="table__cell--num">12 ms</td>
+          </tr>
+          <tr class="table__row">
+            <td class="mono">IR-198</td>
+            <td><span class="status-dot warn">Degraded</span></td>
+            <td>us-east</td>
+            <td class="table__cell--num">98.41%</td>
+            <td class="table__cell--num">64 ms</td>
+          </tr>
+          <tr class="table__row">
+            <td class="mono">IR-071</td>
+            <td><span class="status-dot down">Offline</span></td>
+            <td>ap-south</td>
+            <td class="table__cell--num">0.00%</td>
+            <td class="table__cell--num">—</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="block-head">
+      <div>
+        <h2>Empty State</h2>
+        <p class="block-dek">.empty / .empty__icon / .empty__title / .empty__body — icon rendered at 24px, always paired with a title and one line of body copy.</p>
+      </div>
+      <button type="button" class="copy block-copy-btn" data-copy="&lt;style&gt;
+.infra-empty { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 48px 24px; color: #AF969C; font-family: 'Barlow', sans-serif; }
+.infra-empty svg { color: #AF969C; margin-bottom: 14px; opacity: 0.7; }
+.infra-empty-title { font-weight: 600; color: #ECE2EE; margin-bottom: 6px; font-size: 0.95rem; }
+.infra-empty-body { font-size: 0.84rem; max-width: 40ch; margin: 0 auto; }
+&lt;/style&gt;
+&lt;div class=&quot;infra-empty&quot;&gt;
+  &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;24&quot; height=&quot;24&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;&gt;&lt;ellipse cx=&quot;12&quot; cy=&quot;5&quot; rx=&quot;9&quot; ry=&quot;3&quot;/&gt;&lt;path d=&quot;M3 5V19A9 3 0 0 0 21 19V5&quot;/&gt;&lt;path d=&quot;M3 12A9 3 0 0 0 21 12&quot;/&gt;&lt;/svg&gt;
+  &lt;div class=&quot;infra-empty-title&quot;&gt;No modules provisioned yet&lt;/div&gt;
+  &lt;div class=&quot;infra-empty-body&quot;&gt;Spin up your first dedicated server module to see it listed here.&lt;/div&gt;
+&lt;/div&gt;"><span class="lbl">Copy code</span></button>
+    </div>
+    <div class="demo-surface" style="padding:0;">
+      <div class="empty">
+        <span class="empty__icon" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg>
+        </span>
+        <div class="empty__title">No modules provisioned yet</div>
+        <div class="empty__body">Spin up your first dedicated server module to see it listed here.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="block-head">
+      <div>
+        <h2>Icons</h2>
+        <p class="block-dek">.icon / .icon--accent2 — inline SVG, currentColor fill. Accent-2 (amber) is decoration only, never used on text or as the sole carrier of meaning.</p>
+      </div>
+    </div>
+    <div class="demo-surface">
+      <div class="icon-row">
+        <div class="icon-sample"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="8" x="2" y="2" rx="2" ry="2"/><rect width="20" height="8" x="2" y="14" rx="2" ry="2"/><line x1="6" x2="6.01" y1="6" y2="6"/><line x1="6" x2="6.01" y1="18" y2="18"/></svg>server</div>
+        <div class="icon-sample"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>check</div>
+        <div class="icon-sample"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>loader-circle</div>
+        <div class="icon-sample"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>shield</div>
+        <div class="icon-sample accent2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>triangle-alert <span style="opacity:.6">(accent-2, decorative)</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="block-head">
+      <div>
+        <h2>Class → Token Reference</h2>
+        <p class="block-dek">Every admin component's colour comes from one of these tokens. No component CSS should ever hard-code a hex.</p>
+      </div>
+    </div>
+    <div class="demo-surface">
+      <table class="spec-table">
+        <tbody>
+          <tr><td>.table / .table__head / .table__row / .table__cell</td><td>--infra-surface · --infra-line · --infra-ink-dim</td></tr>
+          <tr><td>.table__cell--num</td><td>Monospace, right-aligned</td></tr>
+          <tr><td>.empty / .empty__icon / .empty__title / .empty__body</td><td>--infra-ink-dim; icon at 24px</td></tr>
+          <tr><td>.icon / .icon--accent2</td><td>currentColor; accent-2 decoration only</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="block-head">
+      <div>
+        <h2>Implementation Notes</h2>
+      </div>
+    </div>
+    <div class="demo-surface">
+      <div class="note-list">
+        <div class="note-row"><span class="k">Admin selects</span><span class="v">Tom Select 2.6.2 (Apache-2.0) — vendored UMD, admin paths only</span></div>
+        <div class="note-row"><span class="k">Select styling</span><span class="v">Token-only overrides — zero hex; native select fallback (progressive enhancement)</span></div>
+        <div class="note-row"><span class="k">Frozen API</span><span class="v">.btn / .badge / .input call sites untouched — additive siblings only</span></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    Extracted from Infra's Graphical Assets &amp; UI module — kept as its own reference page since it's specific to the admin/operator console, not the main product surface. Part of the Infra Component Library — see also <a href="data-display.html">Data Display</a>, <a href="forms.html">Forms</a>, <a href="navigation.html">Navigation</a>, and <a href="overlays.html">Overlays</a>. <span class="mono">Rev. 02 · 2026-09-15</span>
+  </footer>
+
+</div>
+<script>
+(function () {
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+  function writeClipboard(text, onDone) {
+    if (window.navigator && navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(onDone).catch(function () { fallbackCopy(text); onDone(); });
+    } else {
+      fallbackCopy(text); onDone();
+    }
+  }
+  try {
+    document.querySelectorAll('button.copy').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var val = btn.getAttribute('data-copy');
+        var label = btn.querySelector('.lbl');
+        var target = label || btn;
+        writeClipboard(val, function () {
+          var original = target.textContent;
+          target.textContent = 'Copied';
+          setTimeout(function () { target.textContent = original; }, 1200);
+        });
+      });
+    });
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

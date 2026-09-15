@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Infra — Overlays Components</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@700;800;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #17181A; --surface: #2A1C36; --surface-2: #483155; --line: #563B5A;
+    --ink: #ECE2EE; --ink-dim: #AF969C; --accent: #ED423F; --accent-2: #F0A830;
+    --micro: #EEF4B8; --danger: #ED423F; --radius: 6px;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: 'Barlow', system-ui, sans-serif; font-size: 15px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+  .mono { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-variant-numeric: tabular-nums; }
+  .shell { max-width: 1180px; margin: 0 auto; padding: 48px 24px 80px; }
+  header.page-head { margin-bottom: 40px; }
+  .eyebrow { font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 10px; }
+  h1 { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; text-transform: uppercase; letter-spacing: 0.01em; font-size: clamp(2rem, 5vw, 3rem); margin: 0 0 12px; }
+  .page-dek { color: var(--ink-dim); max-width: 62ch; font-size: 0.98rem; margin: 0; }
+  .badge-row { display: flex; gap: 8px; margin-top: 18px; flex-wrap: wrap; }
+  .pill { font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 5px 12px; border-radius: 999px; border: 1px solid var(--line); color: var(--ink-dim); }
+  .pill.on { background: var(--surface-2); color: var(--ink); border-color: var(--surface-2); }
+  .crumbs { display: flex; align-items: center; gap: 8px; font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; color: var(--ink-dim); margin-bottom: 24px; flex-wrap: wrap; }
+  .crumbs a { color: var(--ink-dim); text-decoration: none; border-bottom: 1px solid transparent; }
+  .crumbs a:hover, .crumbs a:focus-visible { color: var(--accent); border-color: var(--accent); outline: none; }
+  section.block { margin-bottom: 56px; }
+  .block-head { margin-bottom: 18px; }
+  h2 { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; text-transform: uppercase; font-size: 1.4rem; margin: 0; }
+  .block-dek { color: var(--ink-dim); font-size: 0.88rem; margin: 6px 0 0; max-width: 68ch; }
+  .component-card { border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: var(--surface); }
+  .component-card__preview { padding: 28px; background: var(--bg); position: relative; min-height: 80px; }
+  .component-card__foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 14px; flex-wrap: wrap; }
+  .component-card__label { font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-dim); }
+  button.copy.component-copy-btn { all: unset; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; letter-spacing: 0.04em; text-transform: uppercase; padding: 6px 12px; border-radius: 4px; border: 1px solid var(--line); color: var(--ink-dim); transition: border-color .15s ease, color .15s ease; }
+  button.copy.component-copy-btn:hover, button.copy.component-copy-btn:focus-visible { border-color: var(--accent); color: var(--accent); outline: none; }
+
+  .infra-open-btn { all: unset; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; padding: 9px 18px; border-radius: 4px; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 0.8rem; font-weight: 500; background: #ED423F; color: #ECE2EE; }
+
+  /* Modal */
+  .infra-modal-backdrop { position: fixed; inset: 0; background: rgba(23,24,26,0.72); display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 100; }
+  .infra-modal-backdrop[hidden] { display: none; }
+  .infra-modal { background: #2A1C36; border: 1px solid #563B5A; border-radius: 10px; width: 100%; max-width: 420px; max-height: calc(100vh - 40px); overflow-y: auto; font-family: 'Barlow', sans-serif; }
+  .infra-modal__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 20px 20px 0; }
+  .infra-modal__title { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; text-transform: uppercase; font-size: 1.15rem; color: #ECE2EE; margin: 0; }
+  .infra-modal__close { all: unset; cursor: pointer; color: #AF969C; padding: 4px; border-radius: 4px; line-height: 0; }
+  .infra-modal__close:hover { color: #ECE2EE; }
+  .infra-modal__body { padding: 12px 20px 20px; color: #AF969C; font-size: 0.9rem; }
+  .infra-modal__foot { display: flex; justify-content: flex-end; gap: 10px; padding: 0 20px 20px; flex-wrap: wrap; }
+  .infra-modal__btn { all: unset; cursor: pointer; padding: 9px 16px; border-radius: 4px; font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem; }
+  .infra-modal__btn--ghost { border: 1px solid #563B5A; color: #ECE2EE; }
+  .infra-modal__btn--danger { background: #ED423F; color: #ECE2EE; }
+
+  /* Tooltip */
+  .infra-tooltip { position: relative; display: inline-flex; }
+  .infra-tooltip .infra-tooltip__bubble {
+    position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%) translateY(4px);
+    background: #483155; color: #ECE2EE; font-family: 'IBM Plex Mono', monospace; font-size: 0.74rem;
+    padding: 6px 10px; border-radius: 4px; white-space: nowrap; opacity: 0; pointer-events: none;
+    transition: opacity .12s ease, transform .12s ease; z-index: 10;
+  }
+  .infra-tooltip .infra-tooltip__bubble::after {
+    content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+    border: 5px solid transparent; border-top-color: #483155;
+  }
+  .infra-tooltip:hover .infra-tooltip__bubble, .infra-tooltip:focus-within .infra-tooltip__bubble {
+    opacity: 1; transform: translateX(-50%) translateY(0);
+  }
+  .infra-tooltip-trigger { all: unset; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; border: 1px solid #563B5A; color: #AF969C; }
+  .infra-tooltip-trigger:hover { color: #ECE2EE; border-color: #ECE2EE; }
+
+  /* Toast */
+  .infra-toast { display: flex; align-items: flex-start; gap: 10px; background: #2A1C36; border: 1px solid #563B5A; border-left: 3px solid #7FBF83; border-radius: 6px; padding: 12px 14px; max-width: 360px; font-family: 'Barlow', sans-serif; font-size: 0.86rem; }
+  .infra-toast svg { flex-shrink: 0; color: #7FBF83; margin-top: 1px; }
+  .infra-toast__title { font-weight: 600; color: #ECE2EE; margin-bottom: 2px; }
+  .infra-toast__body { color: #AF969C; font-size: 0.82rem; }
+
+  @media (max-width: 640px) {
+    .shell { padding: 32px 16px 64px; }
+    .component-card__preview { padding: 18px; }
+  }
+
+  footer { margin-top: 60px; padding-top: 24px; border-top: 1px solid var(--line); color: var(--ink-dim); font-size: 0.78rem; }
+  footer a { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <div class="crumbs"><a href="infra.html">Infra — Brand Specification Book</a> <span>/</span> <span>Component Library</span> <span>/</span> <span>Overlays</span></div>
+
+  <header class="page-head">
+    <div class="eyebrow">Infra — Brand Specification Book · Component Library</div>
+    <h1>Overlays</h1>
+    <p class="page-dek">Modal, tooltip, and toast — copy-ready and self-contained. The modal is centred with side padding at every width so it never touches the screen edge on mobile.</p>
+    <div class="badge-row">
+      <span class="pill on">Copy-ready</span>
+      <span class="pill">Responsive</span>
+      <span class="pill">Rev. 02 · 2026-09-15</span>
+    </div>
+  </header>
+
+  <section class="block">
+    <div class="block-head">
+      <h2>Modal / Popup</h2>
+      <p class="block-dek">Click "Open modal" to try it live — Escape or the backdrop closes it. Keeps 20px of side padding at every width, so it's never flush with the screen edge on mobile.</p>
+    </div>
+    <div class="component-card">
+      <div class="component-card__preview">
+        <button type="button" class="infra-open-btn" data-infra-modal-open="demo-modal">Open modal</button>
+
+        <div class="infra-modal-backdrop" id="demo-modal" data-infra-modal hidden>
+          <div class="infra-modal" role="dialog" aria-modal="true" aria-labelledby="demo-modal-title">
+            <div class="infra-modal__head">
+              <h3 class="infra-modal__title" id="demo-modal-title">Decommission module?</h3>
+              <button type="button" class="infra-modal__close" data-infra-modal-close aria-label="Close">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+              </button>
+            </div>
+            <div class="infra-modal__body">This permanently deletes module IR-402 and its data. This can't be undone.</div>
+            <div class="infra-modal__foot">
+              <button type="button" class="infra-modal__btn infra-modal__btn--ghost" data-infra-modal-close>Cancel</button>
+              <button type="button" class="infra-modal__btn infra-modal__btn--danger" data-infra-modal-close>Decommission</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="component-card__foot">
+        <span class="component-card__label">Modal</span>
+        <button type="button" class="copy component-copy-btn" data-copy="&lt;style&gt;
+.infra-modal-backdrop { position: fixed; inset: 0; background: rgba(23,24,26,0.72); display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 100; }
+.infra-modal-backdrop[hidden] { display: none; }
+.infra-modal { background: #2A1C36; border: 1px solid #563B5A; border-radius: 10px; width: 100%; max-width: 420px; max-height: calc(100vh - 40px); overflow-y: auto; font-family: 'Barlow', sans-serif; }
+.infra-modal__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 20px 20px 0; }
+.infra-modal__title { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; text-transform: uppercase; font-size: 1.15rem; color: #ECE2EE; margin: 0; }
+.infra-modal__close { all: unset; cursor: pointer; color: #AF969C; padding: 4px; border-radius: 4px; line-height: 0; }
+.infra-modal__close:hover { color: #ECE2EE; }
+.infra-modal__body { padding: 12px 20px 20px; color: #AF969C; font-size: 0.9rem; }
+.infra-modal__foot { display: flex; justify-content: flex-end; gap: 10px; padding: 0 20px 20px; flex-wrap: wrap; }
+.infra-modal__btn { all: unset; cursor: pointer; padding: 9px 16px; border-radius: 4px; font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem; }
+.infra-modal__btn--ghost { border: 1px solid #563B5A; color: #ECE2EE; }
+.infra-modal__btn--danger { background: #ED423F; color: #ECE2EE; }
+.infra-open-btn { all: unset; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; padding: 9px 18px; border-radius: 4px; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 0.8rem; font-weight: 500; background: #ED423F; color: #ECE2EE; }
+&lt;/style&gt;
+&lt;button type=&quot;button&quot; class=&quot;infra-open-btn&quot; data-infra-modal-open=&quot;demo-modal&quot;&gt;Open modal&lt;/button&gt;
+&lt;div class=&quot;infra-modal-backdrop&quot; id=&quot;demo-modal&quot; data-infra-modal hidden&gt;
+  &lt;div class=&quot;infra-modal&quot; role=&quot;dialog&quot; aria-modal=&quot;true&quot; aria-labelledby=&quot;demo-modal-title&quot;&gt;
+    &lt;div class=&quot;infra-modal__head&quot;&gt;
+      &lt;h3 class=&quot;infra-modal__title&quot; id=&quot;demo-modal-title&quot;&gt;Decommission module?&lt;/h3&gt;
+      &lt;button type=&quot;button&quot; class=&quot;infra-modal__close&quot; data-infra-modal-close aria-label=&quot;Close&quot;&gt;
+        &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;18&quot; height=&quot;18&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;&gt;&lt;path d=&quot;M18 6 6 18&quot;/&gt;&lt;path d=&quot;m6 6 12 12&quot;/&gt;&lt;/svg&gt;
+      &lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;infra-modal__body&quot;&gt;This permanently deletes module IR-402 and its data. This can't be undone.&lt;/div&gt;
+    &lt;div class=&quot;infra-modal__foot&quot;&gt;
+      &lt;button type=&quot;button&quot; class=&quot;infra-modal__btn infra-modal__btn--ghost&quot; data-infra-modal-close&gt;Cancel&lt;/button&gt;
+      &lt;button type=&quot;button&quot; class=&quot;infra-modal__btn infra-modal__btn--danger&quot; data-infra-modal-close&gt;Decommission&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;script&gt;
+document.querySelectorAll('[data-infra-modal-open]').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    var modal = document.getElementById(btn.getAttribute('data-infra-modal-open'));
+    if (modal) modal.hidden = false;
+  });
+});
+document.querySelectorAll('[data-infra-modal]').forEach(function (backdrop) {
+  function close() { backdrop.hidden = true; }
+  backdrop.addEventListener('click', function (e) { if (e.target === backdrop) close(); });
+  backdrop.querySelectorAll('[data-infra-modal-close]').forEach(function (btn) { btn.addEventListener('click', close); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !backdrop.hidden) close(); });
+});
+&lt;/script&gt;"><span class="lbl">Copy code</span></button>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="block-head">
+      <h2>Tooltip</h2>
+      <p class="block-dek">Hover or focus the info icon. Built with CSS only — no JS required.</p>
+    </div>
+    <div class="component-card">
+      <div class="component-card__preview">
+        <span class="infra-tooltip">
+          <button type="button" class="infra-tooltip-trigger" aria-describedby="tt1">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+          </button>
+          <span class="infra-tooltip__bubble" id="tt1" role="tooltip">Locked at 64 GB, zero shared tenancy</span>
+        </span>
+      </div>
+      <div class="component-card__foot">
+        <span class="component-card__label">Tooltip</span>
+        <button type="button" class="copy component-copy-btn" data-copy="&lt;style&gt;
+.infra-tooltip { position: relative; display: inline-flex; }
+.infra-tooltip .infra-tooltip__bubble {
+  position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%) translateY(4px);
+  background: #483155; color: #ECE2EE; font-family: 'IBM Plex Mono', monospace; font-size: 0.74rem;
+  padding: 6px 10px; border-radius: 4px; white-space: nowrap; opacity: 0; pointer-events: none;
+  transition: opacity .12s ease, transform .12s ease; z-index: 10;
+}
+.infra-tooltip .infra-tooltip__bubble::after {
+  content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+  border: 5px solid transparent; border-top-color: #483155;
+}
+.infra-tooltip:hover .infra-tooltip__bubble, .infra-tooltip:focus-within .infra-tooltip__bubble {
+  opacity: 1; transform: translateX(-50%) translateY(0);
+}
+.infra-tooltip-trigger { all: unset; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; border: 1px solid #563B5A; color: #AF969C; }
+.infra-tooltip-trigger:hover { color: #ECE2EE; border-color: #ECE2EE; }
+&lt;/style&gt;
+&lt;span class=&quot;infra-tooltip&quot;&gt;
+  &lt;button type=&quot;button&quot; class=&quot;infra-tooltip-trigger&quot; aria-describedby=&quot;tt1&quot;&gt;
+    &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;14&quot; height=&quot;14&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;&gt;&lt;circle cx=&quot;12&quot; cy=&quot;12&quot; r=&quot;10&quot;/&gt;&lt;path d=&quot;M12 16v-4&quot;/&gt;&lt;path d=&quot;M12 8h.01&quot;/&gt;&lt;/svg&gt;
+  &lt;/button&gt;
+  &lt;span class=&quot;infra-tooltip__bubble&quot; id=&quot;tt1&quot; role=&quot;tooltip&quot;&gt;Locked at 64 GB, zero shared tenancy&lt;/span&gt;
+&lt;/span&gt;"><span class="lbl">Copy code</span></button>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="block-head">
+      <h2>Toast</h2>
+      <p class="block-dek">A static example — pair with your own JS to auto-dismiss after a few seconds.</p>
+    </div>
+    <div class="component-card">
+      <div class="component-card__preview">
+        <div class="infra-toast">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+          <div>
+            <div class="infra-toast__title">Module provisioned</div>
+            <div class="infra-toast__body">IR-402 is live in eu-west.</div>
+          </div>
+        </div>
+      </div>
+      <div class="component-card__foot">
+        <span class="component-card__label">Toast</span>
+        <button type="button" class="copy component-copy-btn" data-copy="&lt;style&gt;
+.infra-toast { display: flex; align-items: flex-start; gap: 10px; background: #2A1C36; border: 1px solid #563B5A; border-left: 3px solid #7FBF83; border-radius: 6px; padding: 12px 14px; max-width: 360px; font-family: 'Barlow', sans-serif; font-size: 0.86rem; }
+.infra-toast svg { flex-shrink: 0; color: #7FBF83; margin-top: 1px; }
+.infra-toast__title { font-weight: 600; color: #ECE2EE; margin-bottom: 2px; }
+.infra-toast__body { color: #AF969C; font-size: 0.82rem; }
+&lt;/style&gt;
+&lt;div class=&quot;infra-toast&quot;&gt;
+  &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;18&quot; height=&quot;18&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;&gt;&lt;circle cx=&quot;12&quot; cy=&quot;12&quot; r=&quot;10&quot;/&gt;&lt;path d=&quot;m9 12 2 2 4-4&quot;/&gt;&lt;/svg&gt;
+  &lt;div&gt;
+    &lt;div class=&quot;infra-toast__title&quot;&gt;Module provisioned&lt;/div&gt;
+    &lt;div class=&quot;infra-toast__body&quot;&gt;IR-402 is live in eu-west.&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;"><span class="lbl">Copy code</span></button>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    Part of the Infra Component Library — see also <a href="data-display.html">Data Display</a>, <a href="forms.html">Forms</a>, <a href="navigation.html">Navigation</a>, and <a href="admin-console-density-tier.html">Density Tiers</a>. <span class="mono">Rev. 02 · 2026-09-15</span>
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+  function writeClipboard(text, onDone) {
+    if (window.navigator && navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(onDone).catch(function () { fallbackCopy(text); onDone(); });
+    } else {
+      fallbackCopy(text); onDone();
+    }
+  }
+  try {
+    document.querySelectorAll('button.copy').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var val = btn.getAttribute('data-copy');
+        var label = btn.querySelector('.lbl');
+        var target = label || btn;
+        writeClipboard(val, function () {
+          var original = target.textContent;
+          target.textContent = 'Copied';
+          setTimeout(function () { target.textContent = original; }, 1200);
+        });
+      });
+    });
+  } catch (e) {}
+
+  try {
+    document.querySelectorAll('[data-infra-modal-open]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var modal = document.getElementById(btn.getAttribute('data-infra-modal-open'));
+        if (modal) modal.hidden = false;
+      });
+    });
+    document.querySelectorAll('[data-infra-modal]').forEach(function (backdrop) {
+      function close() { backdrop.hidden = true; }
+      backdrop.addEventListener('click', function (e) { if (e.target === backdrop) close(); });
+      backdrop.querySelectorAll('[data-infra-modal-close]').forEach(function (btn) { btn.addEventListener('click', close); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !backdrop.hidden) close(); });
+    });
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

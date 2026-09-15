@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Infra — Forms Components</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@700;800;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #17181A; --surface: #2A1C36; --surface-2: #483155; --line: #563B5A;
+    --ink: #ECE2EE; --ink-dim: #AF969C; --accent: #ED423F; --accent-2: #F0A830;
+    --micro: #EEF4B8; --danger: #ED423F; --radius: 6px;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: 'Barlow', system-ui, sans-serif; font-size: 15px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+  .mono { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-variant-numeric: tabular-nums; }
+  .shell { max-width: 1180px; margin: 0 auto; padding: 48px 24px 80px; }
+  header.page-head { margin-bottom: 40px; }
+  .eyebrow { font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 10px; }
+  h1 { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; text-transform: uppercase; letter-spacing: 0.01em; font-size: clamp(2rem, 5vw, 3rem); margin: 0 0 12px; }
+  .page-dek { color: var(--ink-dim); max-width: 62ch; font-size: 0.98rem; margin: 0; }
+  .badge-row { display: flex; gap: 8px; margin-top: 18px; flex-wrap: wrap; }
+  .pill { font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 5px 12px; border-radius: 999px; border: 1px solid var(--line); color: var(--ink-dim); }
+  .pill.on { background: var(--surface-2); color: var(--ink); border-color: var(--surface-2); }
+  .crumbs { display: flex; align-items: center; gap: 8px; font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; color: var(--ink-dim); margin-bottom: 24px; flex-wrap: wrap; }
+  .crumbs a { color: var(--ink-dim); text-decoration: none; border-bottom: 1px solid transparent; }
+  .crumbs a:hover, .crumbs a:focus-visible { color: var(--accent); border-color: var(--accent); outline: none; }
+  section.block { margin-bottom: 56px; }
+  .block-head { margin-bottom: 18px; }
+  h2 { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; text-transform: uppercase; font-size: 1.4rem; margin: 0; }
+  .block-dek { color: var(--ink-dim); font-size: 0.88rem; margin: 6px 0 0; max-width: 68ch; }
+  .component-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+  .component-card { border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: var(--surface); }
+  .component-card__preview { padding: 28px; background: var(--bg); }
+  .component-card__foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 14px; flex-wrap: wrap; }
+  .component-card__label { font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-dim); }
+  button.copy.component-copy-btn { all: unset; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; letter-spacing: 0.04em; text-transform: uppercase; padding: 6px 12px; border-radius: 4px; border: 1px solid var(--line); color: var(--ink-dim); transition: border-color .15s ease, color .15s ease; }
+  button.copy.component-copy-btn:hover, button.copy.component-copy-btn:focus-visible { border-color: var(--accent); color: var(--accent); outline: none; }
+
+  .infra-field { display: flex; flex-direction: column; gap: 6px; max-width: 320px; font-family: 'IBM Plex Mono', ui-monospace, monospace; }
+  .infra-field-label { font-size: 0.78rem; font-weight: 600; color: #ECE2EE; }
+  .infra-field-hint { font-size: 0.74rem; color: #AF969C; }
+  .infra-field-error { font-size: 0.74rem; color: #ED423F; display: flex; align-items: center; gap: 5px; }
+  .infra-input, .infra-textarea { width: 100%; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 0.86rem; color: #ECE2EE; background: #2A1C36; border: 1px solid #563B5A; border-radius: 4px; padding: 9px 12px; }
+  .infra-input::placeholder, .infra-textarea::placeholder { color: #AF969C; opacity: 0.7; }
+  .infra-input:focus, .infra-textarea:focus { outline: none; border-color: #ED423F; }
+  .infra-field--error .infra-input { border-color: #ED423F; }
+  .infra-textarea { min-height: 96px; resize: vertical; }
+  .infra-select-wrap { position: relative; max-width: 320px; font-family: 'IBM Plex Mono', ui-monospace, monospace; }
+  .infra-select { width: 100%; appearance: none; -webkit-appearance: none; font-size: 0.86rem; color: #ECE2EE; background: #2A1C36; border: 1px solid #563B5A; border-radius: 4px; padding: 9px 34px 9px 12px; cursor: pointer; }
+  .infra-select:focus { outline: none; border-color: #ED423F; }
+  .infra-select-wrap svg { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none; color: #AF969C; }
+  .infra-btn { display: inline-flex; align-items: center; justify-content: center; padding: 9px 18px; border-radius: 4px; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 0.8rem; font-weight: 500; letter-spacing: 0.02em; cursor: pointer; border: 1px solid transparent; transition: opacity .15s ease; }
+  .infra-btn:hover { opacity: 0.86; }
+  .infra-btn--primary { background: #ECE2EE; color: #17181A; }
+  .infra-btn--secondary { background: transparent; border-color: #ECE2EE; color: #ECE2EE; }
+  .infra-btn--accent { background: #ED423F; color: #ECE2EE; }
+  .infra-btn[disabled] { opacity: 0.4; cursor: not-allowed; }
+
+  .infra-checkbox { display: inline-flex; align-items: center; gap: 10px; cursor: pointer; font-family: 'Barlow', sans-serif; font-size: 0.9rem; color: #ECE2EE; }
+  .infra-checkbox input { position: absolute; opacity: 0; width: 0; height: 0; }
+  .infra-checkbox-box { width: 18px; height: 18px; border: 1.5px solid #563B5A; border-radius: 4px; background: #2A1C36; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background .15s, border-color .15s; }
+  .infra-checkbox input:checked + .infra-checkbox-box { background: #ED423F; border-color: #ED423F; }
+  .infra-checkbox-box svg { opacity: 0; transition: opacity .1s; color: #ECE2EE; width: 12px; height: 12px; }
+  .infra-checkbox input:checked + .infra-checkbox-box svg { opacity: 1; }
+  .infra-checkbox input:focus-visible + .infra-checkbox-box { outline: 2px solid #ED423F; outline-offset: 2px; }
+
+  .infra-switch { position: relative; display: inline-flex; align-items: center; gap: 10px; cursor: pointer; font-family: 'Barlow', sans-serif; font-size: 0.9rem; color: #ECE2EE; }
+  .infra-switch input { position: absolute; opacity: 0; width: 0; height: 0; }
+  .infra-switch-track { width: 40px; height: 22px; background: #563B5A; border-radius: 999px; position: relative; transition: background .15s ease; flex-shrink: 0; }
+  .infra-switch-track::after { content: ''; position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; background: #ECE2EE; border-radius: 50%; transition: transform .15s ease; }
+  .infra-switch input:checked + .infra-switch-track { background: #ED423F; }
+  .infra-switch input:checked + .infra-switch-track::after { transform: translateX(18px); }
+  .infra-switch input:focus-visible + .infra-switch-track { outline: 2px solid #ED423F; outline-offset: 2px; }
+
+  @media (max-width: 640px) {
+    .shell { padding: 32px 16px 64px; }
+    .component-card__preview { padding: 18px; }
+    .infra-field, .infra-select-wrap { max-width: 100%; }
+  }
+
+  footer { margin-top: 60px; padding-top: 24px; border-top: 1px solid var(--line); color: var(--ink-dim); font-size: 0.78rem; }
+  footer a { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <div class="crumbs"><a href="infra.html">Infra — Brand Specification Book</a> <span>/</span> <span>Component Library</span> <span>/</span> <span>Forms</span></div>
+
+  <header class="page-head">
+    <div class="eyebrow">Infra — Brand Specification Book · Component Library</div>
+    <h1>Forms</h1>
+    <p class="page-dek">Every input type, copy-ready and self-contained. Paste any block below straight into your project — resize fields, relabel buttons, add your own options. Responsive down to a 375px viewport.</p>
+    <div class="badge-row">
+      <span class="pill on">Copy-ready</span>
+      <span class="pill">Responsive</span>
+      <span class="pill">Rev. 02 · 2026-09-15</span>
+    </div>
+  </header>
+
+  <section class="block">
+    <div class="block-head">
+      <h2>Inputs</h2>
+      <p class="block-dek">Select, text field, error state, and textarea — identical metrics so a form never visually stutters between them.</p>
+    </div>
+    <div class="component-grid">
+
+      <div class="component-card">
+        <div class="component-card__preview">
+          <div class="infra-select-wrap">
+            <select class="infra-select">
+              <option>eu-west (Frankfurt)</option>
+              <option>us-east (Virginia)</option>
+              <option>ap-south (Mumbai)</option>
+              <option>af-south (Cape Town)</option>
+            </select>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+          </div>
+        </div>
+        <div class="component-card__foot">
+          <span class="component-card__label">Select / Dropdown</span>
+          <button type="button" class="copy component-copy-btn" data-copy="&lt;style&gt;
+.infra-select-wrap { position: relative; max-width: 320px; font-family: 'IBM Plex Mono', ui-monospace, monospace; }
+.infra-select { width: 100%; appearance: none; -webkit-appearance: none; font-size: 0.86rem; color: #ECE2EE; background: #2A1C36; border: 1px solid #563B5A; border-radius: 4px; padding: 9px 34px 9px 12px; cursor: pointer; }
+.infra-select:focus { outline: none; border-color: #ED423F; }
+.infra-select-wrap svg { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none; color: #AF969C; }
+&lt;/style&gt;
+&lt;div class=&quot;infra-select-wrap&quot;&gt;
+  &lt;select class=&quot;infra-select&quot;&gt;
+    &lt;option&gt;eu-west (Frankfurt)&lt;/option&gt;
+    &lt;option&gt;us-east (Virginia)&lt;/option&gt;
+    &lt;option&gt;ap-south (Mumbai)&lt;/option&gt;
+    &lt;option&gt;af-south (Cape Town)&lt;/option&gt;
+  &lt;/select&gt;
+  &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;16&quot; height=&quot;16&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; aria-hidden=&quot;true&quot;&gt;&lt;path d=&quot;m6 9 6 6 6-6&quot;/&gt;&lt;/svg&gt;
+&lt;/div&gt;"><span class="lbl">Copy code</span></button>
+        </div>
+      </div>
+
+      <div class="component-card">
+        <div class="component-card__preview">
+          <div class="infra-field">
+            <label class="infra-field-label">Module name</label>
+            <input class="infra-input" type="text" placeholder="ir-402">
+            <span class="infra-field-hint">Lowercase, hyphenated — matches the node ID.</span>
+          </div>
+        </div>
+        <div class="component-card__foot">
+          <span class="component-card__label">Text Field</span>
+          <button type="button" class="copy component-copy-btn" data-copy="&lt;style&gt;
+.infra-field { display: flex; flex-direction: column; gap: 6px; max-width: 320px; font-family: 'IBM Plex Mono', ui-monospace, monospace; }
+.infra-field-label { font-size: 0.78rem; font-weight: 600; color: #ECE2EE; }
+.infra-field-hint { font-size: 0.74rem; color: #AF969C; }
+.infra-input { width: 100%; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 0.86rem; color: #ECE2EE; background: #2A1C36; border: 1px solid #563B5A; border-radius: 4px; padding: 9px 12px; }
+.infra-input::placeholder { color: #AF969C; opacity: 0.7; }
+.infra-input:focus { outline: none; border-color: #ED423F; }
+&lt;/style&gt;
+&lt;div class=&quot;infra-field&quot;&gt;
+  &lt;label class=&quot;infra-field-label&quot;&gt;Module name&lt;/label&gt;
+  &lt;input class=&quot;infra-input&quot; type=&quot;text&quot; placeholder=&quot;ir-402&quot;&gt;
+  &lt;span class=&quot;infra-field-hint&quot;&gt;Lowercase, hyphenated — matches the node ID.&lt;/span&gt;
+&lt;/div&gt;"><span class="lbl">Copy code</span></button>
+        </div>
+      </div>
+
+      <div class="component-card">
+        <div class="component-card__preview">
+          <div class="infra-field infra-field--error">
+            <label class="infra-field-label">Memory allocation (GB)</label>
+            <input class="infra-input" type="text" value="256">
+            <span class="infra-field-error"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>Exceeds the plan ceiling of 128 GB</span>
+          </div>
+        </div>
+        <div class="component-card__foot">
+          <span class="component-card__label">Text Field — Error</span>
+          <button type="button" class="copy component-copy-btn" data-copy="&lt;style&gt;
+.infra-field { display: flex; flex-direction: column; gap: 6px; max-width: 320px; font-family: 'IBM Plex Mono', ui-monospace, monospace; }
+.infra-field-label { font-size: 0.78rem; font-weight: 600; color: #ECE2EE; }
+.infra-field-error { font-size: 0.74rem; color: #ED423F; display: flex; align-items: center; gap: 5px; }
+.infra-input { width: 100%; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 0.86rem; color: #ECE2EE; background: #2A1C36; border: 1px solid #563B5A; border-radius: 4px; padding: 9px 12px; }
+.infra-field--error .infra-input { border-color: #ED423F; }
+.infra-input:focus { outline: none; border-color: #ED423F; }
+&lt;/style&gt;
+&lt;div class=&quot;infra-field infra-field--error&quot;&gt;
+  &lt;label class=&quot;infra-field-label&quot;&gt;Memory allocation (GB)&lt;/label&gt;
+  &lt;input class=&quot;infra-input&quot; type=&quot;text&quot; value=&quot;256&quot;&gt;
+  &lt;span class=&quot;infra-field-error&quot;&gt;&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;13&quot; height=&quot;13&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; aria-hidden=&quot;true&quot;&gt;&lt;path d=&quot;m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3&quot;/&gt;&lt;path d=&quot;M12 9v4&quot;/&gt;&lt;path d=&quot;M12 17h.01&quot;/&gt;&lt;/svg&gt;Exceeds the plan ceiling of 128 GB&lt;/span&gt;
+&lt;/div&gt;"><span class="lbl">Copy code</span></button>
+        </div>
+      </div>
+
+      <div class="component-card">
+        <div class="component-card__preview">
+          <div class="infra-field">
+            <label class="infra-field-label">Notes</label>
+            <textarea class="infra-textarea" placeholder="Add any context for the next on-call engineer…"></textarea>
+          </div>
+        </div>
+        <div class="component-card__foot">
+          <span class="component-card__label">Textarea</span>
+          <button type="button" class="copy component-copy-btn" data-copy="&lt;style&gt;
+.infra-field { display: flex; flex-direction: column; gap: 6px; max-width: 320px; font-family: 'IBM Plex Mono', ui-monospace, monospace; }
+.infra-field-label { font-size: 0.78rem; font-weight: 600; color: #ECE2EE; }
+.infra-textarea { width: 100%; min-height: 96px; resize: vertical; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 0.86rem; color: #ECE2EE; background: #2A1C36; border: 1px solid #563B5A; border-radius: 4px; padding: 9px 12px; }
+.infra-textarea::placeholder { color: #AF969C; opacity: 0.7; }
+.infra-textarea:focus { outline: none; border-color: #ED423F; }
+&lt;/style&gt;
+&lt;div class=&quot;infra-field&quot;&gt;
+  &lt;label class=&quot;infra-field-label&quot;&gt;Notes&lt;/label&gt;
+  &lt;textarea class=&quot;infra-textarea&quot; placeholder=&quot;Add any context for the next on-call engineer…&quot;&gt;&lt;/textarea&gt;
+&lt;/div&gt;"><span class="lbl">Copy code</span></button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="block-head">
+      <h2>Selection Controls</h2>
+      <p class="block-dek">Checkbox and toggle — both keyboard accessible, both built on a real hidden input so they work with native form submission.</p>
+    </div>
+    <div class="component-grid">
+
+      <div class="component-card">
+        <div class="component-card__preview">
+          <label class="infra-checkbox">
+            <input type="checkbox" checked>
+            <span class="infra-checkbox-box"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+            Notify me when this module goes offline
+          </label>
+        </div>
+        <div class="component-card__foot">
+          <span class="component-card__label">Checkbox</span>
+          <button type="button" class="copy component-copy-btn" data-copy="&lt;style&gt;
+.infra-checkbox { display: inline-flex; align-items: center; gap: 10px; cursor: pointer; font-family: 'Barlow', sans-serif; font-size: 0.9rem; color: #ECE2EE; }
+.infra-checkbox input { position: absolute; opacity: 0; width: 0; height: 0; }
+.infra-checkbox-box { width: 18px; height: 18px; border: 1.5px solid #563B5A; border-radius: 4px; background: #2A1C36; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background .15s, border-color .15s; }
+.infra-checkbox input:checked + .infra-checkbox-box { background: #ED423F; border-color: #ED423F; }
+.infra-checkbox-box svg { opacity: 0; transition: opacity .1s; color: #ECE2EE; width: 12px; height: 12px; }
+.infra-checkbox input:checked + .infra-checkbox-box svg { opacity: 1; }
+.infra-checkbox input:focus-visible + .infra-checkbox-box { outline: 2px solid #ED423F; outline-offset: 2px; }
+&lt;/style&gt;
+&lt;label class=&quot;infra-checkbox&quot;&gt;
+  &lt;input type=&quot;checkbox&quot;&gt;
+  &lt;span class=&quot;infra-checkbox-box&quot;&gt;&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;3&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;&gt;&lt;path d=&quot;M20 6 9 17l-5-5&quot;/&gt;&lt;/svg&gt;&lt;/span&gt;
+  Notify me when this module goes offline
+&lt;/label&gt;"><span class="lbl">Copy code</span></button>
+        </div>
+      </div>
+
+      <div class="component-card">
+        <div class="component-card__preview">
+          <label class="infra-switch">
+            <input type="checkbox" checked>
+            <span class="infra-switch-track"></span>
+            Auto-scale under load
+          </label>
+        </div>
+        <div class="component-card__foot">
+          <span class="component-card__label">Toggle / Switch</span>
+          <button type="button" class="copy component-copy-btn" data-copy="&lt;style&gt;
+.infra-switch { position: relative; display: inline-flex; align-items: center; gap: 10px; cursor: pointer; font-family: 'Barlow', sans-serif; font-size: 0.9rem; color: #ECE2EE; }
+.infra-switch input { position: absolute; opacity: 0; width: 0; height: 0; }
+.infra-switch-track { width: 40px; height: 22px; background: #563B5A; border-radius: 999px; position: relative; transition: background .15s ease; flex-shrink: 0; }
+.infra-switch-track::after { content: ''; position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; background: #ECE2EE; border-radius: 50%; transition: transform .15s ease; }
+.infra-switch input:checked + .infra-switch-track { background: #ED423F; }
+.infra-switch input:checked + .infra-switch-track::after { transform: translateX(18px); }
+.infra-switch input:focus-visible + .infra-switch-track { outline: 2px solid #ED423F; outline-offset: 2px; }
+&lt;/style&gt;
+&lt;label class=&quot;infra-switch&quot;&gt;
+  &lt;input type=&quot;checkbox&quot;&gt;
+  &lt;span class=&quot;infra-switch-track&quot;&gt;&lt;/span&gt;
+  Auto-scale under load
+&lt;/label&gt;"><span class="lbl">Copy code</span></button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="block-head">
+      <h2>Buttons</h2>
+      <p class="block-dek">Primary, secondary, and accent — plus the disabled state every button needs.</p>
+    </div>
+    <div class="component-card">
+      <div class="component-card__preview">
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button type="button" class="infra-btn infra-btn--primary">Primary</button>
+          <button type="button" class="infra-btn infra-btn--secondary">Secondary</button>
+          <button type="button" class="infra-btn infra-btn--accent">Accent</button>
+          <button type="button" class="infra-btn infra-btn--primary" disabled>Disabled</button>
+        </div>
+      </div>
+      <div class="component-card__foot">
+        <span class="component-card__label">Buttons</span>
+        <button type="button" class="copy component-copy-btn" data-copy="&lt;style&gt;
+.infra-btn { display: inline-flex; align-items: center; justify-content: center; padding: 9px 18px; border-radius: 4px; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 0.8rem; font-weight: 500; letter-spacing: 0.02em; cursor: pointer; border: 1px solid transparent; transition: opacity .15s ease; }
+.infra-btn:hover { opacity: 0.86; }
+.infra-btn--primary { background: #ECE2EE; color: #17181A; }
+.infra-btn--secondary { background: transparent; border-color: #ECE2EE; color: #ECE2EE; }
+.infra-btn--accent { background: #ED423F; color: #ECE2EE; }
+.infra-btn[disabled] { opacity: 0.4; cursor: not-allowed; }
+&lt;/style&gt;
+&lt;div style=&quot;display:flex; gap:10px; flex-wrap:wrap;&quot;&gt;
+  &lt;button type=&quot;button&quot; class=&quot;infra-btn infra-btn--primary&quot;&gt;Primary&lt;/button&gt;
+  &lt;button type=&quot;button&quot; class=&quot;infra-btn infra-btn--secondary&quot;&gt;Secondary&lt;/button&gt;
+  &lt;button type=&quot;button&quot; class=&quot;infra-btn infra-btn--accent&quot;&gt;Accent&lt;/button&gt;
+  &lt;button type=&quot;button&quot; class=&quot;infra-btn infra-btn--primary&quot; disabled&gt;Disabled&lt;/button&gt;
+&lt;/div&gt;"><span class="lbl">Copy code</span></button>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    Part of the Infra Component Library — see also <a href="data-display.html">Data Display</a>, <a href="navigation.html">Navigation</a>, <a href="overlays.html">Overlays</a>, and <a href="admin-console-density-tier.html">Density Tiers</a>. <span class="mono">Rev. 02 · 2026-09-15</span>
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+  function writeClipboard(text, onDone) {
+    if (window.navigator && navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(onDone).catch(function () { fallbackCopy(text); onDone(); });
+    } else {
+      fallbackCopy(text); onDone();
+    }
+  }
+  try {
+    document.querySelectorAll('button.copy').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var val = btn.getAttribute('data-copy');
+        var label = btn.querySelector('.lbl');
+        var target = label || btn;
+        writeClipboard(val, function () {
+          var original = target.textContent;
+          target.textContent = 'Copied';
+          setTimeout(function () { target.textContent = original; }, 1200);
+        });
+      });
+    });
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

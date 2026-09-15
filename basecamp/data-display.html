@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Infra — Data Display Components</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@700;800;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #17181A;
+    --surface: #2A1C36;
+    --surface-2: #483155;
+    --line: #563B5A;
+    --ink: #ECE2EE;
+    --ink-dim: #AF969C;
+    --accent: #ED423F;
+    --accent-2: #F0A830;
+    --micro: #EEF4B8;
+    --danger: #ED423F;
+    --radius: 6px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Barlow', system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  .mono { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-variant-numeric: tabular-nums; }
+  .shell { max-width: 1180px; margin: 0 auto; padding: 48px 24px 80px; }
+
+  header.page-head { margin-bottom: 40px; }
+  .eyebrow { font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 10px; }
+  h1 { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; text-transform: uppercase; letter-spacing: 0.01em; font-size: clamp(2rem, 5vw, 3rem); margin: 0 0 12px; }
+  .page-dek { color: var(--ink-dim); max-width: 62ch; font-size: 0.98rem; margin: 0; }
+  .badge-row { display: flex; gap: 8px; margin-top: 18px; flex-wrap: wrap; }
+  .pill { font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 5px 12px; border-radius: 999px; border: 1px solid var(--line); color: var(--ink-dim); }
+  .pill.on { background: var(--surface-2); color: var(--ink); border-color: var(--surface-2); }
+
+  .crumbs { display: flex; align-items: center; gap: 8px; font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; color: var(--ink-dim); margin-bottom: 24px; flex-wrap: wrap; }
+  .crumbs a { color: var(--ink-dim); text-decoration: none; border-bottom: 1px solid transparent; }
+  .crumbs a:hover, .crumbs a:focus-visible { color: var(--accent); border-color: var(--accent); outline: none; }
+
+  section.block { margin-bottom: 56px; }
+  .block-head { margin-bottom: 18px; }
+  h2 { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; text-transform: uppercase; font-size: 1.4rem; margin: 0; }
+  .block-dek { color: var(--ink-dim); font-size: 0.88rem; margin: 6px 0 0; max-width: 68ch; }
+
+  .component-card { border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: var(--surface); }
+  .component-card__preview { padding: 28px; background: var(--bg); }
+  .component-card__foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 14px; flex-wrap: wrap; }
+  .component-card__label { font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-dim); }
+  button.copy.component-copy-btn {
+    all: unset; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+    font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; letter-spacing: 0.04em; text-transform: uppercase;
+    padding: 6px 12px; border-radius: 4px; border: 1px solid var(--line); color: var(--ink-dim);
+    transition: border-color .15s ease, color .15s ease;
+  }
+  button.copy.component-copy-btn:hover, button.copy.component-copy-btn:focus-visible { border-color: var(--accent); color: var(--accent); outline: none; }
+
+  /* ---------- .table ---------- */
+  .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); -webkit-overflow-scrolling: touch; }
+  .table { width: 100%; border-collapse: collapse; font-size: 0.84rem; min-width: 560px; }
+  .table__head th { text-align: left; font-family: 'IBM Plex Mono', monospace; font-size: 0.66rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-dim); font-weight: 500; padding: 12px 16px; background: var(--surface-2); border-bottom: 1px solid var(--line); }
+  .table__row td { padding: 12px 16px; border-bottom: 1px solid var(--line); color: var(--ink); }
+  .table__row:last-child td { border-bottom: none; }
+  .table__cell--num { font-family: 'IBM Plex Mono', monospace; text-align: right; }
+  .status-dot { display: inline-flex; align-items: center; gap: 7px; }
+  .status-dot::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--micro); flex-shrink: 0; }
+  .status-dot.warn::before { background: var(--accent-2); }
+  .status-dot.down::before { background: var(--danger); }
+
+  /* ---------- .empty ---------- */
+  .empty { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 48px 24px; color: var(--ink-dim); }
+  .empty__icon { color: var(--ink-dim); margin-bottom: 14px; opacity: 0.7; }
+  .empty__title { font-weight: 600; color: var(--ink); margin-bottom: 6px; font-size: 0.95rem; }
+  .empty__body { font-size: 0.84rem; max-width: 40ch; }
+
+  /* ---------- .infra-badge ---------- */
+  .infra-badge { display: inline-flex; align-items: center; gap: 6px; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; }
+  .infra-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .infra-badge--active { background: rgba(238,244,184,0.14); color: #EEF4B8; }
+  .infra-badge--active::before { background: #EEF4B8; }
+  .infra-badge--pending { border: 1px solid #563B5A; color: #AF969C; }
+  .infra-badge--pending::before { background: #AF969C; }
+  .infra-badge--success { background: rgba(127,191,131,0.14); color: #7FBF83; }
+  .infra-badge--success::before { background: #7FBF83; }
+  .infra-badge--warning { background: rgba(224,166,62,0.14); color: #E0A63E; }
+  .infra-badge--warning::before { background: #E0A63E; }
+  .infra-badge--error { background: rgba(255,107,92,0.14); color: #FF6B5C; }
+  .infra-badge--error::before { background: #FF6B5C; }
+
+  /* ---------- .infra-list ---------- */
+  .infra-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; font-family: 'Barlow', sans-serif; }
+  .infra-list li { display: flex; align-items: flex-start; gap: 10px; padding: 9px 4px; border-bottom: 1px solid #563B5A; font-size: 0.9rem; color: #ECE2EE; }
+  .infra-list li:last-child { border-bottom: none; }
+  .infra-list li::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #ED423F; margin-top: 7px; flex-shrink: 0; }
+  .infra-checklist { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; font-family: 'Barlow', sans-serif; }
+  .infra-checklist li { display: flex; align-items: flex-start; gap: 10px; font-size: 0.9rem; color: #ECE2EE; }
+  .infra-checklist li svg { flex-shrink: 0; margin-top: 1px; color: #7FBF83; }
+  .infra-checklist li.is-pending svg { color: #AF969C; }
+
+  .infra-panel { background: #483155; border: 1px solid #563B5A; border-radius: 6px; overflow: hidden; max-width: 360px; }
+  .infra-panel__header { padding: 14px 18px; border-bottom: 1px solid #563B5A; }
+  .infra-panel__title { margin: 0; font-family: 'Barlow', sans-serif; font-weight: 600; font-size: 0.92rem; color: #ECE2EE; }
+  .infra-panel__body { padding: 18px; font-size: 0.86rem; color: #AF969C; font-family: 'Barlow', sans-serif; }
+
+  @media (max-width: 640px) {
+    .shell { padding: 32px 16px 64px; }
+    .component-card__preview { padding: 18px; }
+  }
+
+  footer { margin-top: 60px; padding-top: 24px; border-top: 1px solid var(--line); color: var(--ink-dim); font-size: 0.78rem; }
+  footer a { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <div class="crumbs"><a href="infra.html">Infra — Brand Specification Book</a> <span>/</span> <span>Component Library</span> <span>/</span> <span>Data Display</span></div>
+
+  <header class="page-head">
+    <div class="eyebrow">Infra — Brand Specification Book · Component Library</div>
+    <h1>Data Display</h1>
+    <p class="page-dek">Table, empty state, status badges, and lists — copy-ready, self-contained HTML + CSS. Paste any block below straight into your project; each one carries its own styles and works with zero dependency on this file. Every component here is responsive down to a 375px viewport.</p>
+    <div class="badge-row">
+      <span class="pill on">Copy-ready</span>
+      <span class="pill">Responsive</span>
+      <span class="pill">Rev. 02 · 2026-09-15</span>
+    </div>
+  </header>
+
+  <section class="block">
+    <div class="block-head">
+      <h2>Table</h2>
+      <p class="block-dek">Scrolls horizontally on narrow screens instead of squashing — wrap it in <span class="mono">.table-wrap</span> and never let a table break your layout.</p>
+    </div>
+    <div class="component-card">
+      <div class="component-card__preview">
+        <div class="table-wrap">
+          <table class="table">
+            <thead class="table__head">
+              <tr><th>Module</th><th>Status</th><th>Region</th><th style="text-align:right;">Uptime</th><th style="text-align:right;">Latency</th></tr>
+            </thead>
+            <tbody>
+              <tr class="table__row">
+                <td class="mono">IR-402</td>
+                <td><span class="status-dot">Active</span></td>
+                <td>eu-west</td>
+                <td class="table__cell--num">99.98%</td>
+                <td class="table__cell--num">12 ms</td>
+              </tr>
+              <tr class="table__row">
+                <td class="mono">IR-198</td>
+                <td><span class="status-dot warn">Degraded</span></td>
+                <td>us-east</td>
+                <td class="table__cell--num">98.41%</td>
+                <td class="table__cell--num">64 ms</td>
+              </tr>
+              <tr class="table__row">
+                <td class="mono">IR-071</td>
+                <td><span class="status-dot down">Offline</span></td>
+                <td>ap-south</td>
+                <td class="table__cell--num">0.00%</td>
+                <td class="table__cell--num">—</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="component-card__foot">
+        <span class="component-card__label">Table — status rows</span>
+        <button type="button" class="copy component-copy-btn" data-copy="&lt;style&gt;
+.infra-table-wrap { overflow-x: auto; border: 1px solid #563B5A; border-radius: 6px; -webkit-overflow-scrolling: touch; }
+.infra-table { width: 100%; border-collapse: collapse; font-size: 0.84rem; min-width: 560px; font-family: 'IBM Plex Mono', ui-monospace, monospace; }
+.infra-table thead th { text-align: left; font-size: 0.66rem; letter-spacing: 0.08em; text-transform: uppercase; color: #AF969C; font-weight: 500; padding: 12px 16px; background: #483155; border-bottom: 1px solid #563B5A; }
+.infra-table td { padding: 12px 16px; border-bottom: 1px solid #563B5A; color: #ECE2EE; }
+.infra-table tr:last-child td { border-bottom: none; }
+.infra-table .num { text-align: right; }
+.infra-status-dot { display: inline-flex; align-items: center; gap: 7px; }
+.infra-status-dot::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: #EEF4B8; flex-shrink: 0; }
+.infra-status-dot.warn::before { background: #F0A830; }
+.infra-status-dot.down::before { background: #ED423F; }
+&lt;/style&gt;
+&lt;div class=&quot;infra-table-wrap&quot;&gt;
+  &lt;table class=&quot;infra-table&quot;&gt;
+    &lt;thead&gt;&lt;tr&gt;&lt;th&gt;Module&lt;/th&gt;&lt;th&gt;Status&lt;/th&gt;&lt;th&gt;Region&lt;/th&gt;&lt;th style=&quot;text-align:right;&quot;&gt;Uptime&lt;/th&gt;&lt;th style=&quot;text-align:right;&quot;&gt;Latency&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;tr&gt;&lt;td&gt;IR-402&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;infra-status-dot&quot;&gt;Active&lt;/span&gt;&lt;/td&gt;&lt;td&gt;eu-west&lt;/td&gt;&lt;td class=&quot;num&quot;&gt;99.98%&lt;/td&gt;&lt;td class=&quot;num&quot;&gt;12 ms&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;IR-198&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;infra-status-dot warn&quot;&gt;Degraded&lt;/span&gt;&lt;/td&gt;&lt;td&gt;us-east&lt;/td&gt;&lt;td class=&quot;num&quot;&gt;98.41%&lt;/td&gt;&lt;td class=&quot;num&quot;&gt;64 ms&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;IR-071&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;infra-status-dot down&quot;&gt;Offline&lt;/span&gt;&lt;/td&gt;&lt;td&gt;ap-south&lt;/td&gt;&lt;td class=&quot;num&quot;&gt;0.00%&lt;/td&gt;&lt;td class=&quot;num&quot;&gt;—&lt;/td&gt;&lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+&lt;/div&gt;"><span class="lbl">Copy code</span></button>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="block-head">
+      <h2>Empty State</h2>
+      <p class="block-dek">Icon at 24px, always paired with a title and one line of body copy — drop this in wherever a table, list, or search result comes back with nothing.</p>
+    </div>
+    <div class="component-card">
+      <div class="component-card__preview" style="padding:0;">
+        <div class="empty">
+          <span class="empty__icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg>
+          </span>
+          <div class="empty__title">No modules provisioned yet</div>
+          <div class="empty__body">Spin up your first dedicated server module to see it listed here.</div>
+        </div>
+      </div>
+      <div class="component-card__foot">
+        <span class="component-card__label">Empty state</span>
+        <button type="button" class="copy component-copy-btn" data-copy="&lt;style&gt;
+.infra-empty { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 48px 24px; color: #AF969C; font-family: 'Barlow', sans-serif; }
+.infra-empty svg { color: #AF969C; margin-bottom: 14px; opacity: 0.7; }
+.infra-empty-title { font-weight: 600; color: #ECE2EE; margin-bottom: 6px; font-size: 0.95rem; }
+.infra-empty-body { font-size: 0.84rem; max-width: 40ch; margin: 0 auto; }
+&lt;/style&gt;
+&lt;div class=&quot;infra-empty&quot;&gt;
+  &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;24&quot; height=&quot;24&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;&gt;&lt;ellipse cx=&quot;12&quot; cy=&quot;5&quot; rx=&quot;9&quot; ry=&quot;3&quot;/&gt;&lt;path d=&quot;M3 5V19A9 3 0 0 0 21 19V5&quot;/&gt;&lt;path d=&quot;M3 12A9 3 0 0 0 21 12&quot;/&gt;&lt;/svg&gt;
+  &lt;div class=&quot;infra-empty-title&quot;&gt;No modules provisioned yet&lt;/div&gt;
+  &lt;div class=&quot;infra-empty-body&quot;&gt;Spin up your first dedicated server module to see it listed here.&lt;/div&gt;
+&lt;/div&gt;"><span class="lbl">Copy code</span></button>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="block-head">
+      <h2>Status Badges</h2>
+      <p class="block-dek">Same five states used throughout this book — active, pending, success, warning, error.</p>
+    </div>
+    <div class="component-card">
+      <div class="component-card__preview">
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <span class="infra-badge infra-badge--active">Active</span>
+          <span class="infra-badge infra-badge--pending">Pending</span>
+          <span class="infra-badge infra-badge--success">Success</span>
+          <span class="infra-badge infra-badge--warning">Warning</span>
+          <span class="infra-badge infra-badge--error">Error</span>
+        </div>
+      </div>
+      <div class="component-card__foot">
+        <span class="component-card__label">Badges</span>
+        <button type="button" class="copy component-copy-btn" data-copy="&lt;style&gt;
+.infra-badge { display: inline-flex; align-items: center; gap: 6px; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; }
+.infra-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.infra-badge--active { background: rgba(238,244,184,0.14); color: #EEF4B8; }
+.infra-badge--active::before { background: #EEF4B8; }
+.infra-badge--pending { border: 1px solid #563B5A; color: #AF969C; }
+.infra-badge--pending::before { background: #AF969C; }
+.infra-badge--success { background: rgba(127,191,131,0.14); color: #7FBF83; }
+.infra-badge--success::before { background: #7FBF83; }
+.infra-badge--warning { background: rgba(224,166,62,0.14); color: #E0A63E; }
+.infra-badge--warning::before { background: #E0A63E; }
+.infra-badge--error { background: rgba(255,107,92,0.14); color: #FF6B5C; }
+.infra-badge--error::before { background: #FF6B5C; }
+&lt;/style&gt;
+&lt;div style=&quot;display:flex; gap:8px; flex-wrap:wrap;&quot;&gt;
+  &lt;span class=&quot;infra-badge infra-badge--active&quot;&gt;Active&lt;/span&gt;
+  &lt;span class=&quot;infra-badge infra-badge--pending&quot;&gt;Pending&lt;/span&gt;
+  &lt;span class=&quot;infra-badge infra-badge--success&quot;&gt;Success&lt;/span&gt;
+  &lt;span class=&quot;infra-badge infra-badge--warning&quot;&gt;Warning&lt;/span&gt;
+  &lt;span class=&quot;infra-badge infra-badge--error&quot;&gt;Error&lt;/span&gt;
+&lt;/div&gt;"><span class="lbl">Copy code</span></button>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="block-head">
+      <h2>Lists</h2>
+      <p class="block-dek">A dotted list for plain items, and a checklist variant for completed / pending steps.</p>
+    </div>
+    <div class="component-card">
+      <div class="component-card__preview">
+        <ul class="infra-list">
+          <li>Dedicated server module, 64 GB locked allocation</li>
+          <li>Zero shared tenancy across all regions</li>
+          <li>Session data isolated per user, per module</li>
+        </ul>
+      </div>
+      <div class="component-card__foot">
+        <span class="component-card__label">List — dotted</span>
+        <button type="button" class="copy component-copy-btn" data-copy="&lt;style&gt;
+.infra-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; font-family: 'Barlow', sans-serif; }
+.infra-list li { display: flex; align-items: flex-start; gap: 10px; padding: 9px 4px; border-bottom: 1px solid #563B5A; font-size: 0.9rem; color: #ECE2EE; }
+.infra-list li:last-child { border-bottom: none; }
+.infra-list li::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #ED423F; margin-top: 7px; flex-shrink: 0; }
+&lt;/style&gt;
+&lt;ul class=&quot;infra-list&quot;&gt;
+  &lt;li&gt;Dedicated server module, 64 GB locked allocation&lt;/li&gt;
+  &lt;li&gt;Zero shared tenancy across all regions&lt;/li&gt;
+  &lt;li&gt;Session data isolated per user, per module&lt;/li&gt;
+&lt;/ul&gt;"><span class="lbl">Copy code</span></button>
+      </div>
+    </div>
+    <div class="component-card" style="margin-top:16px;">
+      <div class="component-card__preview">
+        <ul class="infra-checklist">
+          <li><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m16 9-5.5 5.5L8 12"/></svg>Module provisioned</li>
+          <li><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m16 9-5.5 5.5L8 12"/></svg>Region assigned</li>
+          <li class="is-pending"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg>Awaiting first connection</li>
+        </ul>
+      </div>
+      <div class="component-card__foot">
+        <span class="component-card__label">List — checklist</span>
+        <button type="button" class="copy component-copy-btn" data-copy="&lt;style&gt;
+.infra-checklist { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; font-family: 'Barlow', sans-serif; }
+.infra-checklist li { display: flex; align-items: flex-start; gap: 10px; font-size: 0.9rem; color: #ECE2EE; }
+.infra-checklist li svg { flex-shrink: 0; margin-top: 1px; color: #7FBF83; }
+.infra-checklist li.is-pending svg { color: #AF969C; }
+&lt;/style&gt;
+&lt;ul class=&quot;infra-checklist&quot;&gt;
+  &lt;li&gt;&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;16&quot; height=&quot;16&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;&gt;&lt;circle cx=&quot;12&quot; cy=&quot;12&quot; r=&quot;10&quot;/&gt;&lt;path d=&quot;m16 9-5.5 5.5L8 12&quot;/&gt;&lt;/svg&gt;Module provisioned&lt;/li&gt;
+  &lt;li&gt;&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;16&quot; height=&quot;16&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;&gt;&lt;circle cx=&quot;12&quot; cy=&quot;12&quot; r=&quot;10&quot;/&gt;&lt;path d=&quot;m16 9-5.5 5.5L8 12&quot;/&gt;&lt;/svg&gt;Region assigned&lt;/li&gt;
+  &lt;li class=&quot;is-pending&quot;&gt;&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;16&quot; height=&quot;16&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;&gt;&lt;circle cx=&quot;12&quot; cy=&quot;12&quot; r=&quot;10&quot;/&gt;&lt;/svg&gt;Awaiting first connection&lt;/li&gt;
+&lt;/ul&gt;"><span class="lbl">Copy code</span></button>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="block-head">
+      <h2>Card / Panel</h2>
+      <p class="block-dek">The base container for grouping related content — a header and a body, nothing more.</p>
+    </div>
+    <div class="component-card">
+      <div class="component-card__preview">
+        <div class="infra-panel">
+          <div class="infra-panel__header">
+            <h3 class="infra-panel__title">Module IR-402</h3>
+          </div>
+          <div class="infra-panel__body">Dedicated server module, active since 2026-08-11. Zero shared tenancy.</div>
+        </div>
+      </div>
+      <div class="component-card__foot">
+        <span class="component-card__label">Card / Panel</span>
+        <button type="button" class="copy component-copy-btn" data-copy="&lt;style&gt;
+.infra-panel { background: #483155; border: 1px solid #563B5A; border-radius: 6px; overflow: hidden; max-width: 360px; }
+.infra-panel__header { padding: 14px 18px; border-bottom: 1px solid #563B5A; }
+.infra-panel__title { margin: 0; font-family: &#x27;Barlow&#x27;, sans-serif; font-weight: 600; font-size: 0.92rem; color: #ECE2EE; }
+.infra-panel__body { padding: 18px; font-size: 0.86rem; color: #AF969C; font-family: &#x27;Barlow&#x27;, sans-serif; }
+&lt;/style&gt;
+&lt;div class=&quot;infra-panel&quot;&gt;
+  &lt;div class=&quot;infra-panel__header&quot;&gt;
+    &lt;h3 class=&quot;infra-panel__title&quot;&gt;Module IR-402&lt;/h3&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;infra-panel__body&quot;&gt;Dedicated server module, active since 2026-08-11. Zero shared tenancy.&lt;/div&gt;
+&lt;/div&gt;"><span class="lbl">Copy code</span></button>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    Part of the Infra Component Library — see also <a href="forms.html">Forms</a>, <a href="navigation.html">Navigation</a>, <a href="overlays.html">Overlays</a>, and <a href="admin-console-density-tier.html">Density Tiers</a>. <span class="mono">Rev. 02 · 2026-09-15</span>
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+  function writeClipboard(text, onDone) {
+    if (window.navigator && navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(onDone).catch(function () { fallbackCopy(text); onDone(); });
+    } else {
+      fallbackCopy(text); onDone();
+    }
+  }
+  try {
+    document.querySelectorAll('button.copy').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var val = btn.getAttribute('data-copy');
+        var label = btn.querySelector('.lbl');
+        var target = label || btn;
+        writeClipboard(val, function () {
+          var original = target.textContent;
+          target.textContent = 'Copied';
+          setTimeout(function () { target.textContent = original; }, 1200);
+        });
+      });
+    });
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>
