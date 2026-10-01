@@ -1,0 +1,20 @@
+# Cloudflare response headers for ferventdigital.co.za
+# Security headers that browsers, work filters and security scanners look for.
+
+/*
+  Strict-Transport-Security: max-age=31536000
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+  X-Frame-Options: SAMEORIGIN
+  Cross-Origin-Opener-Policy: same-origin
+
+# Fonts never change name, so browsers may keep them for a year
+/assets/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Private client hub: keep out of search results
+/basecamp.html
+  X-Robots-Tag: noindex, nofollow
+/basecamp/*
+  X-Robots-Tag: noindex, nofollow

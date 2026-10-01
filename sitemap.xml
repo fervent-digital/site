@@ -1,72 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.ferventdigital.co.za/</loc>
-    <lastmod>2026-05-04</lastmod>
+    <lastmod>2026-10-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="en-gb" href="https://www.ferventdigital.co.za/"/>
-    <xhtml:link rel="alternate" hreflang="en-za" href="https://www.ferventdigital.co.za/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.ferventdigital.co.za/"/>
-  </url>
-  <url>
-    <loc>https://www.ferventdigital.co.za/#about</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.ferventdigital.co.za/#services</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.ferventdigital.co.za/#work</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://www.ferventdigital.co.za/portfolio.html</loc>
-    <lastmod>2026-05-04</lastmod>
+    <lastmod>2026-10-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.95</priority>
+    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://www.ferventdigital.co.za/cv.html</loc>
-    <lastmod>2026-05-05</lastmod>
+    <lastmod>2026-10-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://www.ferventdigital.co.za/#experience</loc>
+    <loc>https://www.ferventdigital.co.za/start.html</loc>
+    <lastmod>2026-10-01</lastmod>
     <changefreq>yearly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://www.ferventdigital.co.za/#strategic-solutions</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://www.ferventdigital.co.za/#work-with-me</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://www.ferventdigital.co.za/#contact</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.ferventdigital.co.za/privacy.html</loc>
-    <lastmod>2026-05-04</lastmod>
+    <lastmod>2026-10-01</lastmod>
     <changefreq>yearly</changefreq>
-    <priority>0.4</priority>
+    <priority>0.3</priority>
   </url>
   <url>
     <loc>https://www.ferventdigital.co.za/terms.html</loc>
-    <lastmod>2026-05-04</lastmod>
+    <lastmod>2026-10-01</lastmod>
     <changefreq>yearly</changefreq>
-    <priority>0.4</priority>
+    <priority>0.3</priority>
   </url>
 </urlset>
