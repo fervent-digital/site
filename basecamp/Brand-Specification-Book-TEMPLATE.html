@@ -6,6 +6,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex_Mono:wght@400;500&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
+<script>
+(function(){var r=document.documentElement,p=null;try{p=localStorage.getItem('infra-theme');}catch(e){}
+var s=(window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches)?'light':'dark';
+var ok=(p==='light'||p==='dark');r.setAttribute('data-theme',ok?p:s);r.setAttribute('data-theme-pref',ok?p:'auto');})();
+</script>
 <style>
   :root {
     --bg: #F1F1EA;
@@ -253,7 +258,7 @@
   }
   .cover-logo { margin-bottom: 22px; }
   .cover-logo img { display: block; height: clamp(3.4rem, 9.5vw, 6.2rem); width: auto; }
-  .cover-logo-dark { display: none; }
+  .cover-logo img.cover-logo-dark { display: none; }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) .cover-logo-light { display: none; }
     :root:not([data-theme="light"]) .cover-logo-dark { display: block; }
@@ -741,6 +746,15 @@
   @media (prefers-reduced-motion: reduce) {
     * { transition: none !important; }
   }
+
+  /* ---- Light / Dark / Auto switch ---- */
+  .theme-toggle { display: inline-flex; gap: 2px; padding: 2px; border: 1px solid var(--line); border-radius: 999px; background: var(--bg); }
+  .theme-toggle button { all: unset; cursor: pointer; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 0.66rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 5px 11px; border-radius: 999px; color: var(--ink-dim); }
+  .theme-toggle button:hover { color: var(--ink); }
+  .theme-toggle button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+  .theme-toggle button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .theme-toggle--float { position: fixed; top: 14px; right: 14px; z-index: 60; }
+  .nav-sub + .theme-toggle { margin: 14px 0 6px; }
 </style>
 
 <button type="button" class="nav-toggle" aria-label="Open section navigation" aria-expanded="false" aria-controls="site-nav">
@@ -753,6 +767,7 @@
     <button type="button" class="nav-close" aria-label="Close section navigation">&times;</button>
     <div class="nav-brand">Spec&nbsp;Book</div>
     <div class="nav-sub">Brand identity template</div>
+    <div class="theme-toggle" role="group" aria-label="Colour mode"><button type="button" data-theme-set="auto" aria-pressed="false">Auto</button><button type="button" data-theme-set="light" aria-pressed="false">Light</button><button type="button" data-theme-set="dark" aria-pressed="false">Dark</button></div>
 
     <div class="nav-group">
       <div class="nav-group-label">Optional — strategy &amp; voice</div>
@@ -1136,6 +1151,7 @@
         <span class="badge badge--core">Core</span>
       </div>
       <p class="module-dek">The full palette, grouped by role, with reproduction values for every medium. Main Palette covers print and general use; Light Mode and Dark Mode give web/app development the exact tokens to build with.</p>
+      <div class="field-value placeholder" style="max-width:none; margin-bottom:14px;">[REQUIREMENT for every client book: the book and each component page ship with an Auto / Light / Dark switch (in the sidebar header, floating top-right on component pages), remembered across pages. Component colours are --infra-style variables with dark fallbacks. Always provide both a Light Mode and a Dark Mode token set below, and set one green (or brand accent) that holds 3:1 on both for icons]</div>
 
       <div class="module-body">
         <div class="color-tabs" role="tablist" aria-label="Color view">
@@ -1854,4 +1870,14 @@
     sections.forEach(function (s) { if (s) observer.observe(s); });
   } catch (e) {}
 })();
+</script>
+<script>
+(function(){var r=document.documentElement,K='infra-theme',mq=window.matchMedia?matchMedia('(prefers-color-scheme: light)'):null;
+function pref(){try{return localStorage.getItem(K);}catch(e){return null;}}
+function apply(p){var ok=(p==='light'||p==='dark');r.setAttribute('data-theme',ok?p:(mq&&mq.matches?'light':'dark'));r.setAttribute('data-theme-pref',ok?p:'auto');
+document.querySelectorAll('[data-theme-set]').forEach(function(b){b.setAttribute('aria-pressed',String(b.getAttribute('data-theme-set')===r.getAttribute('data-theme-pref')));});}
+document.querySelectorAll('[data-theme-set]').forEach(function(b){b.addEventListener('click',function(){var v=b.getAttribute('data-theme-set');
+try{if(v==='auto'){localStorage.removeItem(K);}else{localStorage.setItem(K,v);}}catch(e){}apply(v==='auto'?null:v);});});
+if(mq&&mq.addEventListener){mq.addEventListener('change',function(){if(!pref()){apply(null);}});}
+apply(pref());})();
 </script>

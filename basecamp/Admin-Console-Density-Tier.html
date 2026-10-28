@@ -7,6 +7,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@700;800;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>
+(function(){var r=document.documentElement,p=null;try{p=localStorage.getItem('infra-theme');}catch(e){}
+var s=(window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches)?'light':'dark';
+var ok=(p==='light'||p==='dark');r.setAttribute('data-theme',ok?p:s);r.setAttribute('data-theme-pref',ok?p:'auto');})();
+</script>
 <style>
   :root {
     --bg: #17181A;           /* Deep Space */
@@ -15,7 +20,7 @@
     --line: #563B5A;         /* Border / Divider */
     --ink: #ECE2EE;          /* Text Primary — Mist Lavender */
     --ink-dim: #AF969C;      /* Text Secondary */
-    --accent: #ED423F;       /* Coral Crimson — actions */
+    --accent: #EEF4B8;       /* Electric Citron — buttons, links & actions */
     --accent-2: #F0A830;     /* Amber Node — decoration only, never text */
     --micro: #EEF4B8;        /* Electric Citron — status / hover */
     --danger: #ED423F;
@@ -115,6 +120,7 @@
   .icon-sample { display: flex; flex-direction: column; align-items: center; gap: 8px; font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; color: var(--ink-dim); }
   .icon-sample svg { color: var(--ink); }
   .icon-sample.accent2 svg { color: var(--accent-2); }
+  .icon-sample.alert svg { color: var(--danger); }
 
   /* ---------- spec reference ---------- */
   .spec-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
@@ -135,9 +141,30 @@
   button.copy.block-copy-btn:hover, button.copy.block-copy-btn:focus-visible { border-color: var(--accent); color: var(--accent); outline: none; }
 
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+  /* ---- Light mode ---- page chrome + component tokens (components fall back to the dark values above when no variable is set) */
+  :root[data-theme="light"] {
+    --bg: #FDFBF7; --surface: #E7E4DF; --surface-2: #ECE2EE; --line: #B39B8C;
+    --ink: #1F142E; --ink-dim: #563B5A; --accent: #566D2B; --micro: #566D2B;
+    --infra-ink: #1F142E; --infra-ink-dim: #563B5A; --infra-line: #B39B8C;
+    --infra-surface: #E7E4DF; --infra-surface-2: #ECE2EE;
+    --infra-accent: #566D2B; --infra-on-accent: #FDFBF7; --infra-danger: #ED423F;
+    --infra-success: #3F6E45; --infra-warning: #A8741F; --infra-error: #B3261E;
+    --infra-accent-tint: rgba(86,109,43,0.14); --infra-success-tint: rgba(63,110,69,0.14);
+    --infra-warning-tint: rgba(168,116,31,0.14); --infra-error-tint: rgba(179,38,30,0.14);
+  }
+
+  /* ---- Light / Dark / Auto switch ---- */
+  .theme-toggle { display: inline-flex; gap: 2px; padding: 2px; border: 1px solid var(--line); border-radius: 999px; background: var(--bg); }
+  .theme-toggle button { all: unset; cursor: pointer; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 0.66rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 5px 11px; border-radius: 999px; color: var(--ink-dim); }
+  .theme-toggle button:hover { color: var(--ink); }
+  .theme-toggle button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+  .theme-toggle button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .theme-toggle--float { position: fixed; top: 14px; right: 14px; z-index: 60; }
 </style>
 </head>
 <body>
+<div class="theme-toggle theme-toggle--float" role="group" aria-label="Colour mode"><button type="button" data-theme-set="auto" aria-pressed="false">Auto</button><button type="button" data-theme-set="light" aria-pressed="false">Light</button><button type="button" data-theme-set="dark" aria-pressed="false">Dark</button></div>
 <div class="shell">
 
   <header class="page-head">
@@ -159,16 +186,16 @@
         <p class="block-dek">.table / .table__head / .table__row / .table__cell — .table__cell--num renders monospace and right-aligned, so figures line up down the column.</p>
       </div>
       <button type="button" class="copy block-copy-btn" data-copy="&lt;style&gt;
-.infra-table-wrap { overflow-x: auto; border: 1px solid #563B5A; border-radius: 6px; -webkit-overflow-scrolling: touch; }
+.infra-table-wrap { overflow-x: auto; border: 1px solid var(--infra-line, #563B5A); border-radius: 6px; -webkit-overflow-scrolling: touch; }
 .infra-table { width: 100%; border-collapse: collapse; font-size: 0.84rem; min-width: 560px; font-family: 'IBM Plex Mono', ui-monospace, monospace; }
-.infra-table thead th { text-align: left; font-size: 0.66rem; letter-spacing: 0.08em; text-transform: uppercase; color: #AF969C; font-weight: 500; padding: 12px 16px; background: #483155; border-bottom: 1px solid #563B5A; }
-.infra-table td { padding: 12px 16px; border-bottom: 1px solid #563B5A; color: #ECE2EE; }
+.infra-table thead th { text-align: left; font-size: 0.66rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--infra-ink-dim, #AF969C); font-weight: 500; padding: 12px 16px; background: var(--infra-surface-2, #483155); border-bottom: 1px solid var(--infra-line, #563B5A); }
+.infra-table td { padding: 12px 16px; border-bottom: 1px solid var(--infra-line, #563B5A); color: var(--infra-ink, #ECE2EE); }
 .infra-table tr:last-child td { border-bottom: none; }
 .infra-table .num { text-align: right; }
 .infra-status-dot { display: inline-flex; align-items: center; gap: 7px; }
-.infra-status-dot::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: #EEF4B8; flex-shrink: 0; }
+.infra-status-dot::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--infra-accent, #EEF4B8); flex-shrink: 0; }
 .infra-status-dot.warn::before { background: #F0A830; }
-.infra-status-dot.down::before { background: #ED423F; }
+.infra-status-dot.down::before { background: var(--infra-danger, #ED423F); }
 &lt;/style&gt;
 &lt;div class=&quot;infra-table-wrap&quot;&gt;
   &lt;table class=&quot;infra-table&quot;&gt;
@@ -220,9 +247,9 @@
         <p class="block-dek">.empty / .empty__icon / .empty__title / .empty__body — icon rendered at 24px, always paired with a title and one line of body copy.</p>
       </div>
       <button type="button" class="copy block-copy-btn" data-copy="&lt;style&gt;
-.infra-empty { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 48px 24px; color: #AF969C; font-family: 'Barlow', sans-serif; }
-.infra-empty svg { color: #AF969C; margin-bottom: 14px; opacity: 0.7; }
-.infra-empty-title { font-weight: 600; color: #ECE2EE; margin-bottom: 6px; font-size: 0.95rem; }
+.infra-empty { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 48px 24px; color: var(--infra-ink-dim, #AF969C); font-family: 'Barlow', sans-serif; }
+.infra-empty svg { color: var(--infra-ink-dim, #AF969C); margin-bottom: 14px; opacity: 0.7; }
+.infra-empty-title { font-weight: 600; color: var(--infra-ink, #ECE2EE); margin-bottom: 6px; font-size: 0.95rem; }
 .infra-empty-body { font-size: 0.84rem; max-width: 40ch; margin: 0 auto; }
 &lt;/style&gt;
 &lt;div class=&quot;infra-empty&quot;&gt;
@@ -246,7 +273,7 @@
     <div class="block-head">
       <div>
         <h2>Icons</h2>
-        <p class="block-dek">.icon / .icon--accent2 — inline SVG, currentColor fill. Accent-2 (amber) is decoration only, never used on text or as the sole carrier of meaning.</p>
+        <p class="block-dek">.icon / .icon--accent2 — inline SVG, currentColor fill. Accent-2 (amber) is decoration only, never used on text or as the sole carrier of meaning. Alert icons such as triangle-alert use the danger red instead.</p>
       </div>
     </div>
     <div class="demo-surface">
@@ -255,7 +282,7 @@
         <div class="icon-sample"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>check</div>
         <div class="icon-sample"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>loader-circle</div>
         <div class="icon-sample"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>shield</div>
-        <div class="icon-sample accent2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>triangle-alert <span style="opacity:.6">(accent-2, decorative)</span></div>
+        <div class="icon-sample alert"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>triangle-alert <span style="opacity:.6">(alert)</span></div>
       </div>
     </div>
   </section>
@@ -274,6 +301,7 @@
           <tr><td>.table__cell--num</td><td>Monospace, right-aligned</td></tr>
           <tr><td>.empty / .empty__icon / .empty__title / .empty__body</td><td>--infra-ink-dim; icon at 24px</td></tr>
           <tr><td>.icon / .icon--accent2</td><td>currentColor; accent-2 decoration only</td></tr>
+          <tr><td>.icon--alert</td><td>--danger red; alerts and urgent notifications</td></tr>
         </tbody>
       </table>
     </div>
@@ -334,6 +362,16 @@
     });
   } catch (e) {}
 })();
+</script>
+<script>
+(function(){var r=document.documentElement,K='infra-theme',mq=window.matchMedia?matchMedia('(prefers-color-scheme: light)'):null;
+function pref(){try{return localStorage.getItem(K);}catch(e){return null;}}
+function apply(p){var ok=(p==='light'||p==='dark');r.setAttribute('data-theme',ok?p:(mq&&mq.matches?'light':'dark'));r.setAttribute('data-theme-pref',ok?p:'auto');
+document.querySelectorAll('[data-theme-set]').forEach(function(b){b.setAttribute('aria-pressed',String(b.getAttribute('data-theme-set')===r.getAttribute('data-theme-pref')));});}
+document.querySelectorAll('[data-theme-set]').forEach(function(b){b.addEventListener('click',function(){var v=b.getAttribute('data-theme-set');
+try{if(v==='auto'){localStorage.removeItem(K);}else{localStorage.setItem(K,v);}}catch(e){}apply(v==='auto'?null:v);});});
+if(mq&&mq.addEventListener){mq.addEventListener('change',function(){if(!pref()){apply(null);}});}
+apply(pref());})();
 </script>
 </body>
 </html>

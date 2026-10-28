@@ -7,10 +7,15 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@700;800;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>
+(function(){var r=document.documentElement,p=null;try{p=localStorage.getItem('infra-theme');}catch(e){}
+var s=(window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches)?'light':'dark';
+var ok=(p==='light'||p==='dark');r.setAttribute('data-theme',ok?p:s);r.setAttribute('data-theme-pref',ok?p:'auto');})();
+</script>
 <style>
   :root {
     --bg: #17181A; --surface: #2A1C36; --surface-2: #483155; --line: #563B5A;
-    --ink: #ECE2EE; --ink-dim: #AF969C; --accent: #ED423F; --accent-2: #F0A830;
+    --ink: #ECE2EE; --ink-dim: #AF969C; --accent: #EEF4B8; --accent-2: #F0A830;
     --micro: #EEF4B8; --danger: #ED423F; --radius: 6px;
   }
   * { box-sizing: border-box; }
@@ -40,40 +45,40 @@
   button.copy.component-copy-btn:hover, button.copy.component-copy-btn:focus-visible { border-color: var(--accent); color: var(--accent); outline: none; }
 
   .infra-field { display: flex; flex-direction: column; gap: 6px; max-width: 320px; font-family: 'IBM Plex Mono', ui-monospace, monospace; }
-  .infra-field-label { font-size: 0.78rem; font-weight: 600; color: #ECE2EE; }
-  .infra-field-hint { font-size: 0.74rem; color: #AF969C; }
-  .infra-field-error { font-size: 0.74rem; color: #ED423F; display: flex; align-items: center; gap: 5px; }
-  .infra-input, .infra-textarea { width: 100%; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 0.86rem; color: #ECE2EE; background: #2A1C36; border: 1px solid #563B5A; border-radius: 4px; padding: 9px 12px; }
-  .infra-input::placeholder, .infra-textarea::placeholder { color: #AF969C; opacity: 0.7; }
-  .infra-input:focus, .infra-textarea:focus { outline: none; border-color: #ED423F; }
-  .infra-field--error .infra-input { border-color: #ED423F; }
+  .infra-field-label { font-size: 0.78rem; font-weight: 600; color: var(--infra-ink, #ECE2EE); }
+  .infra-field-hint { font-size: 0.74rem; color: var(--infra-ink-dim, #AF969C); }
+  .infra-field-error { font-size: 0.74rem; color: var(--infra-danger, #ED423F); display: flex; align-items: center; gap: 5px; }
+  .infra-input, .infra-textarea { width: 100%; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 0.86rem; color: var(--infra-ink, #ECE2EE); background: var(--infra-surface, #2A1C36); border: 1px solid var(--infra-line, #563B5A); border-radius: 4px; padding: 9px 12px; }
+  .infra-input::placeholder, .infra-textarea::placeholder { color: var(--infra-ink-dim, #AF969C); opacity: 0.7; }
+  .infra-input:focus, .infra-textarea:focus { outline: none; border-color: var(--infra-accent, #EEF4B8); }
+  .infra-field--error .infra-input { border-color: var(--infra-danger, #ED423F); }
   .infra-textarea { min-height: 96px; resize: vertical; }
   .infra-select-wrap { position: relative; max-width: 320px; font-family: 'IBM Plex Mono', ui-monospace, monospace; }
-  .infra-select { width: 100%; appearance: none; -webkit-appearance: none; font-size: 0.86rem; color: #ECE2EE; background: #2A1C36; border: 1px solid #563B5A; border-radius: 4px; padding: 9px 34px 9px 12px; cursor: pointer; }
-  .infra-select:focus { outline: none; border-color: #ED423F; }
-  .infra-select-wrap svg { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none; color: #AF969C; }
+  .infra-select { width: 100%; appearance: none; -webkit-appearance: none; font-size: 0.86rem; color: var(--infra-ink, #ECE2EE); background: var(--infra-surface, #2A1C36); border: 1px solid var(--infra-line, #563B5A); border-radius: 4px; padding: 9px 34px 9px 12px; cursor: pointer; }
+  .infra-select:focus { outline: none; border-color: var(--infra-accent, #EEF4B8); }
+  .infra-select-wrap svg { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--infra-ink-dim, #AF969C); }
   .infra-btn { display: inline-flex; align-items: center; justify-content: center; padding: 9px 18px; border-radius: 4px; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 0.8rem; font-weight: 500; letter-spacing: 0.02em; cursor: pointer; border: 1px solid transparent; transition: opacity .15s ease; }
   .infra-btn:hover { opacity: 0.86; }
-  .infra-btn--primary { background: #ECE2EE; color: #17181A; }
-  .infra-btn--secondary { background: transparent; border-color: #ECE2EE; color: #ECE2EE; }
-  .infra-btn--accent { background: #ED423F; color: #ECE2EE; }
+  .infra-btn--primary { background: var(--infra-ink, #ECE2EE); color: var(--infra-on-accent, #17181A); }
+  .infra-btn--secondary { background: transparent; border-color: var(--infra-ink, #ECE2EE); color: var(--infra-ink, #ECE2EE); }
+  .infra-btn--accent { background: var(--infra-accent, #EEF4B8); color: var(--infra-on-accent, #17181A); }
   .infra-btn[disabled] { opacity: 0.4; cursor: not-allowed; }
 
-  .infra-checkbox { display: inline-flex; align-items: center; gap: 10px; cursor: pointer; font-family: 'Barlow', sans-serif; font-size: 0.9rem; color: #ECE2EE; }
+  .infra-checkbox { display: inline-flex; align-items: center; gap: 10px; cursor: pointer; font-family: 'Barlow', sans-serif; font-size: 0.9rem; color: var(--infra-ink, #ECE2EE); }
   .infra-checkbox input { position: absolute; opacity: 0; width: 0; height: 0; }
-  .infra-checkbox-box { width: 18px; height: 18px; border: 1.5px solid #563B5A; border-radius: 4px; background: #2A1C36; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background .15s, border-color .15s; }
-  .infra-checkbox input:checked + .infra-checkbox-box { background: #ED423F; border-color: #ED423F; }
-  .infra-checkbox-box svg { opacity: 0; transition: opacity .1s; color: #ECE2EE; width: 12px; height: 12px; }
+  .infra-checkbox-box { width: 18px; height: 18px; border: 1.5px solid var(--infra-line, #563B5A); border-radius: 4px; background: var(--infra-surface, #2A1C36); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background .15s, border-color .15s; }
+  .infra-checkbox input:checked + .infra-checkbox-box { background: var(--infra-accent, #EEF4B8); border-color: var(--infra-accent, #EEF4B8); }
+  .infra-checkbox-box svg { opacity: 0; transition: opacity .1s; color: var(--infra-on-accent, #17181A); width: 12px; height: 12px; }
   .infra-checkbox input:checked + .infra-checkbox-box svg { opacity: 1; }
-  .infra-checkbox input:focus-visible + .infra-checkbox-box { outline: 2px solid #ED423F; outline-offset: 2px; }
+  .infra-checkbox input:focus-visible + .infra-checkbox-box { outline: 2px solid var(--infra-accent, #EEF4B8); outline-offset: 2px; }
 
-  .infra-switch { position: relative; display: inline-flex; align-items: center; gap: 10px; cursor: pointer; font-family: 'Barlow', sans-serif; font-size: 0.9rem; color: #ECE2EE; }
+  .infra-switch { position: relative; display: inline-flex; align-items: center; gap: 10px; cursor: pointer; font-family: 'Barlow', sans-serif; font-size: 0.9rem; color: var(--infra-ink, #ECE2EE); }
   .infra-switch input { position: absolute; opacity: 0; width: 0; height: 0; }
-  .infra-switch-track { width: 40px; height: 22px; background: #563B5A; border-radius: 999px; position: relative; transition: background .15s ease; flex-shrink: 0; }
-  .infra-switch-track::after { content: ''; position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; background: #ECE2EE; border-radius: 50%; transition: transform .15s ease; }
-  .infra-switch input:checked + .infra-switch-track { background: #ED423F; }
-  .infra-switch input:checked + .infra-switch-track::after { transform: translateX(18px); }
-  .infra-switch input:focus-visible + .infra-switch-track { outline: 2px solid #ED423F; outline-offset: 2px; }
+  .infra-switch-track { width: 40px; height: 22px; background: var(--infra-line, #563B5A); border-radius: 999px; position: relative; transition: background .15s ease; flex-shrink: 0; }
+  .infra-switch-track::after { content: ''; position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; background: var(--infra-ink, #ECE2EE); border-radius: 50%; transition: transform .15s ease; }
+  .infra-switch input:checked + .infra-switch-track { background: var(--infra-accent, #EEF4B8); }
+  .infra-switch input:checked + .infra-switch-track::after { transform: translateX(18px); background: var(--infra-on-accent, #17181A); }
+  .infra-switch input:focus-visible + .infra-switch-track { outline: 2px solid var(--infra-accent, #EEF4B8); outline-offset: 2px; }
 
   @media (max-width: 640px) {
     .shell { padding: 32px 16px 64px; }
@@ -83,9 +88,30 @@
 
   footer { margin-top: 60px; padding-top: 24px; border-top: 1px solid var(--line); color: var(--ink-dim); font-size: 0.78rem; }
   footer a { color: var(--accent); }
+
+  /* ---- Light mode ---- page chrome + component tokens (components fall back to the dark values above when no variable is set) */
+  :root[data-theme="light"] {
+    --bg: #FDFBF7; --surface: #E7E4DF; --surface-2: #ECE2EE; --line: #B39B8C;
+    --ink: #1F142E; --ink-dim: #563B5A; --accent: #566D2B; --micro: #566D2B;
+    --infra-ink: #1F142E; --infra-ink-dim: #563B5A; --infra-line: #B39B8C;
+    --infra-surface: #E7E4DF; --infra-surface-2: #ECE2EE;
+    --infra-accent: #566D2B; --infra-on-accent: #FDFBF7; --infra-danger: #ED423F;
+    --infra-success: #3F6E45; --infra-warning: #A8741F; --infra-error: #B3261E;
+    --infra-accent-tint: rgba(86,109,43,0.14); --infra-success-tint: rgba(63,110,69,0.14);
+    --infra-warning-tint: rgba(168,116,31,0.14); --infra-error-tint: rgba(179,38,30,0.14);
+  }
+
+  /* ---- Light / Dark / Auto switch ---- */
+  .theme-toggle { display: inline-flex; gap: 2px; padding: 2px; border: 1px solid var(--line); border-radius: 999px; background: var(--bg); }
+  .theme-toggle button { all: unset; cursor: pointer; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 0.66rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 5px 11px; border-radius: 999px; color: var(--ink-dim); }
+  .theme-toggle button:hover { color: var(--ink); }
+  .theme-toggle button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+  .theme-toggle button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .theme-toggle--float { position: fixed; top: 14px; right: 14px; z-index: 60; }
 </style>
 </head>
 <body>
+<div class="theme-toggle theme-toggle--float" role="group" aria-label="Colour mode"><button type="button" data-theme-set="auto" aria-pressed="false">Auto</button><button type="button" data-theme-set="light" aria-pressed="false">Light</button><button type="button" data-theme-set="dark" aria-pressed="false">Dark</button></div>
 <div class="shell">
 
   <div class="crumbs"><a href="infra.html">Infra — Brand Specification Book</a> <span>/</span> <span>Component Library</span> <span>/</span> <span>Forms</span></div>
@@ -124,9 +150,9 @@
           <span class="component-card__label">Select / Dropdown</span>
           <button type="button" class="copy component-copy-btn" data-copy="&lt;style&gt;
 .infra-select-wrap { position: relative; max-width: 320px; font-family: 'IBM Plex Mono', ui-monospace, monospace; }
-.infra-select { width: 100%; appearance: none; -webkit-appearance: none; font-size: 0.86rem; color: #ECE2EE; background: #2A1C36; border: 1px solid #563B5A; border-radius: 4px; padding: 9px 34px 9px 12px; cursor: pointer; }
-.infra-select:focus { outline: none; border-color: #ED423F; }
-.infra-select-wrap svg { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none; color: #AF969C; }
+.infra-select { width: 100%; appearance: none; -webkit-appearance: none; font-size: 0.86rem; color: var(--infra-ink, #ECE2EE); background: var(--infra-surface, #2A1C36); border: 1px solid var(--infra-line, #563B5A); border-radius: 4px; padding: 9px 34px 9px 12px; cursor: pointer; }
+.infra-select:focus { outline: none; border-color: var(--infra-accent, #EEF4B8); }
+.infra-select-wrap svg { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--infra-ink-dim, #AF969C); }
 &lt;/style&gt;
 &lt;div class=&quot;infra-select-wrap&quot;&gt;
   &lt;select class=&quot;infra-select&quot;&gt;
@@ -152,11 +178,11 @@
           <span class="component-card__label">Text Field</span>
           <button type="button" class="copy component-copy-btn" data-copy="&lt;style&gt;
 .infra-field { display: flex; flex-direction: column; gap: 6px; max-width: 320px; font-family: 'IBM Plex Mono', ui-monospace, monospace; }
-.infra-field-label { font-size: 0.78rem; font-weight: 600; color: #ECE2EE; }
-.infra-field-hint { font-size: 0.74rem; color: #AF969C; }
-.infra-input { width: 100%; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 0.86rem; color: #ECE2EE; background: #2A1C36; border: 1px solid #563B5A; border-radius: 4px; padding: 9px 12px; }
-.infra-input::placeholder { color: #AF969C; opacity: 0.7; }
-.infra-input:focus { outline: none; border-color: #ED423F; }
+.infra-field-label { font-size: 0.78rem; font-weight: 600; color: var(--infra-ink, #ECE2EE); }
+.infra-field-hint { font-size: 0.74rem; color: var(--infra-ink-dim, #AF969C); }
+.infra-input { width: 100%; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 0.86rem; color: var(--infra-ink, #ECE2EE); background: var(--infra-surface, #2A1C36); border: 1px solid var(--infra-line, #563B5A); border-radius: 4px; padding: 9px 12px; }
+.infra-input::placeholder { color: var(--infra-ink-dim, #AF969C); opacity: 0.7; }
+.infra-input:focus { outline: none; border-color: var(--infra-accent, #EEF4B8); }
 &lt;/style&gt;
 &lt;div class=&quot;infra-field&quot;&gt;
   &lt;label class=&quot;infra-field-label&quot;&gt;Module name&lt;/label&gt;
@@ -178,11 +204,11 @@
           <span class="component-card__label">Text Field — Error</span>
           <button type="button" class="copy component-copy-btn" data-copy="&lt;style&gt;
 .infra-field { display: flex; flex-direction: column; gap: 6px; max-width: 320px; font-family: 'IBM Plex Mono', ui-monospace, monospace; }
-.infra-field-label { font-size: 0.78rem; font-weight: 600; color: #ECE2EE; }
-.infra-field-error { font-size: 0.74rem; color: #ED423F; display: flex; align-items: center; gap: 5px; }
-.infra-input { width: 100%; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 0.86rem; color: #ECE2EE; background: #2A1C36; border: 1px solid #563B5A; border-radius: 4px; padding: 9px 12px; }
-.infra-field--error .infra-input { border-color: #ED423F; }
-.infra-input:focus { outline: none; border-color: #ED423F; }
+.infra-field-label { font-size: 0.78rem; font-weight: 600; color: var(--infra-ink, #ECE2EE); }
+.infra-field-error { font-size: 0.74rem; color: var(--infra-danger, #ED423F); display: flex; align-items: center; gap: 5px; }
+.infra-input { width: 100%; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 0.86rem; color: var(--infra-ink, #ECE2EE); background: var(--infra-surface, #2A1C36); border: 1px solid var(--infra-line, #563B5A); border-radius: 4px; padding: 9px 12px; }
+.infra-field--error .infra-input { border-color: var(--infra-danger, #ED423F); }
+.infra-input:focus { outline: none; border-color: var(--infra-accent, #EEF4B8); }
 &lt;/style&gt;
 &lt;div class=&quot;infra-field infra-field--error&quot;&gt;
   &lt;label class=&quot;infra-field-label&quot;&gt;Memory allocation (GB)&lt;/label&gt;
@@ -203,10 +229,10 @@
           <span class="component-card__label">Textarea</span>
           <button type="button" class="copy component-copy-btn" data-copy="&lt;style&gt;
 .infra-field { display: flex; flex-direction: column; gap: 6px; max-width: 320px; font-family: 'IBM Plex Mono', ui-monospace, monospace; }
-.infra-field-label { font-size: 0.78rem; font-weight: 600; color: #ECE2EE; }
-.infra-textarea { width: 100%; min-height: 96px; resize: vertical; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 0.86rem; color: #ECE2EE; background: #2A1C36; border: 1px solid #563B5A; border-radius: 4px; padding: 9px 12px; }
-.infra-textarea::placeholder { color: #AF969C; opacity: 0.7; }
-.infra-textarea:focus { outline: none; border-color: #ED423F; }
+.infra-field-label { font-size: 0.78rem; font-weight: 600; color: var(--infra-ink, #ECE2EE); }
+.infra-textarea { width: 100%; min-height: 96px; resize: vertical; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 0.86rem; color: var(--infra-ink, #ECE2EE); background: var(--infra-surface, #2A1C36); border: 1px solid var(--infra-line, #563B5A); border-radius: 4px; padding: 9px 12px; }
+.infra-textarea::placeholder { color: var(--infra-ink-dim, #AF969C); opacity: 0.7; }
+.infra-textarea:focus { outline: none; border-color: var(--infra-accent, #EEF4B8); }
 &lt;/style&gt;
 &lt;div class=&quot;infra-field&quot;&gt;
   &lt;label class=&quot;infra-field-label&quot;&gt;Notes&lt;/label&gt;
@@ -236,13 +262,13 @@
         <div class="component-card__foot">
           <span class="component-card__label">Checkbox</span>
           <button type="button" class="copy component-copy-btn" data-copy="&lt;style&gt;
-.infra-checkbox { display: inline-flex; align-items: center; gap: 10px; cursor: pointer; font-family: 'Barlow', sans-serif; font-size: 0.9rem; color: #ECE2EE; }
+.infra-checkbox { display: inline-flex; align-items: center; gap: 10px; cursor: pointer; font-family: 'Barlow', sans-serif; font-size: 0.9rem; color: var(--infra-ink, #ECE2EE); }
 .infra-checkbox input { position: absolute; opacity: 0; width: 0; height: 0; }
-.infra-checkbox-box { width: 18px; height: 18px; border: 1.5px solid #563B5A; border-radius: 4px; background: #2A1C36; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background .15s, border-color .15s; }
-.infra-checkbox input:checked + .infra-checkbox-box { background: #ED423F; border-color: #ED423F; }
-.infra-checkbox-box svg { opacity: 0; transition: opacity .1s; color: #ECE2EE; width: 12px; height: 12px; }
+.infra-checkbox-box { width: 18px; height: 18px; border: 1.5px solid var(--infra-line, #563B5A); border-radius: 4px; background: var(--infra-surface, #2A1C36); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background .15s, border-color .15s; }
+.infra-checkbox input:checked + .infra-checkbox-box { background: var(--infra-accent, #EEF4B8); border-color: var(--infra-accent, #EEF4B8); }
+.infra-checkbox-box svg { opacity: 0; transition: opacity .1s; color: var(--infra-on-accent, #17181A); width: 12px; height: 12px; }
 .infra-checkbox input:checked + .infra-checkbox-box svg { opacity: 1; }
-.infra-checkbox input:focus-visible + .infra-checkbox-box { outline: 2px solid #ED423F; outline-offset: 2px; }
+.infra-checkbox input:focus-visible + .infra-checkbox-box { outline: 2px solid var(--infra-accent, #EEF4B8); outline-offset: 2px; }
 &lt;/style&gt;
 &lt;label class=&quot;infra-checkbox&quot;&gt;
   &lt;input type=&quot;checkbox&quot;&gt;
@@ -263,13 +289,13 @@
         <div class="component-card__foot">
           <span class="component-card__label">Toggle / Switch</span>
           <button type="button" class="copy component-copy-btn" data-copy="&lt;style&gt;
-.infra-switch { position: relative; display: inline-flex; align-items: center; gap: 10px; cursor: pointer; font-family: 'Barlow', sans-serif; font-size: 0.9rem; color: #ECE2EE; }
+.infra-switch { position: relative; display: inline-flex; align-items: center; gap: 10px; cursor: pointer; font-family: 'Barlow', sans-serif; font-size: 0.9rem; color: var(--infra-ink, #ECE2EE); }
 .infra-switch input { position: absolute; opacity: 0; width: 0; height: 0; }
-.infra-switch-track { width: 40px; height: 22px; background: #563B5A; border-radius: 999px; position: relative; transition: background .15s ease; flex-shrink: 0; }
-.infra-switch-track::after { content: ''; position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; background: #ECE2EE; border-radius: 50%; transition: transform .15s ease; }
-.infra-switch input:checked + .infra-switch-track { background: #ED423F; }
-.infra-switch input:checked + .infra-switch-track::after { transform: translateX(18px); }
-.infra-switch input:focus-visible + .infra-switch-track { outline: 2px solid #ED423F; outline-offset: 2px; }
+.infra-switch-track { width: 40px; height: 22px; background: var(--infra-line, #563B5A); border-radius: 999px; position: relative; transition: background .15s ease; flex-shrink: 0; }
+.infra-switch-track::after { content: ''; position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; background: var(--infra-ink, #ECE2EE); border-radius: 50%; transition: transform .15s ease; }
+.infra-switch input:checked + .infra-switch-track { background: var(--infra-accent, #EEF4B8); }
+.infra-switch input:checked + .infra-switch-track::after { transform: translateX(18px); background: var(--infra-on-accent, #17181A); }
+.infra-switch input:focus-visible + .infra-switch-track { outline: 2px solid var(--infra-accent, #EEF4B8); outline-offset: 2px; }
 &lt;/style&gt;
 &lt;label class=&quot;infra-switch&quot;&gt;
   &lt;input type=&quot;checkbox&quot;&gt;
@@ -301,9 +327,9 @@
         <button type="button" class="copy component-copy-btn" data-copy="&lt;style&gt;
 .infra-btn { display: inline-flex; align-items: center; justify-content: center; padding: 9px 18px; border-radius: 4px; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 0.8rem; font-weight: 500; letter-spacing: 0.02em; cursor: pointer; border: 1px solid transparent; transition: opacity .15s ease; }
 .infra-btn:hover { opacity: 0.86; }
-.infra-btn--primary { background: #ECE2EE; color: #17181A; }
-.infra-btn--secondary { background: transparent; border-color: #ECE2EE; color: #ECE2EE; }
-.infra-btn--accent { background: #ED423F; color: #ECE2EE; }
+.infra-btn--primary { background: var(--infra-ink, #ECE2EE); color: var(--infra-on-accent, #17181A); }
+.infra-btn--secondary { background: transparent; border-color: var(--infra-ink, #ECE2EE); color: var(--infra-ink, #ECE2EE); }
+.infra-btn--accent { background: var(--infra-accent, #EEF4B8); color: var(--infra-on-accent, #17181A); }
 .infra-btn[disabled] { opacity: 0.4; cursor: not-allowed; }
 &lt;/style&gt;
 &lt;div style=&quot;display:flex; gap:10px; flex-wrap:wrap;&quot;&gt;
@@ -357,6 +383,16 @@
     });
   } catch (e) {}
 })();
+</script>
+<script>
+(function(){var r=document.documentElement,K='infra-theme',mq=window.matchMedia?matchMedia('(prefers-color-scheme: light)'):null;
+function pref(){try{return localStorage.getItem(K);}catch(e){return null;}}
+function apply(p){var ok=(p==='light'||p==='dark');r.setAttribute('data-theme',ok?p:(mq&&mq.matches?'light':'dark'));r.setAttribute('data-theme-pref',ok?p:'auto');
+document.querySelectorAll('[data-theme-set]').forEach(function(b){b.setAttribute('aria-pressed',String(b.getAttribute('data-theme-set')===r.getAttribute('data-theme-pref')));});}
+document.querySelectorAll('[data-theme-set]').forEach(function(b){b.addEventListener('click',function(){var v=b.getAttribute('data-theme-set');
+try{if(v==='auto'){localStorage.removeItem(K);}else{localStorage.setItem(K,v);}}catch(e){}apply(v==='auto'?null:v);});});
+if(mq&&mq.addEventListener){mq.addEventListener('change',function(){if(!pref()){apply(null);}});}
+apply(pref());})();
 </script>
 </body>
 </html>

@@ -7,10 +7,15 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@700;800;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>
+(function(){var r=document.documentElement,p=null;try{p=localStorage.getItem('infra-theme');}catch(e){}
+var s=(window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches)?'light':'dark';
+var ok=(p==='light'||p==='dark');r.setAttribute('data-theme',ok?p:s);r.setAttribute('data-theme-pref',ok?p:'auto');})();
+</script>
 <style>
   :root {
     --bg: #17181A; --surface: #2A1C36; --surface-2: #483155; --line: #563B5A;
-    --ink: #ECE2EE; --ink-dim: #AF969C; --accent: #ED423F; --accent-2: #F0A830;
+    --ink: #ECE2EE; --ink-dim: #AF969C; --accent: #EEF4B8; --accent-2: #F0A830;
     --micro: #EEF4B8; --danger: #ED423F; --radius: 6px;
   }
   * { box-sizing: border-box; }
@@ -39,13 +44,13 @@
   button.copy.component-copy-btn:hover, button.copy.component-copy-btn:focus-visible { border-color: var(--accent); color: var(--accent); outline: none; }
 
   /* Navbar */
-  .infra-navbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 20px; background: #2A1C36; border: 1px solid #563B5A; border-radius: 8px; font-family: 'Barlow', sans-serif; position: relative; }
-  .infra-navbar__brand { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; text-transform: uppercase; letter-spacing: 0.02em; color: #ECE2EE; font-size: 1.05rem; }
+  .infra-navbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 20px; background: var(--infra-surface, #2A1C36); border: 1px solid var(--infra-line, #563B5A); border-radius: 8px; font-family: 'Barlow', sans-serif; position: relative; }
+  .infra-navbar__brand { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; text-transform: uppercase; letter-spacing: 0.02em; color: var(--infra-ink, #ECE2EE); font-size: 1.05rem; }
   .infra-navbar__links { display: flex; gap: 24px; list-style: none; margin: 0; padding: 0; }
-  .infra-navbar__links a { color: #AF969C; text-decoration: none; font-size: 0.86rem; font-weight: 500; }
-  .infra-navbar__links a.is-active, .infra-navbar__links a:hover { color: #ECE2EE; }
-  .infra-navbar__cta { background: #ED423F; color: #ECE2EE; border: none; border-radius: 4px; padding: 8px 16px; font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem; cursor: pointer; }
-  .infra-navbar__toggle { display: none; background: none; border: 1px solid #563B5A; border-radius: 4px; width: 36px; height: 36px; color: #ECE2EE; cursor: pointer; align-items: center; justify-content: center; }
+  .infra-navbar__links a { color: var(--infra-ink-dim, #AF969C); text-decoration: none; font-size: 0.86rem; font-weight: 500; }
+  .infra-navbar__links a.is-active, .infra-navbar__links a:hover { color: var(--infra-ink, #ECE2EE); }
+  .infra-navbar__cta { background: var(--infra-accent, #EEF4B8); color: var(--infra-on-accent, #17181A); border: none; border-radius: 4px; padding: 8px 16px; font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem; cursor: pointer; }
+  .infra-navbar__toggle { display: none; background: none; border: 1px solid var(--infra-line, #563B5A); border-radius: 4px; width: 36px; height: 36px; color: var(--infra-ink, #ECE2EE); cursor: pointer; align-items: center; justify-content: center; }
   @media (max-width: 640px) {
     .infra-navbar__links, .infra-navbar__cta { display: none; }
     .infra-navbar__toggle { display: inline-flex; }
@@ -53,29 +58,29 @@
 
   /* Breadcrumbs */
   .infra-crumbs { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem; }
-  .infra-crumbs a { color: #AF969C; text-decoration: none; }
-  .infra-crumbs a:hover { color: #ED423F; }
-  .infra-crumbs span.sep { color: #563B5A; }
-  .infra-crumbs span.current { color: #ECE2EE; }
+  .infra-crumbs a { color: var(--infra-ink-dim, #AF969C); text-decoration: none; }
+  .infra-crumbs a:hover { color: var(--infra-accent, #EEF4B8); }
+  .infra-crumbs span.sep { color: var(--infra-line, #563B5A); }
+  .infra-crumbs span.current { color: var(--infra-ink, #ECE2EE); }
 
   /* Tabs */
-  .infra-tabs { display: flex; gap: 2px; border: 1px solid #563B5A; border-radius: 999px; padding: 3px; width: fit-content; max-width: 100%; overflow-x: auto; }
-  .infra-tab-btn { all: unset; cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.05em; text-transform: uppercase; padding: 7px 16px; border-radius: 999px; color: #AF969C; white-space: nowrap; }
-  .infra-tab-btn.is-active { background: #ECE2EE; color: #17181A; }
+  .infra-tabs { display: flex; gap: 2px; border: 1px solid var(--infra-line, #563B5A); border-radius: 999px; padding: 3px; width: fit-content; max-width: 100%; overflow-x: auto; }
+  .infra-tab-btn { all: unset; cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.05em; text-transform: uppercase; padding: 7px 16px; border-radius: 999px; color: var(--infra-ink-dim, #AF969C); white-space: nowrap; }
+  .infra-tab-btn.is-active { background: var(--infra-ink, #ECE2EE); color: var(--infra-on-accent, #17181A); }
 
   /* Pagination */
   .infra-pagination { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; font-family: 'IBM Plex Mono', monospace; font-size: 0.82rem; }
-  .infra-page-btn { all: unset; cursor: pointer; min-width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center; border-radius: 4px; border: 1px solid #563B5A; color: #AF969C; padding: 0 8px; }
-  .infra-page-btn.is-active { background: #ED423F; border-color: #ED423F; color: #ECE2EE; }
+  .infra-page-btn { all: unset; cursor: pointer; min-width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center; border-radius: 4px; border: 1px solid var(--infra-line, #563B5A); color: var(--infra-ink-dim, #AF969C); padding: 0 8px; }
+  .infra-page-btn.is-active { background: var(--infra-accent, #EEF4B8); border-color: var(--infra-accent, #EEF4B8); color: var(--infra-on-accent, #17181A); }
   .infra-page-btn:disabled { opacity: 0.35; cursor: not-allowed; }
-  .infra-page-btn:not(:disabled):hover { border-color: #ED423F; color: #ECE2EE; }
+  .infra-page-btn:not(:disabled):hover { border-color: var(--infra-accent, #EEF4B8); color: var(--infra-ink, #ECE2EE); }
 
   /* Sidebar nav */
-  .infra-sidenav { display: flex; flex-direction: column; gap: 2px; background: #2A1C36; border: 1px solid #563B5A; border-radius: 8px; padding: 10px; width: 220px; max-width: 100%; font-family: 'Barlow', sans-serif; }
-  .infra-sidenav a { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 6px; color: #AF969C; text-decoration: none; font-size: 0.88rem; }
+  .infra-sidenav { display: flex; flex-direction: column; gap: 2px; background: var(--infra-surface, #2A1C36); border: 1px solid var(--infra-line, #563B5A); border-radius: 8px; padding: 10px; width: 220px; max-width: 100%; font-family: 'Barlow', sans-serif; }
+  .infra-sidenav a { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 6px; color: var(--infra-ink-dim, #AF969C); text-decoration: none; font-size: 0.88rem; }
   .infra-sidenav a svg { flex-shrink: 0; }
-  .infra-sidenav a.is-active { background: #483155; color: #ECE2EE; }
-  .infra-sidenav a:hover:not(.is-active) { color: #ECE2EE; }
+  .infra-sidenav a.is-active { background: var(--infra-surface-2, #483155); color: var(--infra-ink, #ECE2EE); }
+  .infra-sidenav a:hover:not(.is-active) { color: var(--infra-ink, #ECE2EE); }
 
   @media (max-width: 640px) {
     .shell { padding: 32px 16px 64px; }
@@ -84,9 +89,30 @@
 
   footer { margin-top: 60px; padding-top: 24px; border-top: 1px solid var(--line); color: var(--ink-dim); font-size: 0.78rem; }
   footer a { color: var(--accent); }
+
+  /* ---- Light mode ---- page chrome + component tokens (components fall back to the dark values above when no variable is set) */
+  :root[data-theme="light"] {
+    --bg: #FDFBF7; --surface: #E7E4DF; --surface-2: #ECE2EE; --line: #B39B8C;
+    --ink: #1F142E; --ink-dim: #563B5A; --accent: #566D2B; --micro: #566D2B;
+    --infra-ink: #1F142E; --infra-ink-dim: #563B5A; --infra-line: #B39B8C;
+    --infra-surface: #E7E4DF; --infra-surface-2: #ECE2EE;
+    --infra-accent: #566D2B; --infra-on-accent: #FDFBF7; --infra-danger: #ED423F;
+    --infra-success: #3F6E45; --infra-warning: #A8741F; --infra-error: #B3261E;
+    --infra-accent-tint: rgba(86,109,43,0.14); --infra-success-tint: rgba(63,110,69,0.14);
+    --infra-warning-tint: rgba(168,116,31,0.14); --infra-error-tint: rgba(179,38,30,0.14);
+  }
+
+  /* ---- Light / Dark / Auto switch ---- */
+  .theme-toggle { display: inline-flex; gap: 2px; padding: 2px; border: 1px solid var(--line); border-radius: 999px; background: var(--bg); }
+  .theme-toggle button { all: unset; cursor: pointer; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 0.66rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 5px 11px; border-radius: 999px; color: var(--ink-dim); }
+  .theme-toggle button:hover { color: var(--ink); }
+  .theme-toggle button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+  .theme-toggle button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .theme-toggle--float { position: fixed; top: 14px; right: 14px; z-index: 60; }
 </style>
 </head>
 <body>
+<div class="theme-toggle theme-toggle--float" role="group" aria-label="Colour mode"><button type="button" data-theme-set="auto" aria-pressed="false">Auto</button><button type="button" data-theme-set="light" aria-pressed="false">Light</button><button type="button" data-theme-set="dark" aria-pressed="false">Dark</button></div>
 <div class="shell">
 
   <div class="crumbs"><a href="infra.html">Infra — Brand Specification Book</a> <span>/</span> <span>Component Library</span> <span>/</span> <span>Navigation</span></div>
@@ -123,13 +149,13 @@
       <div class="component-card__foot">
         <span class="component-card__label">Navbar</span>
         <button type="button" class="copy component-copy-btn" data-copy="&lt;style&gt;
-.infra-navbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 20px; background: #2A1C36; border: 1px solid #563B5A; border-radius: 8px; font-family: 'Barlow', sans-serif; position: relative; }
-.infra-navbar__brand { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; text-transform: uppercase; letter-spacing: 0.02em; color: #ECE2EE; font-size: 1.05rem; }
+.infra-navbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 20px; background: var(--infra-surface, #2A1C36); border: 1px solid var(--infra-line, #563B5A); border-radius: 8px; font-family: 'Barlow', sans-serif; position: relative; }
+.infra-navbar__brand { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; text-transform: uppercase; letter-spacing: 0.02em; color: var(--infra-ink, #ECE2EE); font-size: 1.05rem; }
 .infra-navbar__links { display: flex; gap: 24px; list-style: none; margin: 0; padding: 0; }
-.infra-navbar__links a { color: #AF969C; text-decoration: none; font-size: 0.86rem; font-weight: 500; }
-.infra-navbar__links a.is-active, .infra-navbar__links a:hover { color: #ECE2EE; }
-.infra-navbar__cta { background: #ED423F; color: #ECE2EE; border: none; border-radius: 4px; padding: 8px 16px; font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem; cursor: pointer; }
-.infra-navbar__toggle { display: none; background: none; border: 1px solid #563B5A; border-radius: 4px; width: 36px; height: 36px; color: #ECE2EE; cursor: pointer; align-items: center; justify-content: center; }
+.infra-navbar__links a { color: var(--infra-ink-dim, #AF969C); text-decoration: none; font-size: 0.86rem; font-weight: 500; }
+.infra-navbar__links a.is-active, .infra-navbar__links a:hover { color: var(--infra-ink, #ECE2EE); }
+.infra-navbar__cta { background: var(--infra-accent, #EEF4B8); color: var(--infra-on-accent, #17181A); border: none; border-radius: 4px; padding: 8px 16px; font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem; cursor: pointer; }
+.infra-navbar__toggle { display: none; background: none; border: 1px solid var(--infra-line, #563B5A); border-radius: 4px; width: 36px; height: 36px; color: var(--infra-ink, #ECE2EE); cursor: pointer; align-items: center; justify-content: center; }
 @media (max-width: 640px) {
   .infra-navbar__links, .infra-navbar__cta { display: none; }
   .infra-navbar__toggle { display: inline-flex; }
@@ -164,10 +190,10 @@
         <span class="component-card__label">Breadcrumbs</span>
         <button type="button" class="copy component-copy-btn" data-copy="&lt;style&gt;
 .infra-crumbs { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem; }
-.infra-crumbs a { color: #AF969C; text-decoration: none; }
-.infra-crumbs a:hover { color: #ED423F; }
-.infra-crumbs span.sep { color: #563B5A; }
-.infra-crumbs span.current { color: #ECE2EE; }
+.infra-crumbs a { color: var(--infra-ink-dim, #AF969C); text-decoration: none; }
+.infra-crumbs a:hover { color: var(--infra-accent, #EEF4B8); }
+.infra-crumbs span.sep { color: var(--infra-line, #563B5A); }
+.infra-crumbs span.current { color: var(--infra-ink, #ECE2EE); }
 &lt;/style&gt;
 &lt;nav class=&quot;infra-crumbs&quot; aria-label=&quot;Breadcrumb&quot;&gt;
   &lt;a href=&quot;#&quot;&gt;Modules&lt;/a&gt;&lt;span class=&quot;sep&quot;&gt;/&lt;/span&gt;&lt;a href=&quot;#&quot;&gt;eu-west&lt;/a&gt;&lt;span class=&quot;sep&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;current&quot;&gt;IR-402&lt;/span&gt;
@@ -193,9 +219,9 @@
       <div class="component-card__foot">
         <span class="component-card__label">Tabs</span>
         <button type="button" class="copy component-copy-btn" data-copy="&lt;style&gt;
-.infra-tabs { display: flex; gap: 2px; border: 1px solid #563B5A; border-radius: 999px; padding: 3px; width: fit-content; max-width: 100%; overflow-x: auto; }
-.infra-tab-btn { all: unset; cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.05em; text-transform: uppercase; padding: 7px 16px; border-radius: 999px; color: #AF969C; white-space: nowrap; }
-.infra-tab-btn.is-active { background: #ECE2EE; color: #17181A; }
+.infra-tabs { display: flex; gap: 2px; border: 1px solid var(--infra-line, #563B5A); border-radius: 999px; padding: 3px; width: fit-content; max-width: 100%; overflow-x: auto; }
+.infra-tab-btn { all: unset; cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.05em; text-transform: uppercase; padding: 7px 16px; border-radius: 999px; color: var(--infra-ink-dim, #AF969C); white-space: nowrap; }
+.infra-tab-btn.is-active { background: var(--infra-ink, #ECE2EE); color: var(--infra-on-accent, #17181A); }
 &lt;/style&gt;
 &lt;div class=&quot;infra-tabs&quot; role=&quot;tablist&quot;&gt;
   &lt;button type=&quot;button&quot; class=&quot;infra-tab-btn is-active&quot;&gt;Overview&lt;/button&gt;
@@ -229,7 +255,7 @@ document.querySelectorAll('.infra-tabs').forEach(function (tabs) {
           <button type="button" class="infra-page-btn is-active">1</button>
           <button type="button" class="infra-page-btn">2</button>
           <button type="button" class="infra-page-btn">3</button>
-          <span style="color:#563B5A;">…</span>
+          <span style="color:var(--infra-line, #563B5A);">…</span>
           <button type="button" class="infra-page-btn">12</button>
           <button type="button" class="infra-page-btn">›</button>
         </div>
@@ -238,17 +264,17 @@ document.querySelectorAll('.infra-tabs').forEach(function (tabs) {
         <span class="component-card__label">Pagination</span>
         <button type="button" class="copy component-copy-btn" data-copy="&lt;style&gt;
 .infra-pagination { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; font-family: 'IBM Plex Mono', monospace; font-size: 0.82rem; }
-.infra-page-btn { all: unset; cursor: pointer; min-width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center; border-radius: 4px; border: 1px solid #563B5A; color: #AF969C; padding: 0 8px; }
-.infra-page-btn.is-active { background: #ED423F; border-color: #ED423F; color: #ECE2EE; }
+.infra-page-btn { all: unset; cursor: pointer; min-width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center; border-radius: 4px; border: 1px solid var(--infra-line, #563B5A); color: var(--infra-ink-dim, #AF969C); padding: 0 8px; }
+.infra-page-btn.is-active { background: var(--infra-accent, #EEF4B8); border-color: var(--infra-accent, #EEF4B8); color: var(--infra-on-accent, #17181A); }
 .infra-page-btn:disabled { opacity: 0.35; cursor: not-allowed; }
-.infra-page-btn:not(:disabled):hover { border-color: #ED423F; color: #ECE2EE; }
+.infra-page-btn:not(:disabled):hover { border-color: var(--infra-accent, #EEF4B8); color: var(--infra-ink, #ECE2EE); }
 &lt;/style&gt;
 &lt;div class=&quot;infra-pagination&quot;&gt;
   &lt;button type=&quot;button&quot; class=&quot;infra-page-btn&quot; disabled&gt;‹&lt;/button&gt;
   &lt;button type=&quot;button&quot; class=&quot;infra-page-btn is-active&quot;&gt;1&lt;/button&gt;
   &lt;button type=&quot;button&quot; class=&quot;infra-page-btn&quot;&gt;2&lt;/button&gt;
   &lt;button type=&quot;button&quot; class=&quot;infra-page-btn&quot;&gt;3&lt;/button&gt;
-  &lt;span style=&quot;color:#563B5A;&quot;&gt;…&lt;/span&gt;
+  &lt;span style=&quot;color:var(--infra-line, #563B5A);&quot;&gt;…&lt;/span&gt;
   &lt;button type=&quot;button&quot; class=&quot;infra-page-btn&quot;&gt;12&lt;/button&gt;
   &lt;button type=&quot;button&quot; class=&quot;infra-page-btn&quot;&gt;›&lt;/button&gt;
 &lt;/div&gt;"><span class="lbl">Copy code</span></button>
@@ -272,11 +298,11 @@ document.querySelectorAll('.infra-tabs').forEach(function (tabs) {
       <div class="component-card__foot">
         <span class="component-card__label">Sidebar Nav</span>
         <button type="button" class="copy component-copy-btn" data-copy="&lt;style&gt;
-.infra-sidenav { display: flex; flex-direction: column; gap: 2px; background: #2A1C36; border: 1px solid #563B5A; border-radius: 8px; padding: 10px; width: 220px; max-width: 100%; font-family: 'Barlow', sans-serif; }
-.infra-sidenav a { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 6px; color: #AF969C; text-decoration: none; font-size: 0.88rem; }
+.infra-sidenav { display: flex; flex-direction: column; gap: 2px; background: var(--infra-surface, #2A1C36); border: 1px solid var(--infra-line, #563B5A); border-radius: 8px; padding: 10px; width: 220px; max-width: 100%; font-family: 'Barlow', sans-serif; }
+.infra-sidenav a { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 6px; color: var(--infra-ink-dim, #AF969C); text-decoration: none; font-size: 0.88rem; }
 .infra-sidenav a svg { flex-shrink: 0; }
-.infra-sidenav a.is-active { background: #483155; color: #ECE2EE; }
-.infra-sidenav a:hover:not(.is-active) { color: #ECE2EE; }
+.infra-sidenav a.is-active { background: var(--infra-surface-2, #483155); color: var(--infra-ink, #ECE2EE); }
+.infra-sidenav a:hover:not(.is-active) { color: var(--infra-ink, #ECE2EE); }
 &lt;/style&gt;
 &lt;nav class=&quot;infra-sidenav&quot;&gt;
   &lt;a href=&quot;#&quot; class=&quot;is-active&quot;&gt;&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;16&quot; height=&quot;16&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;&gt;&lt;rect width=&quot;7&quot; height=&quot;9&quot; x=&quot;3&quot; y=&quot;3&quot; rx=&quot;1&quot;/&gt;&lt;rect width=&quot;7&quot; height=&quot;5&quot; x=&quot;14&quot; y=&quot;3&quot; rx=&quot;1&quot;/&gt;&lt;rect width=&quot;7&quot; height=&quot;9&quot; x=&quot;14&quot; y=&quot;12&quot; rx=&quot;1&quot;/&gt;&lt;rect width=&quot;7&quot; height=&quot;5&quot; x=&quot;3&quot; y=&quot;16&quot; rx=&quot;1&quot;/&gt;&lt;/svg&gt;Dashboard&lt;/a&gt;
@@ -352,6 +378,16 @@ document.querySelectorAll('.infra-tabs').forEach(function (tabs) {
     });
   } catch (e) {}
 })();
+</script>
+<script>
+(function(){var r=document.documentElement,K='infra-theme',mq=window.matchMedia?matchMedia('(prefers-color-scheme: light)'):null;
+function pref(){try{return localStorage.getItem(K);}catch(e){return null;}}
+function apply(p){var ok=(p==='light'||p==='dark');r.setAttribute('data-theme',ok?p:(mq&&mq.matches?'light':'dark'));r.setAttribute('data-theme-pref',ok?p:'auto');
+document.querySelectorAll('[data-theme-set]').forEach(function(b){b.setAttribute('aria-pressed',String(b.getAttribute('data-theme-set')===r.getAttribute('data-theme-pref')));});}
+document.querySelectorAll('[data-theme-set]').forEach(function(b){b.addEventListener('click',function(){var v=b.getAttribute('data-theme-set');
+try{if(v==='auto'){localStorage.removeItem(K);}else{localStorage.setItem(K,v);}}catch(e){}apply(v==='auto'?null:v);});});
+if(mq&&mq.addEventListener){mq.addEventListener('change',function(){if(!pref()){apply(null);}});}
+apply(pref());})();
 </script>
 </body>
 </html>
