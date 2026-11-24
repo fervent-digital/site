@@ -47,7 +47,7 @@ var ok=(p==='light'||p==='dark');r.setAttribute('data-theme',ok?p:s);r.setAttrib
   .infra-field { display: flex; flex-direction: column; gap: 6px; max-width: 320px; font-family: 'IBM Plex Mono', ui-monospace, monospace; }
   .infra-field-label { font-size: 0.78rem; font-weight: 600; color: var(--infra-ink, #ECE2EE); }
   .infra-field-hint { font-size: 0.74rem; color: var(--infra-ink-dim, #AF969C); }
-  .infra-field-error { font-size: 0.74rem; color: var(--infra-danger, #ED423F); display: flex; align-items: center; gap: 5px; }
+  .infra-field-error { font-size: 0.74rem; color: var(--infra-error, #FF6B5C); display: flex; align-items: center; gap: 5px; }
   .infra-input, .infra-textarea { width: 100%; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 0.86rem; color: var(--infra-ink, #ECE2EE); background: var(--infra-surface, #2A1C36); border: 1px solid var(--infra-line, #563B5A); border-radius: 4px; padding: 9px 12px; }
   .infra-input::placeholder, .infra-textarea::placeholder { color: var(--infra-ink-dim, #AF969C); opacity: 0.7; }
   .infra-input:focus, .infra-textarea:focus { outline: none; border-color: var(--infra-accent, #EEF4B8); }
@@ -96,9 +96,9 @@ var ok=(p==='light'||p==='dark');r.setAttribute('data-theme',ok?p:s);r.setAttrib
     --infra-ink: #1F142E; --infra-ink-dim: #563B5A; --infra-line: #B39B8C;
     --infra-surface: #E7E4DF; --infra-surface-2: #ECE2EE;
     --infra-accent: #566D2B; --infra-on-accent: #FDFBF7; --infra-danger: #ED423F;
-    --infra-success: #3F6E45; --infra-warning: #A8741F; --infra-error: #B3261E;
+    --infra-success: #3F6E45; --infra-warning: #7B5517; --infra-error: #B3261E;
     --infra-accent-tint: rgba(86,109,43,0.14); --infra-success-tint: rgba(63,110,69,0.14);
-    --infra-warning-tint: rgba(168,116,31,0.14); --infra-error-tint: rgba(179,38,30,0.14);
+    --infra-warning-tint: rgba(168,116,31,0.14); --infra-error-tint: rgba(179,38,30,0.08);
   }
 
   /* ---- Light / Dark / Auto switch ---- */
@@ -123,7 +123,7 @@ var ok=(p==='light'||p==='dark');r.setAttribute('data-theme',ok?p:s);r.setAttrib
     <div class="badge-row">
       <span class="pill on">Copy-ready</span>
       <span class="pill">Responsive</span>
-      <span class="pill">Rev. 02 · 2026-09-15</span>
+      <span class="pill">Rev. 03 · 2026-11-24</span>
     </div>
   </header>
 
@@ -205,7 +205,7 @@ var ok=(p==='light'||p==='dark');r.setAttribute('data-theme',ok?p:s);r.setAttrib
           <button type="button" class="copy component-copy-btn" data-copy="&lt;style&gt;
 .infra-field { display: flex; flex-direction: column; gap: 6px; max-width: 320px; font-family: 'IBM Plex Mono', ui-monospace, monospace; }
 .infra-field-label { font-size: 0.78rem; font-weight: 600; color: var(--infra-ink, #ECE2EE); }
-.infra-field-error { font-size: 0.74rem; color: var(--infra-danger, #ED423F); display: flex; align-items: center; gap: 5px; }
+.infra-field-error { font-size: 0.74rem; color: var(--infra-error, #FF6B5C); display: flex; align-items: center; gap: 5px; }
 .infra-input { width: 100%; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 0.86rem; color: var(--infra-ink, #ECE2EE); background: var(--infra-surface, #2A1C36); border: 1px solid var(--infra-line, #563B5A); border-radius: 4px; padding: 9px 12px; }
 .infra-field--error .infra-input { border-color: var(--infra-danger, #ED423F); }
 .infra-input:focus { outline: none; border-color: var(--infra-accent, #EEF4B8); }
@@ -343,7 +343,7 @@ var ok=(p==='light'||p==='dark');r.setAttribute('data-theme',ok?p:s);r.setAttrib
   </section>
 
   <footer>
-    Part of the Infra Component Library — see also <a href="Data-Display.html">Data Display</a>, <a href="Navigation.html">Navigation</a>, <a href="Overlays.html">Overlays</a>, and <a href="Admin-Console-Density-Tier.html">Density Tiers</a>. <span class="mono">Rev. 02 · 2026-09-15</span>
+    Part of the Infra Component Library — see also <a href="Data-Display.html">Data Display</a>, <a href="Navigation.html">Navigation</a>, <a href="Overlays.html">Overlays</a>, and <a href="Admin-Console-Density-Tier.html">Density Tiers</a>. <span class="mono">Rev. 03 · 2026-11-24</span>
   </footer>
 
 </div>

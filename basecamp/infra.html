@@ -25,7 +25,7 @@ var ok=(p==='light'||p==='dark');r.setAttribute('data-theme',ok?p:s);r.setAttrib
     --core-bg: #1B1D1B;
     --core-ink: #F1F1EA;
     --pass: #3F6E45;
-    --caution: #A8741F;
+    --caution: #7B5517;
     --fail: #B3261E;
     --shadow: 0 1px 0 rgba(27,29,27,0.06);
   }
@@ -850,7 +850,7 @@ var ok=(p==='light'||p==='dark');r.setAttribute('data-theme',ok?p:s);r.setAttrib
 
   <main>
     <div class="cover">
-      <div class="eyebrow">Brand Specification Book — Rev. 02</div>
+      <div class="eyebrow">Brand Specification Book — Rev. 03</div>
       <div class="cover-logo">
         <img src="infra/Logo Suite/infra-name-logo-black.svg" alt="Infra" class="cover-logo-light">
         <img src="infra/Logo Suite/infra-name-logo-white.svg" alt="Infra" class="cover-logo-dark">
@@ -859,8 +859,8 @@ var ok=(p==='light'||p==='dark');r.setAttribute('data-theme',ok?p:s);r.setAttrib
       <div class="cover-meta">
         <div><div class="eyebrow">Prepared for</div><div class="client-field client-field--pill">Infra</div></div>
         <div><div class="eyebrow">Prepared by</div><div class="client-field client-field--pill">Fervent Digital Marketing</div></div>
-        <div><div class="eyebrow">Date</div><div class="client-field client-field--pill">15 / 09 / 2026</div></div>
-        <div style="max-width:360px;"><div class="eyebrow">Scope</div><div class="client-field">Core — Brand Strategy, Logo Suite, Color, Typography. Optional — Voice &amp; Messaging, Imagery &amp; Video, Graphical Assets &amp; UI, Print &amp; Physical, Digital &amp; Templates (all retained). Rev. 02 — module 07 iconography concretised, UI component library added with copy-ready code, core icon set given Combination/Dark/Light colour modes (2026-09-15).</div></div>
+        <div><div class="eyebrow">Date</div><div class="client-field client-field--pill">24 / 11 / 2026</div></div>
+        <div style="max-width:360px;"><div class="eyebrow">Scope</div><div class="client-field">Core — Brand Strategy, Logo Suite, Color, Typography. Optional — Voice &amp; Messaging, Imagery &amp; Video, Graphical Assets &amp; UI, Print &amp; Physical, Digital &amp; Templates (all retained). Rev. 02 — module 07 iconography concretised, UI component library added with copy-ready code, core icon set given Combination/Dark/Light colour modes (2026-09-15). Rev. 03 — Infrastructure Lime as the action colour, red reserved for alerts, 2-tone logo retired, Light/Dark/Auto switch, and accessible warning and alert text tokens (2026-11-24).</div></div>
       </div>
     </div>
 
@@ -1515,12 +1515,15 @@ var ok=(p==='light'||p==='dark');r.setAttribute('data-theme',ok?p:s);r.setAttrib
                 <tr><td class="touchpoint">Electric Citron on Midnight Plum</td><td class="mono">15.3 : 1</td><td><span class="wcag-badge pass">AAA · all text</span></td></tr>
                 <tr><td class="touchpoint">Coral Crimson (alerts) on Alabaster Cream</td><td class="mono">3.7 : 1</td><td><span class="wcag-badge caution">AA · large text / UI only</span></td></tr>
                 <tr><td class="touchpoint">Coral Crimson (alerts) on Midnight Plum</td><td class="mono">4.6 : 1</td><td><span class="wcag-badge pass">AA · normal text</span></td></tr>
+                <tr><td class="touchpoint">Deep Crimson (alert text) on Alabaster Cream</td><td class="mono">6.3 : 1</td><td><span class="wcag-badge pass">AA · normal text</span></td></tr>
+                <tr><td class="touchpoint">Soft Coral (alert text, dark mode) on Midnight Plum</td><td class="mono">6.3 : 1</td><td><span class="wcag-badge pass">AA · normal text</span></td></tr>
+                <tr><td class="touchpoint">Deep Amber (warning text) on Alabaster Cream</td><td class="mono">6.4 : 1</td><td><span class="wcag-badge pass">AA · normal text</span></td></tr>
                 <tr><td class="touchpoint">Amber Node on Midnight Plum</td><td class="mono">8.6 : 1</td><td><span class="wcag-badge pass">AAA · all text</span></td></tr>
                 <tr><td class="touchpoint">Amber Node on Alabaster Cream</td><td class="mono">2.0 : 1</td><td><span class="wcag-badge fail">Fail · decorative only</span></td></tr>
               </tbody>
             </table>
           </div>
-          <div class="field-value placeholder" style="margin-top:10px">[the light anchors read beautifully on the dark plum — that's the brand's natural dark-mode pairing. On the cream background, use Deep Moss for buttons and links, keep Coral Crimson to alerts as large text/UI only, and never put Amber Node text on cream]</div>
+          <div class="field-value placeholder" style="margin-top:10px">[the light anchors read beautifully on the dark plum — that's the brand's natural dark-mode pairing. On the cream background, use Deep Moss for buttons and links, keep Coral Crimson for alert fills, borders, stripes and dots (large text/UI only), write alert words in Deep Crimson and warning words in Deep Amber, and never put Amber Node text on cream. Dark mode: alert words use Soft Coral and warning words use Amber Node]</div>
         </div>
         </div>
 
@@ -1537,7 +1540,9 @@ var ok=(p==='light'||p==='dark');r.setAttribute('data-theme',ok?p:s);r.setAttrib
               <div class="token-row"><div class="token-swatch" style="background:#563B5A"></div><div class="token-role">Text Secondary</div><div class="token-note">Dusk Violet (Skin tone)</div><span class="token-ratio">9.4:1 AAA</span><button type="button" class="copy token-hex" data-copy="#563B5A">#563B5A</button></div>
               <div class="token-row"><div class="token-swatch" style="background:#566D2B"></div><div class="token-role">Accent / CTA</div><div class="token-note">Infrastructure Lime (Deep Moss) — buttons &amp; links, pair with Cream label text</div><span class="token-ratio">5.6:1 AA</span><button type="button" class="copy token-hex" data-copy="#566D2B">#566D2B</button></div>
               <div class="token-row"><div class="token-swatch" style="background:#F0A830"></div><div class="token-role">Accent Secondary</div><div class="token-note">Amber Node — badges, icons; not for text on cream</div><span class="token-ratio">2.0:1 Fail*</span><button type="button" class="copy token-hex" data-copy="#F0A830">#F0A830</button></div>
-              <div class="token-row"><div class="token-swatch" style="background:#ED423F"></div><div class="token-role">Alert / Urgent</div><div class="token-note">Coral Crimson — errors, destructive actions and urgent notifications only</div><span class="token-ratio">3.7:1 AA large</span><button type="button" class="copy token-hex" data-copy="#ED423F">#ED423F</button></div>
+              <div class="token-row"><div class="token-swatch" style="background:#ED423F"></div><div class="token-role">Alert / Urgent (fills)</div><div class="token-note">Coral Crimson — fills, borders, stripes and dots for errors, destructive actions and urgent notifications. Not for words on light surfaces</div><span class="token-ratio">3.7:1 AA large / UI</span><button type="button" class="copy token-hex" data-copy="#ED423F">#ED423F</button></div>
+              <div class="token-row"><div class="token-swatch" style="background:#B3261E"></div><div class="token-role">Alert Text</div><div class="token-note">Deep Crimson (--infra-error) — error messages, field errors and alert text; same red family, readable on every light surface</div><span class="token-ratio">6.3:1 AA</span><button type="button" class="copy token-hex" data-copy="#B3261E">#B3261E</button></div>
+              <div class="token-row"><div class="token-swatch" style="background:#7B5517"></div><div class="token-role">Warning Text</div><div class="token-note">Deep Amber (--infra-warning) — caution text and the warning badge on light surfaces. Amber Node stays for fills, dots and icons</div><span class="token-ratio">6.4:1 AA</span><button type="button" class="copy token-hex" data-copy="#7B5517">#7B5517</button></div>
             </div>
           </div>
           <div class="field-value placeholder" style="margin-top:10px">[* ratios marked are the colour used as a text/icon fill on the Background above — Deep Moss works as a button fill with Cream label text (5.6:1) and as link text on Cream. Coral Crimson is reserved for alerts]</div>
@@ -1558,7 +1563,8 @@ var ok=(p==='light'||p==='dark');r.setAttribute('data-theme',ok?p:s);r.setAttrib
               <div class="token-row"><div class="token-swatch" style="background:#AF969C"></div><div class="token-role">Text Secondary</div><div class="token-note">Skin tone</div><span class="token-ratio">6.4:1 AA</span><button type="button" class="copy token-hex" data-copy="#AF969C">#AF969C</button></div>
               <div class="token-row"><div class="token-swatch" style="background:#EEF4B8"></div><div class="token-role">Accent / CTA</div><div class="token-note">Infrastructure Lime (Electric Citron) — buttons, links, active states, pair with Deep Space label text</div><span class="token-ratio">15.3:1 AAA</span><button type="button" class="copy token-hex" data-copy="#EEF4B8">#EEF4B8</button></div>
               <div class="token-row"><div class="token-swatch" style="background:#F0A830"></div><div class="token-role">Accent Secondary</div><div class="token-note">Amber Node — safe as text or icon here</div><span class="token-ratio">8.6:1 AAA</span><button type="button" class="copy token-hex" data-copy="#F0A830">#F0A830</button></div>
-              <div class="token-row"><div class="token-swatch" style="background:#ED423F"></div><div class="token-role">Alert / Urgent</div><div class="token-note">Coral Crimson — errors, destructive actions and urgent notifications only</div><span class="token-ratio">4.6:1 AA</span><button type="button" class="copy token-hex" data-copy="#ED423F">#ED423F</button></div>
+              <div class="token-row"><div class="token-swatch" style="background:#ED423F"></div><div class="token-role">Alert / Urgent (fills)</div><div class="token-note">Coral Crimson — fills, borders, stripes and dots for errors, destructive actions and urgent notifications</div><span class="token-ratio">4.6:1 AA</span><button type="button" class="copy token-hex" data-copy="#ED423F">#ED423F</button></div>
+              <div class="token-row"><div class="token-swatch" style="background:#FF6B5C; border-color:rgba(255,255,255,0.2);"></div><div class="token-role">Alert Text</div><div class="token-note">Soft Coral (--infra-error) — error messages, field errors and alert text on dark surfaces</div><span class="token-ratio">6.3:1 AA</span><button type="button" class="copy token-hex" data-copy="#FF6B5C">#FF6B5C</button></div>
             </div>
           </div>
         </div>
